@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="491fab40-6d9f-4bd8-9986-f9f17033547b" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1bMC6YFwMrYPfAIp9hsqsY7BhLY" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="D:\WorkSpaces\AF project\Store_Manager_Dashboard\node_modules\prettier" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="491fab40-6d9f-4bd8-9986-f9f17033547b" name="Default Changelist" comment="" />
+      <created>1588432400839</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1588432400839</updated>
+      <workItem from="1588432403928" duration="513000" />
+      <workItem from="1588435723142" duration="191000" />
+      <workItem from="1588435926752" duration="390000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="153" y="261" key="#Notifications" timestamp="1588435903549">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="153" y="261" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1588435903549" />
+    <state x="341" y="357" key="FileChooserDialogImpl" timestamp="1588436074507">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="341" y="357" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588436074507" />
+    <state width="1899" height="260" key="GridCell.Tab.0.bottom" timestamp="1588436319671">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588436319671" />
+    <state width="1899" height="260" key="GridCell.Tab.0.center" timestamp="1588436319671">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="260" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588436319671" />
+    <state width="1899" height="260" key="GridCell.Tab.0.left" timestamp="1588436319670">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="260" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588436319670" />
+    <state width="1899" height="260" key="GridCell.Tab.0.right" timestamp="1588436319671">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="260" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588436319671" />
+    <state x="62" y="245" key="SettingsEditor" timestamp="1588436079575">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="62" y="245" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1588436079575" />
+  </component>
+</project>
