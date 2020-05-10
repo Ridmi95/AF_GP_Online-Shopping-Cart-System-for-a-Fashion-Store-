@@ -1,0 +1,97 @@
+.header {
+  background-color: #ffffff;
+  padding: 0px 15px;
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    .site-logo {
+      display: inline-block;
+      padding: 20px 0;
+      width: 20%;
+      img {
+        width: 150px;
+      }
+    }
+    .search-bar {
+      padding: 20px 0;
+      width: 40%;
+      .form-input {
+        margin-bottom: 0px !important;
+        input {
+          border: 1px solid #e6e6e6 !important;
+          border-radius: 5px;
+        }
+      }
+    }
+    .main-button-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      .btn-wrapper {
+        display: inline-flex;
+        .auth-button {
+          margin-right: 10px;
+        }
+      }
+      .cart-wrapper {
+        font-size: 20px;
+        background-color: rgba(240, 71, 71, 0.87);
+        padding: 0px 10px;
+        border-radius: 5px;
+        border: 2px solid rgba(240, 71, 71, 0.87);
+        i {
+          font-weight: 800;
+          color: #ffffff;
+        }
+      }
+      button {
+        background-color: rgba(240, 71, 71, 0.87);
+        color: white;
+        font-weight: 700;
+        border-color: rgba(240, 71, 71, 0.87);
+        margin-left: 5px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 875px) {
+  .header {
+    padding: 10px 15px;
+    .container {
+      display: block;
+      width: 100%;
+      .site-logo {
+        width: 100%;
+        text-align: center;
+      }
+      .search-bar {
+        width: 100%;
+        padding: 0 0 20px 0;
+        .form-input {
+          input {
+            box-sizing: border-box;
+          }
+        }
+      }
+      .main-button-container {
+        width: 100%;
+        .cart-wrapper {
+          padding: 5px 10px;
+        }
+        .btn-wrapper {
+          width: 100%;
+          display: block !important;
+          .auth-button {
+            margin-bottom: 10px;
+            button {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+@media screen and (max-width: 720px) {
+  .header {
+    padding: 10px 15px;
+    .container {
+      display: block !important;
+      width: 100%;
+      .site-logo {
+        width: 100% !important;
+        text-align: center;
+      }
+      .top-menu-container {
+        width: 100%;
+        .button-container {
+          margin-left: auto;
+          margin-right: 0;
+          .btn-wrapper {
+            margin: 0 20% 0 20%;
+            width: 70%;
+            .auth-button {
+              margin: auto 5px auto auto;
+              width: 160px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.header {
+  background-color: #ffffff;
+  padding: 0px 15px;
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    .site-logo {
+      display: inline-block;
+      padding: 20px 0;
+      width: 20%;
+      img {
+        width: 150px;
+      }
+    }
+    .top-menu-container {
+      box-sizing: border-box;
+      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .button-container {
+        justify-content: space-between;
+        padding-left: 8px;
+        margin-bottom: 15px;
+        .username-container {
+          font-size: 13px;
+          padding-right: 10px;
+        }
+        .profile-icon {
+          background-color: #e1e2eb !important;
+          border-color: #e1e2eb !important;
+          color: #888da2;
+        }
+        button {
+          margin: 3px !important;
+          background-color: rgba(240, 71, 71, 0.87);
+          color: white;
+          font-weight: 700;
+          border-color: rgba(240, 71, 71, 0.87);
+          min-height: 5px;
+          border: 2px solid transparent;
+        }
+      }
+    }
+    /* .button-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        .btn-wrapper{
+          display: inline-flex;
+          .auth-button {
+            margin-right: 10px;
+          }
+        }
+        button {
+          background-color: rgba(240, 71, 71, 0.87);
+          color: white;
+          font-weight: 700;
+          border-color: rgba(240, 71, 71, 0.87);
+          border-radius: 5px;
+          border: 2px solid transparent;
+        }
+      }*/
+  }
+}
