@@ -1,0 +1,88 @@
+.product {
+  background-color: rgb(235, 235, 235);
+  border-radius: 10px;
+  a {
+    text-decoration: none;
+    color: initial;
+  }
+  .product-selector {
+    .checkbox-container {
+      padding-left: 0px;
+      float: right;
+      .checkmark {
+        border-radius: 15px;
+      }
+      input:checked ~ .checkmark {
+        background-color: rgba(163, 163, 163, 0.603);
+        padding: 1px;
+      }
+    }
+    &.selected {
+      .checkbox-container {
+        .checkmark {
+          border-radius: 15px;
+        }
+        input:checked ~ .checkmark {
+          background-color: #4ed02e;
+          padding: 1px;
+        }
+      }
+    }
+  }
+  .featured-image {
+    position: relative;
+    img {
+      width: 100%;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      display: block;
+    }
+  }
+  .product-content {
+    & > div {
+      margin-bottom: 10px;
+    }
+    font-size: 14px;
+    padding: 15px;
+    .product-title {
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      height: 40px;
+    }
+    .product-currency {
+      margin-top: 10px;
+      color: #ff6000;
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .ratings {
+      margin-top: 10px;
+      .star-rate {
+        min-width: 110px;
+        .rate-star {
+          i {
+            font-size: 15px;
+          }
+        }
+      }
+      span {
+        font-size: 15px;
+      }
+    }
+  }
+}
+.product:hover {
+  background-color: rgb(110, 20, 255);
+  transform: scale(1.1);
+  .product-content {
+    .product-title {
+      color: white;
+    }
+  }
+}
+@media screen and (max-width: 875px) {
+  .product {
+    margin-bottom: 15px;
+  }
+}
