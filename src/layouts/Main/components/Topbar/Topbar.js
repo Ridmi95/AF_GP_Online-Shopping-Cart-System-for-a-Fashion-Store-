@@ -7,6 +7,20 @@ import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
+import axios from 'axios';
+
+const logout = function () {
+
+  let logout = async () => {
+
+    let response = await axios.get('http://localhost:4000/auth/logout');
+
+    if (response.data === false) {
+      window.location.replace('/sign-in')
+    }
+  }
+  logout();
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +40,7 @@ const Topbar = props => {
   const classes = useStyles();
 
   const [notifications] = useState([]);
+
 
   return (
     <AppBar
@@ -53,6 +68,7 @@ const Topbar = props => {
           <IconButton
             className={classes.signOutButton}
             color="inherit"
+            onClick={logout}
           >
             <InputIcon />
           </IconButton>

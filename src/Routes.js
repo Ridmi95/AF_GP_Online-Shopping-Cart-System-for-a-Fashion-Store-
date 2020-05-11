@@ -7,14 +7,18 @@ import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 import {
   Dashboard as DashboardView,
   ProductList as ProductListView,
-  UserList as UserListView,
+  UserList as UserListView, //Load template original user page
   Typography as TypographyView,
   Icons as IconsView,
   Account as AccountView,
   Settings as SettingsView,
   SignUp as SignUpView,
   SignIn as SignInView,
-  NotFound as NotFoundView
+  NotFound as NotFoundView,
+  CreateCategory as CreateCategoryView,
+  Managers as Managers,
+  Users as Users
+
 } from './views';
 
 const Routes = () => {
@@ -23,7 +27,7 @@ const Routes = () => {
       <Redirect
         exact
         from="/"
-        to="/dashboard"
+        to="/sign-in"
       />
       <RouteWithLayout
         component={DashboardView}
@@ -32,7 +36,19 @@ const Routes = () => {
         path="/dashboard"
       />
       <RouteWithLayout
-        component={UserListView}
+        component={CreateCategoryView}
+        exact
+        layout={MainLayout}
+        path="/category"
+      />
+      <RouteWithLayout
+        component={Managers}
+        exact
+        layout={MainLayout}
+        path="/managers"
+      />
+      <RouteWithLayout
+        component={Users}
         exact
         layout={MainLayout}
         path="/users"

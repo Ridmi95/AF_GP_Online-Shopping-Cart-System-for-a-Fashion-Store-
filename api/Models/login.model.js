@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Define collection and schema for Category
+// Define collection and schema for login
 let loging = new Schema({
     id: {
         type: Number
@@ -16,6 +16,12 @@ let loging = new Schema({
     },
     is_active: {
         type: Number
+    },
+    role: {
+        type:String
+    },
+    email: {
+        type:String
     }
 }, {
     collection: 'login'

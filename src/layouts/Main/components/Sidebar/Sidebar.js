@@ -49,6 +49,16 @@ const Sidebar = props => {
       icon: <DashboardIcon />
     },
     {
+      title: 'Categories',
+      href: '/category',
+      icon: <DashboardIcon />
+    },
+    {
+      title: 'Managers',
+      href: '/managers',
+      icon: <PeopleIcon />
+    },
+    {
       title: 'Users',
       href: '/users',
       icon: <PeopleIcon />

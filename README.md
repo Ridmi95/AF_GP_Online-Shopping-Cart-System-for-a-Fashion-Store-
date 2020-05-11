@@ -22,3 +22,11 @@ npm install --save react-admin
 
 npm install --save express express-session body-parser
 npm i --S redis connect-redis
+
+
+Install the Axios library and send a POST request.-----------
+npm install axios --save
+
+npm install react-bootstrap bootstrap
+npm install bootstrap --save
+npm install react-router-dom --save

@@ -8,3 +8,6 @@ export { default as SignIn } from './SignIn';
 export { default as SignUp } from './SignUp';
 export { default as Typography } from './Typography';
 export { default as UserList } from './UserList';
+export { default as CreateCategory } from './Category/Create_Category';
+export { default as Managers } from './Managers';
+export { default as Users } from './Users';
