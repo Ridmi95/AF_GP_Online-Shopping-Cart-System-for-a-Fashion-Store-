@@ -1,0 +1,62 @@
+POST http://localhost:4000/login HTTP/1.1
+content-type: application/json
+
+{
+    "username":"admin",
+    "password":"123456"
+}
+
+
+
+GET http://localhost:4000/category/edit/1 HTTP/1.1
+
+
+
+GET http://localhost:4000/managers HTTP/1.1
+
+
+POST http://localhost:4000/managers/add HTTP/1.1
+content-type: application/json
+
+{
+    "username":"managerx",
+    "password":"$2b$10$UBdsy4NFie/HbyyP4QduHOWYdqvDmtHVyYwrtxsl8q8E7oHUkNRf2",
+    "is_active":1,
+    "role":"manager"
+}
+
+
+
+GET http://localhost:4000/managers/edit/5eb196b487d8360108dc3b3e HTTP/1.1
+
+
+POST http://localhost:4000/managers/update/5eb774862c29f04d6035ed5e HTTP/1.1
+content-type: application/json
+{
+    "username": "man15",
+    "password": "pas22311"
+    "is_active": 1,
+    "role": "manager",
+    "email":"test@9834mail.com"
+};
+
+
+
+GET  http://localhost:4000/login/hash HTTP/1.1
+
+
+POST http://localhost:4000/managers/add HTTP/1.1
+//content-type: application/json
+
+{
+    "username": "man15",
+    "password": "pas22311"
+    "is_active": 1,
+    "role": "manager",
+    "email":"test@9834mail.com"
+}
+
+
+GET http://localhost:4000/users HTTP/1.1
+
+GET http://localhost:4000/auth/logout HTTP/1.1

@@ -1,0 +1,25 @@
+[{
+  "_id": {
+    "$oid": "5eb664ed7e1fae2bd8d43593"
+  },
+  "category_name": "cat1",
+  "category_description": "asdasd",
+  "is_active": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb882f24ee22b2538929e6f"
+  },
+  "category_name": "test",
+  "category_description": "test",
+  "is_active": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb883bc4ee22b2538929e70"
+  },
+  "category_name": "cat3",
+  "category_description": "cat3",
+  "is_active": 1,
+  "__v": 0
+}]
