@@ -17,26 +17,26 @@ let Product = require("../Models/product.model");
 //     });
 // });
 
-// productRoutes.route("/").get(function (req, res) {
-//   Product.find(function (err, products) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.status(200).json({ success: true, data: products });
-//     }
-//   });
-// });
+productRoutes.route("/").get(function (req, res) {
+  Product.find(function (err, products) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: products });
+    }
+  });
+});
 
-// productRoutes.route("/:id").get(function (req, res) {
-//   let id = req.params.id;
-//   Product.findOne({ productCode: id }, function (err, product) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.status(200).json({ success: true, data: product });
-//     }
-//   });
-// });
+productRoutes.route("/:id").get(function (req, res) {
+  let id = req.params.id;
+  Product.findOne({ productCode: id }, function (err, product) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: product });
+    }
+  });
+});
 
 //search by Id
 productRoutes.route("/search/:key").get(function (req, res) {
@@ -80,16 +80,16 @@ productRoutes.route("/update/bycode/").put(function (req, res) {
 
 
 //get all the products
-productRoutes.route('/').get((req, res) =>{
+// productRoutes.route('/list').get((req, res) =>{
 
-  Product.find().then(product => res.json(product))
-  .catch(err => res.status(400).json('Error: ' + err));
+//   Product.find().then(product => res.json(product))
+//   .catch(err => res.status(400).json('Error: ' + err));
 
 
-});
+// });
 
 // get product by id
-productRoutes.route('/:id').get((req, res) =>{
+productRoutes.route('/list/:id').get((req, res) =>{
 
   Product.findById(req.params.id).then(product => res.json(product))
   .catch(err => res.status(400).json('Error: ' + err));
