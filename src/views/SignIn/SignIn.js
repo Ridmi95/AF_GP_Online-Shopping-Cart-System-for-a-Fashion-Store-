@@ -227,7 +227,7 @@ const SignIn = props => {
                   className={classes.bio}
                   variant="body2"
                 >
-                  Administration at InVision
+                  Administration at Fashion House
                 </Typography>
               </div>
             </div>

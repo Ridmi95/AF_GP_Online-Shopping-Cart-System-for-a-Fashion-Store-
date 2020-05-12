@@ -58,7 +58,7 @@ const TotalProfit = props => {
               color="inherit"
               variant="h3"
             >
-              $23,200
+              LKR 250,000,00
             </Typography>
           </Grid>
           <Grid item>

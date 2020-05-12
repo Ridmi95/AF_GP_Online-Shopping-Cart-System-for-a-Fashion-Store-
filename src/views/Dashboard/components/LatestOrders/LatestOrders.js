@@ -1,148 +1,96 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import moment from 'moment';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import {
-  Card,
-  CardActions,
-  CardHeader,
-  CardContent,
-  Button,
-  Divider,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  TableSortLabel
-} from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+//User
+import React, { Component } from 'react';
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Card from 'react-bootstrap/Card';
+import { CardContent } from '@material-ui/core';
 
-import mockData from './data';
-import { StatusBullet } from 'components';
+export default class Users extends Component {
 
-const useStyles = makeStyles(theme => ({
-  root: {},
-  content: {
-    padding: 0
-  },
-  inner: {
-    minWidth: 800
-  },
-  statusContainer: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  status: {
-    marginRight: theme.spacing(1)
-  },
-  actions: {
-    justifyContent: 'flex-end'
+  constructor(props) {
+    super(props);
+
+
+    this.state = {
+      all_users : []
+    }
+
+    document.title = "Users";
+    this.validateSession();
   }
-}));
 
-const statusColors = {
-  delivered: 'success',
-  pending: 'info',
-  refunded: 'danger'
-};
 
-const LatestOrders = props => {
-  const { className, ...rest } = props;
+  validateSession() {
+    let auth = async () => {
+      let response = await axios.get('http://localhost:4000/auth');
+      if (response.data !== true) {
+        window.location.replace("/sign-in");
+      }
+    }
 
-  const classes = useStyles();
+    auth();
+  }
 
-  const [orders] = useState(mockData);
+  //Get all users for display
+  componentDidMount() {
 
-  return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <CardHeader
-        action={
-          <Button
-            color="primary"
-            size="small"
-            variant="outlined"
-          >
-            New entry
-          </Button>
-        }
-        title="Latest Orders"
-      />
-      <Divider />
-      <CardContent className={classes.content}>
-        <PerfectScrollbar>
-          <div className={classes.inner}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Order Ref</TableCell>
-                  <TableCell>Customer</TableCell>
-                  <TableCell sortDirection="desc">
-                    <Tooltip
-                      enterDelay={300}
-                      title="Sort"
-                    >
-                      <TableSortLabel
-                        active
-                        direction="desc"
-                      >
-                        Date
-                      </TableSortLabel>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>Status</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {orders.map(order => (
-                  <TableRow
-                    hover
-                    key={order.id}
-                  >
-                    <TableCell>{order.ref}</TableCell>
-                    <TableCell>{order.customer.name}</TableCell>
-                    <TableCell>
-                      {moment(order.createdAt).format('DD/MM/YYYY')}
-                    </TableCell>
-                    <TableCell>
-                      <div className={classes.statusContainer}>
-                        <StatusBullet
-                          className={classes.status}
-                          color={statusColors[order.status]}
-                          size="sm"
-                        />
-                        {order.status}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </PerfectScrollbar>
-      </CardContent>
-      <Divider />
-      <CardActions className={classes.actions}>
-        <Button
-          color="primary"
-          size="small"
-          variant="text"
-        >
-          View all <ArrowRightIcon />
-        </Button>
-      </CardActions>
-    </Card>
-  );
-};
+    try {
+      axios.get('http://localhost:4000/users')
+        .then(response => {
+          this.setState({ all_users: response.data });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
-LatestOrders.propTypes = {
-  className: PropTypes.string
-};
+    } catch (err) {
+      console.log(err)
+    }
 
-export default LatestOrders;
+  }
+
+  render() {
+    return (<div>
+
+      <Card className="mt-1">
+        <h4 className="mb-0 pl-5 ml-1 mt-3 mb-3">All Users</h4>
+
+        <div className='p-2' style={{ overflow: "auto" }}>
+          <table className="table w-100 table-striped mx-auto">
+            <thead className="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th>User</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Phone</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {this.state.all_users.map((item, index) => (
+
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{item.name}</td>
+                <td>{item.email}</td>
+                <td>{item.address.country + "," + item.address.state + "," + item.address.city + "," + item.address.street + "."}</td>
+                <td>{item.phone}</td>
+
+              </tr>
+            ))}
+
+            </tbody>
+          </table>
+
+        </div>
+
+      </Card>
+
+
+    </div>);
+  }
+
+}
