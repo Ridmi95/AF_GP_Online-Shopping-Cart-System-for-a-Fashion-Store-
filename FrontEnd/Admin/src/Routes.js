@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 
 import { RouteWithLayout } from './components';
-import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
+import { Main as MainLayout, Minimal as MinimalLayout ,index as Base} from './layouts';
 
 import {
   Dashboard as DashboardView,
@@ -21,6 +21,18 @@ import {
 
 } from './views';
 
+
+// manager
+
+import Navbar from "./manager.components/manager.navbar.components";
+import addproducts from "./manager.components/manager.AddProducts.components";
+import productList from "./manager.components/manager.productlist.components";
+import updateproduct from "./manager.components/manager.updateProduct.components";
+
+import ManagerSignIn from "./manager.components/manager.signin.components";
+
+// manager
+
 const Routes = () => {
   return (
     <Switch>
@@ -29,6 +41,44 @@ const Routes = () => {
         from="/"
         to="/sign-in"
       />
+{/* manager */}
+<RouteWithLayout
+        component={addproducts}
+        exact
+        layout={MinimalLayout}
+        path="/add-product"
+      />
+
+<RouteWithLayout
+        component={productList}
+        exact
+        layout={MinimalLayout}
+        path="/dashboard-manager"
+      />
+
+<RouteWithLayout
+        component={addproducts}
+        exact
+        layout={MinimalLayout}
+        path="/add-product"
+      />
+
+<RouteWithLayout
+        component={updateproduct}
+        exact
+        layout={MinimalLayout}
+        path="/edit-product/:id"/>
+
+<RouteWithLayout
+        component={ManagerSignIn}
+        exact
+        layout={MinimalLayout}
+        path="/manager-Sign-In"/>
+
+      {/* manager */}
+
+
+
       <RouteWithLayout
         component={DashboardView}
         exact

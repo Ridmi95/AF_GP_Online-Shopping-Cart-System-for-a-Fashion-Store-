@@ -1,5 +1,12 @@
 // // category.route.js
 
+const express = require('express');
+const categoryRoutes = express.Router();
+const session = require('express-session');
+
+// Require Category model in our routes module
+let Category = require('../Models/category.model');
+
 // const express = require('express');
 // const categoryRoutes = express.Router();
 
@@ -19,17 +26,17 @@
 //     });
 // });
 
-// // Defined get data(index or listing) route
-// categoryRoutes.route('/').get(function (req, res) {
-//   Category.find(function (err, categories) {
-//     if (err) {
-//       console.log(err);
-//     }
-//     else {
-//       res.json(categories);
-//     }
-//   });
-// });
+// Defined get data(index or listing) route
+categoryRoutes.route('/getall').get(function (req, res) {
+  Category.find(function (err, categories) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.json(categories);
+    }
+  });
+});
 
 // // Defined edit route
 // categoryRoutes.route('/edit/:id').get(function (req, res) {
@@ -72,12 +79,7 @@
 
 // category.route.js
 
-const express = require('express');
-const categoryRoutes = express.Router();
-const session = require('express-session');
 
-// Require Category model in our routes module
-let Category = require('../Models/category.model');
 
 
 // Defined store route

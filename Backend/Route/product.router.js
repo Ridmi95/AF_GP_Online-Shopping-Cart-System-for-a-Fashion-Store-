@@ -112,7 +112,7 @@ productRoutes.route('/add').post((req, res) =>{
 
   const newProduct = new Product({productCode,productName,price,color,categoryName,discount,quantity,description,size});
 
-  newProduct.save().then(()=> res.json('Product added!')).catch(err=> res.status(400).json('Erro' + err));
+  newProduct.save().then(()=> res.json('success')).catch(err=> res.status(400).json('Erro' + err));
 
 
 });
