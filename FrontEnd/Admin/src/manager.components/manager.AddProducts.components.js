@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Navbar from "./manager.navbar.components";
 import Title from "./manager.title.components";
+import styleManager from "./css/manager-add-style.css"
 
 export default class addproducts extends Component{
 
@@ -206,8 +207,15 @@ onSubmit=(e)=>{
 
         
         return(
+
+            
         
-            <div>
+            <div className="manager">
+                <header>
+
+                <link rel="stylesheet" href="./css/manager-add-style.css"/>
+
+                </header>
                 <Title/>
                 <Navbar />
             
