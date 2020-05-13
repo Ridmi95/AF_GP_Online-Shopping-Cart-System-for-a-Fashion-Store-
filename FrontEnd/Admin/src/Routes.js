@@ -56,12 +56,6 @@ const Routes = () => {
         path="/dashboard-manager"
       />
 
-<RouteWithLayout
-        component={addproducts}
-        exact
-        layout={MinimalLayout}
-        path="/add-product"
-      />
 
 <RouteWithLayout
         component={updateproduct}
