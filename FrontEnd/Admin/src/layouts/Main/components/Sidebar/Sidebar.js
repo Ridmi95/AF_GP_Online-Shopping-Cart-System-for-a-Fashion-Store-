@@ -51,7 +51,7 @@ const Sidebar = props => {
     {
       title: 'Categories',
       href: '/category',
-      icon: <DashboardIcon />
+      icon: <ShoppingBasketIcon />
     },
     {
       title: 'Managers',
@@ -63,35 +63,11 @@ const Sidebar = props => {
       href: '/users',
       icon: <PeopleIcon />
     },
-    {
-      title: 'Products',
-      href: '/products',
-      icon: <ShoppingBasketIcon />
-    },
+
     {
       title: 'Authentication',
       href: '/sign-in',
       icon: <LockOpenIcon />
-    },
-    {
-      title: 'Typography',
-      href: '/typography',
-      icon: <TextFieldsIcon />
-    },
-    {
-      title: 'Icons',
-      href: '/icons',
-      icon: <ImageIcon />
-    },
-    {
-      title: 'Account',
-      href: '/account',
-      icon: <AccountBoxIcon />
-    },
-    {
-      title: 'Settings',
-      href: '/settings',
-      icon: <SettingsIcon />
     }
   ];
 
@@ -107,13 +83,13 @@ const Sidebar = props => {
         {...rest}
         className={clsx(classes.root, className)}
       >
-        <Profile />
+        
         <Divider className={classes.divider} />
         <SidebarNav
           className={classes.nav}
           pages={pages}
         />
-        <UpgradePlan />
+
       </div>
     </Drawer>
   );

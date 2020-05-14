@@ -82,15 +82,7 @@ const LatestProducts = props => {
         </List>
       </CardContent>
       <Divider />
-      <CardActions className={classes.actions}>
-        <Button
-          color="primary"
-          size="small"
-          variant="text"
-        >
-          View all <ArrowRightIcon />
-        </Button>
-      </CardActions>
+
     </Card>
   );
 };

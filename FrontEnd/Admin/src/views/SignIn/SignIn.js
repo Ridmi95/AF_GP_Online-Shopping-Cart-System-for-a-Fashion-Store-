@@ -12,6 +12,8 @@ import {
   Link,
   Typography
 } from '@material-ui/core';
+import {blue, lightBlue} from '@material-ui/core/colors';
+import {black} from 'color-name';
 
 const schema = {
   username: {
@@ -31,7 +33,7 @@ const schema = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: lightBlue,
     height: '100%'
   },
   grid: {
@@ -48,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundImage: 'url(/images/auth.jpg)',
+    backgroundImage: 'url(/images/signIn.jpg)',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center'
@@ -58,15 +60,17 @@ const useStyles = makeStyles(theme => ({
     flexBasis: '600px'
   },
   quoteText: {
-    color: theme.palette.white,
+    color: blue,
     fontWeight: 300
   },
   name: {
     marginTop: theme.spacing(3),
-    color: theme.palette.white
+    color: black
+
   },
   bio: {
-    color: theme.palette.white
+    color: black,
+
   },
   contentContainer: {},
   content: {
@@ -178,14 +182,14 @@ const SignIn = props => {
         password: formState.values.password
       }
 
-      let response = await axios.post("http://localhost:4000/login", obj);
+      let response = await axios.post('http://localhost:4000/login', obj);
 
       console.log(response);
 
       if (response.data === true) {
         history.push('/category');
       } else {
-        alert("Invalid username or password");
+        alert('Invalid username or password');
       }
 
     }
@@ -214,21 +218,20 @@ const SignIn = props => {
                 className={classes.quoteText}
                 variant="h1"
               >
-                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
-                they sold out High Life.
+                FASHIONISTA
               </Typography>
               <div className={classes.person}>
                 <Typography
                   className={classes.name}
                   variant="body1"
                 >
-                  Takamaru Ayako
+                  Ashcharya Hemachandra
                 </Typography>
                 <Typography
                   className={classes.bio}
                   variant="body2"
                 >
-                  Manager at inVision
+                  Administration Invision
                 </Typography>
               </div>
             </div>
@@ -241,9 +244,7 @@ const SignIn = props => {
           xs={12}
         >
           <div className={classes.content}>
-            <div className={classes.contentHeader}>
-      
-            </div>
+            <div className={classes.contentHeader} />
             <div className={classes.contentBody}>
               <form
                 className={classes.form}
@@ -258,18 +259,14 @@ const SignIn = props => {
                 <Typography
                   color="textSecondary"
                   gutterBottom
-                >
-      
-                </Typography>
+                />
    
                 <Typography
                   align="center"
                   className={classes.sugestion}
                   color="textSecondary"
                   variant="body1"
-                >
-                  
-                </Typography>
+                />
                 <TextField
                   className={classes.textField}
                   error={hasError('username')}
@@ -307,7 +304,7 @@ const SignIn = props => {
                   type="submit"
                   variant="contained"
                 >
-                  Sign in now
+                  Sign In
                 </Button>
  
               </form>
