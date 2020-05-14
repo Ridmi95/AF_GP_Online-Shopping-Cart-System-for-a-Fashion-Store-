@@ -26,12 +26,12 @@ export default class CreateCategory extends Component {
       category_description: '',
       all_categories: [],
       UpdateId: null,
-      buttonName: "Add New Category",
+      buttonName: 'Add New Category',
       buttonChecked: ''
     }
 
     //Set document title
-    document.title = "Categories";
+    document.title = 'Categories';
     this.validateSession();
   }
 
@@ -41,7 +41,7 @@ export default class CreateCategory extends Component {
     let auth = async () => {
       let response = await axios.get('http://localhost:4000/auth');
       if (response.data !== true) {
-        window.location.replace("/sign-in");
+        window.location.replace('/sign-in');
       }
     }
 
@@ -52,7 +52,7 @@ export default class CreateCategory extends Component {
   //Form reset
   resetForm() {
     this.setState({
-      buttonName: "Add New Category",
+      buttonName: 'Add New Category',
       category_name: '',
       is_active: 0,
       category_description: '',
@@ -61,8 +61,8 @@ export default class CreateCategory extends Component {
     });
     //window.location.reload(false);
   }
-  
-  
+
+
   //Get category name
   onChangeCategoryName(e) {
     this.setState({
@@ -80,6 +80,7 @@ export default class CreateCategory extends Component {
     } else {
       this.setState({
         is_active: true,
+
         buttonChecked: 'checked'
       });
     }
@@ -97,7 +98,7 @@ export default class CreateCategory extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    if (this.state.category_name !== "" ) {
+    if (this.state.category_name !== '' ) {
       const obj = {
         category_name: this.state.category_name,
         category_description: this.state.category_description,
@@ -107,7 +108,7 @@ export default class CreateCategory extends Component {
       if (this.state.UpdateId == null) {
 
         let insertCat = async () => {
-          
+
           let response = await axios.post('http://localhost:4000/Category/add', obj);
           if (response.data) {
             alert(response.data['message']);
@@ -122,9 +123,9 @@ export default class CreateCategory extends Component {
 
         }
         insertCat();
-    
+
       }else {
-       
+
         let updateCat = async () => {
           let response = await axios.post('http://localhost:4000/Category/update/' + this.state.UpdateId, obj);
 
@@ -135,7 +136,7 @@ export default class CreateCategory extends Component {
               is_active: 0,
               category_description: '',
               buttonChecked: '',
-              buttonName: "Add New Category",
+              buttonName: 'Add New Category',
               UpdateId: null
             });
             this.componentDidMount();
@@ -143,9 +144,9 @@ export default class CreateCategory extends Component {
         }
         updateCat();
       }
-      
+
     } else {
-      alert("You must enter category name")
+      alert('You must enter category name')
     }
 
   }
@@ -201,7 +202,7 @@ export default class CreateCategory extends Component {
         console.log(error);
       })
     this.setState({
-      buttonName : "Update Category" 
+      buttonName : 'Update Category'
     });
   }
 
@@ -210,55 +211,64 @@ export default class CreateCategory extends Component {
       <div>
         <Card>
           <h1 className="text-center mb-0 pt-2">Product Categories</h1>
-          <hr></hr>
+          <hr />
           <CardContent>
 
-            <div className='row'>
-            <div className='col-12 col-md-6 col-lg-4 col-xl-4'>
-            <Form onSubmit={this.onSubmit}>
+            <div className="row">
+              <div className="col-12 col-md-6 col-lg-4 col-xl-4">
+                <Form onSubmit={this.onSubmit}>
 
-              <h4>Add New Category</h4>
+                  <h4>Add New Category</h4>
 
-              <Form.Group controlId="categoryName">
-                <Form.Label>Category Name:</Form.Label>
-                <Form.Control type="text"
-                  placeholder="Enter Category Name"
-                  value={this.state.category_name}
-                  onChange={this.onChangeCategoryName}
-                />
-              </Form.Group>
+                  <Form.Group controlId="categoryName">
+                    <Form.Label>Category Name:</Form.Label>
+                    <Form.Control
+                      onChange={this.onChangeCategoryName}
+                      placeholder="Enter Category Name"
+                      type="text"
+                      value={this.state.category_name}
+                    />
+                  </Form.Group>
 
-              <Form.Group controlId="categoryDescription">
-                <Form.Label>Category Description</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Description"
-                  value={this.state.category_description}
-                  onChange={this.onChangeCategoryDescription}
-                />
-              </Form.Group>
+                  <Form.Group controlId="categoryDescription">
+                    <Form.Label>Category Description</Form.Label>
+                    <Form.Control
+                      onChange={this.onChangeCategoryDescription}
+                      placeholder="Enter Description"
+                      type="text"
+                      value={this.state.category_description}
+                    />
+                  </Form.Group>
 
-              <Form.Group controlId="categoryStatus">
-                <Form.Check
-                  type="checkbox"
-                  label="Category Status Active/In-active"
-                  onChange={this.handleChecked}
-                  checked={this.state.buttonChecked}
-                />
-              </Form.Group>
+                  <Form.Group controlId="categoryStatus">
+                    <Form.Check
+                      checked={this.state.buttonChecked}
+                      label="Category Status Active/In-active"
+                      onChange={this.handleChecked}
+                      type="checkbox"
+                    />
+                  </Form.Group>
 
-              <Button variant="primary" type="submit" className="">
-                {this.state.buttonName}
-              </Button>
+                  <Button
+                    className=""
+                    type="submit"
+                    variant="primary"
+                  >
+                    {this.state.buttonName}
+                  </Button>
 
-              <button type="button" onClick={this.resetForm} className="btn btn-danger ml-2" >
-                Clear
-              </button>
+                  <button
+                    className="btn btn-danger ml-2"
+                    onClick={this.resetForm}
+                    type="button"
+                  >
+                    Clear
+                  </button>
 
-            </Form>
+                </Form>
               </div>
-              </div>
-                
+            </div>
+
           </CardContent>
 
         </Card>
@@ -266,7 +276,10 @@ export default class CreateCategory extends Component {
         <Card className="mt-1">
           <h4 className="mb-0 pl-5 ml-1 mt-3 mb-3">All Categories</h4>
 
-          <div className='p-2' style={{ overflow: "auto" }}>
+          <div
+            className="p-2"
+            style={{ overflow: 'auto' }}
+          >
             <table className="table w-100 table-striped mx-auto">
               <thead className="thead-dark">
                 <tr>
@@ -287,9 +300,20 @@ export default class CreateCategory extends Component {
                     <td>{item.category_description}</td>
                     <td>{item.is_active === 1 ? <span className="text-success">Active</span> : <span className="text-danger">Deactivated</span>}</td>
                     <td className="text-center">
-                      <div className="btn-group btn-group-sm" role="group" >
-                        <button type="button" className="btn btn-warning btn-sm" onClick={(e) => { this.GetCategoryById(item._id) }}>Edit</button>
-                        <button type="button" onClick={(e) => { this.delete(item._id) }} className="btn btn-danger btn-sm">Delete</button>
+                      <div
+                        className="btn-group btn-group-sm"
+                        role="group"
+                      >
+                        <button
+                          className="btn btn-warning btn-sm"
+                          onClick={(e) => { this.GetCategoryById(item._id) }}
+                          type="button"
+                        >Edit</button>
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={(e) => { this.delete(item._id) }}
+                          type="button"
+                        >Delete</button>
                       </div>
                     </td>
                   </tr>

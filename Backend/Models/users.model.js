@@ -10,20 +10,15 @@ let users = new Schema({
         type: String
     },
     address: {
-        country: {
-            type : String
-        },
-        state: {
-            type : String
-        },
-        city: {
-            type : String
-        },
-        street: {
-            type : String
-        }
+        type : String
     },
     email: {
+        type: String
+    },
+    username: {
+        type: String
+    },
+    password: {
         type: String
     },
     phone: {

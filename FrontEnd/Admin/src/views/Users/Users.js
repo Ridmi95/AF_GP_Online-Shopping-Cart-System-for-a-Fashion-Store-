@@ -6,89 +6,96 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import { CardContent } from '@material-ui/core';
 
-export default class Users extends Component { 
+export default class Users extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
 
-        this.state = {
-            all_users : []
-        }
-
-        document.title = "Users";
-        this.validateSession();
+    this.state = {
+      all_users : []
     }
 
+    document.title = 'Users';
+    this.validateSession();
+  }
 
-    validateSession() {
-        let auth = async () => {
-            let response = await axios.get('http://localhost:4000/auth');
-            if (response.data !== true) {
-                window.location.replace("/sign-in");
-            }
-        }
 
-        auth();
+  validateSession() {
+    let auth = async () => {
+      let response = await axios.get('http://localhost:4000/auth');
+      if (response.data !== true) {
+        window.location.replace('/sign-in');
+      }
     }
 
-    //Get all users for display
-    componentDidMount() {
+    auth();
+  }
 
-        try {
-            axios.get('http://localhost:4000/users')
-                .then(response => {
-                    this.setState({ all_users: response.data });
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+  //Get all users for display
+  componentDidMount() {
 
-        } catch (err) {
-            console.log(err)
-        }
+    try {
+      axios.get('http://localhost:4000/users')
+        .then(response => {
+          this.setState({ all_users: response.data });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
+    } catch (err) {
+      console.log(err)
     }
 
-    render() {
-        return (<div>
-            
-            <Card className="mt-1">
-                <h4 className="mb-0 pl-5 ml-1 mt-3 mb-3">All Users</h4>
+  }
 
-                <div className='p-2' style={{ overflow: "auto" }}>
-                    <table className="table w-100 table-striped mx-auto">
-                        <thead className="thead-dark">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+  render() {
+    return (<div>
 
-                            {this.state.all_users.map((item, index) => (
+      <Card className="mt-1">
+        <h4 className="mb-0 pl-5 ml-1 mt-3 mb-3">All Users</h4>
 
-                                <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{item.name}</td>
-                                    <td>{item.email}</td>
-                                    <td>{item.address.country + "," + item.address.state + "," + item.address.city + "," + item.address.street + "."}</td>
-                                    <td>{item.phone}</td>
-                                </tr>
-                            ))}
+        <div
+          className="p-2"
+          style={{ overflow: 'auto' }}
+        >
+          <table className="table w-100 table-striped mx-auto">
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th>User</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Username</th>
+                <th>PassWord</th>
+              </tr>
+            </thead>
+            <tbody>
 
-                        </tbody>
-                    </table>
+              {this.state.all_users.map((item, index) => (
 
-                </div>
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
+                  <td>{item.address}</td>
+                  <td>{item.phone}</td>
+                  <td>{item.username}</td>
+                  <td>{item.password}</td>
+                </tr>
+              ))}
 
-            </Card>
+            </tbody>
+          </table>
+
+        </div>
+
+      </Card>
 
 
-        </div>);
-    }
+    </div>);
+  }
 
 }
