@@ -40,7 +40,7 @@ loginRoutes.route('/').post(function (req, res) {
                         } else {
                             if (response === true) {
                                 session.user = db_user;
-                                session.role = db_role;
+                                session.role= db_role;
                                 res.json(true);
                             } else {
                                 console.log("Invalid Username");

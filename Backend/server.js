@@ -18,6 +18,9 @@ const productRoute = require("./Route/product.router");
 const authRoute = require('./Route/auth.router');
 const orderRoute = require("./Route/order.router");
 const usersRoute = require('./Route/users.router');
+//const usersLoginRoute = require("./Route/userLogin.route");
+const loginAuthRoute = require("./Route/userLoginAuth.route");
+//const regUser = require("./Route/userReg.router");
 
 
 mongoose.Promise = global.Promise;
@@ -47,12 +50,17 @@ app.use("/order", orderRoute);
 app.use('/managers', managerRoute);
 app.use('/auth', authRoute);
 app.use('/users', usersRoute);
+//app.use('/userlogin',usersLoginRoute);
+app.use('/loginAuth', loginAuthRoute);
+//app.use("/regUser", regUser);
 
 app.use(session({
   secret: 'kjcxlchiy48236',
   resave: false,
   saveUninitialized: false
 }));
+
+
 
 app.listen(PORT, function(){
   console.log('Server is running on Port:',PORT);
