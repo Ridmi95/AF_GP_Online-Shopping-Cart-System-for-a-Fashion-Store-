@@ -44,10 +44,9 @@ categoryRoutes.route('/').get(function (req, res) {
   }
   Category.find(function (err, categories) {
     if (err) {
-      console.log(err);
-    }
-    else {
-      res.json(categories);
+      res.status(400).json({ success: false, data: "data not found" });
+    } else {
+      res.status(400).json({ success: true, data: categories });
     }
   });
 });
