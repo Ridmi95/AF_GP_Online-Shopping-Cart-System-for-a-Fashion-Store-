@@ -7,6 +7,8 @@ const session = require('express-session');
 // Require Category model in our routes module
 let login = require('../Models/login.model');
 
+// let manager = require('../Models/manager.model');
+
 // Defined get data(index or listing) route
 loginRoutes.route('/').post(function (req, res) {
 
@@ -63,6 +65,8 @@ loginRoutes.route('/').post(function (req, res) {
     });
 
 });
+
+
 
 /*
 loginRoutes.route('/hash').get(function (req, res) {

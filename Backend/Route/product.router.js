@@ -22,7 +22,7 @@ productRoutes.route("/").get(function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.status(200).json({ success: true, data: products });
+      res.json(products);
     }
   });
 });

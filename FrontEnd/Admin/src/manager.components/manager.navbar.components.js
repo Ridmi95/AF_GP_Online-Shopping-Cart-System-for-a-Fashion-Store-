@@ -22,11 +22,15 @@ export default class Navbar extends Component{
       <li class="nav-item">
         <a class="nav-link" href="#"></a>
       </li>
-      <li class="nav-item dropdown">
+      
+      <li  class="nav-item dropdown">
+     
+      
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          User Name
+        <text style={{fontSize:'16px'}}> <i class="zmdi zmdi-settings"></i><b> Settings</b> </text>
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" >
           <a class="dropdown-item" href="#">Log Out</a>
           <a class="dropdown-item" href="#">Another action</a>
           <a class="dropdown-item" href="#">Something else here</a>

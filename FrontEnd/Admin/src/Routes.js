@@ -29,7 +29,8 @@ import addproducts from "./manager.components/manager.AddProducts.components";
 import productList from "./manager.components/manager.productlist.components";
 import updateproduct from "./manager.components/manager.updateProduct.components";
 
-import ManagerSignIn from "./manager.components/manager.signin.components";
+import ManagerSignIn from "./manager.components/managerSignIn";
+
 
 // manager
 

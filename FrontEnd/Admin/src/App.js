@@ -14,11 +14,6 @@ import validators from './common/validators';
 import Routes from './Routes';
 
 // Manager
-import addproducts from "./manager.components/manager.AddProducts.components";
-import productList from "./manager.components/manager.productlist.components";
-import updateproduct from "./manager.components/manager.updateProduct.components";
-
-import ManagerSignIn from "./manager.components/manager.signin.components";
 
 
 

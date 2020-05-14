@@ -11,6 +11,7 @@ const session = require('express-session');
 let login = require('../Models/login.model');
 
 
+
 async function hashPassword(pass) {
 
     try {
@@ -52,6 +53,67 @@ function sendMail(mailOptions) {
         }
     });
 }
+
+
+// //manager login
+// ManagerRoutes.route('/login').post(function (req, res) {
+
+//     const postBody = req.body;
+    
+//     let user = postBody['username'];
+//     let pass = postBody['password'];
+   
+//    // console.log(user); return;
+
+//     login.findOne({ username: user }, function (err, login) {
+        
+
+//         if (err) {
+//             console.log(err);
+//         }
+//         else {
+
+//             try {
+
+//                 if (login !== null) {
+//                     let db_user = login['username'] !== null ? login['username'] : '';
+//                     let db_pass = login['password'] !== null ? login['password'] : ''; //password hash
+//                     let db_id   = login['id'] !== null ? login['id'] : '';
+//                     let db_role = login['role'] !== null ? login['role'] : '';
+
+
+//                     bcrypt.compare(pass, db_pass, function (err, response) {
+//                         if (err) {
+//                             console.log(err);
+//                         } else {
+//                             if (response === true) {
+//                                 session.user = db_user;
+//                                 session.role = db_role;
+//                                 res.json(true);
+//                             } else {
+//                                 console.log("Invalid Username");
+//                                 res.json(false);
+//                             }
+//                         }
+//                     })
+                    
+//                 } else {
+//                     console.log("Invalid Username");
+//                     res.json(false);
+//                 }
+                
+//             } catch (error) {
+//                 console.log(error);
+//             }
+
+
+//         }
+//     });
+
+// });
+
+
+
 
 // Add new manager
 ManagerRoutes.route('/add').post(function (req, res) {

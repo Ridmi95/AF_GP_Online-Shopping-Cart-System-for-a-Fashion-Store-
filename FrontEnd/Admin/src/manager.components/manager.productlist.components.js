@@ -5,6 +5,18 @@ import Title from "./manager.title.components";
 import axios from 'axios';
 
 
+function searchItems(item){
+
+    return function(e){
+        return e.productCode.toLowerCase().includes(item.toLowerCase()) 
+        ||e.productName.toLowerCase().includes(item.toLowerCase())||
+        
+        e.size.toLowerCase().includes(item.toLowerCase()) ||
+         !item;
+    }
+        
+}
+
 const ProductRow = props => (
 
 
@@ -18,7 +30,7 @@ const ProductRow = props => (
         <td>{props.product.size}</td>
         <td>
             <Link to={"/edit-product/" + props.product._id}>Edit</Link> | <a href="#" onClick={() => {
-                props.deleteProduct(props.product._id)
+                props.deleteProduct(props.product._id) ; console.log("Deleted ID: ",props.product._id)
             }
             }>delete</a>
         </td>
@@ -45,7 +57,8 @@ export default class productList extends Component {
         this.state = {
 
             products: [],
-            search: null
+            search: '',
+            
 
         };
 
@@ -58,6 +71,7 @@ export default class productList extends Component {
             this.setState({
 
                 products: res.data
+                
             })
         }).catch(err => {
             console.log(err);
@@ -69,18 +83,19 @@ export default class productList extends Component {
 
     deleteProduct(id) {
 
-        axios.delete('http://localhost:4000/product/delete' + id).then(res => console.log(res.data));
+        axios.delete('http://localhost:4000/product/delete/' + id).then(res => console.log(res.data));
 
         this.setState({
 
-            products: this.state.products.filter(e => e._id !== id)
+            products: this.state.products.filter(e => e._id !== id),
+            
         })
 
     }
 
     productList() {
 
-        return this.state.products.map(productCurrent => {
+        return this.state.products.filter(searchItems(this.state.search)).map(productCurrent => {
 
             return <ProductRow product={productCurrent}
                 deleteProduct={this.deleteProduct} key={productCurrent._id} />;
@@ -99,6 +114,8 @@ export default class productList extends Component {
 
     }
 
+    
+
     render() {
 
 
@@ -110,6 +127,49 @@ export default class productList extends Component {
                 <Title />
                 <Navbar />
 
+                <div clss="Managercard">
+<div class="managerStat">
+<div class="container " style={{padding:"15px"}}>
+    <div class="row">
+    <div class="col-md-3">
+      <div class="card-counter primary">
+        <i class="fa fa-code-fork"></i>
+        <span class="count-numbers">{this.state.products.length}</span>
+        <span class="count-name">Total Products</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card-counter danger">
+        <i class="fa fa-ticket"></i>
+        <span class="count-numbers">599</span>
+        <span class="count-name">Instances</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card-counter success">
+        <i class="fa fa-database"></i>
+        <span class="count-numbers">6875</span>
+        <span class="count-name">Data</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card-counter info">
+        <i class="fa fa-users"></i>
+        <span class="count-numbers">35</span>
+        <span class="count-name">Users</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+</div>
+
 
 
 
@@ -120,12 +180,12 @@ export default class productList extends Component {
 
                 <div class="row" style={{ float: 'left', margin: "10px" }}>
 
-
+            <h4>
 
                     <div class="form-group">
-                        <label for="name"><i class="zmdi zmdi-search"></i></label>
+                        <label for="name"><i class="zmdi zmdi-search" style={{paddingRight:"20px", paddingLeft:'10px'}}>  </i> </label>
                         <input type="text" name="name" id="productName" placeholder="Search Items" onChange={this.onChangeSearch} value={this.state.search} required />
-                    </div>
+                    </div></h4>
 
 
                     {/* <div class="col-md" style={{width:'22%'}}>
