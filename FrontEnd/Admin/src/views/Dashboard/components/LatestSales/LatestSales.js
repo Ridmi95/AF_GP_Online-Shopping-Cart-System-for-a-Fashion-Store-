@@ -38,14 +38,7 @@ const LatestSales = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        action={
-          <Button
-            size="small"
-            variant="text"
-          >
-            Last 7 days <ArrowDropDownIcon />
-          </Button>
-        }
+        
         title="Latest Sales"
       />
       <Divider />
