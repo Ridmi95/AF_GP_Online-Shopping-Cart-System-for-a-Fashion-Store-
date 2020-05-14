@@ -38,7 +38,7 @@ productRoutes.route("/:id").get(function (req, res) {
   });
 });
 
-productRoutes.route("/").put(function (req, res) {
+productRoutes.route("/update/bycode").put(function (req, res) {
   Product.findOneAndUpdate(
     { productCode: req.body.productCode },
     req.body,

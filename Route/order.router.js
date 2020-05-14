@@ -5,9 +5,10 @@ const orderRoutes = express.Router();
 let Order = require("../Models/order.model");
 
 orderRoutes.route("/add").post(function (req, res) {
-  let Order = new Order(req.body);
+  let orders = new Order(req.body);
 
-  Order.save()
+  orders
+    .save()
     .then((order) => {
       res.status(200).json({ success: true, data: order });
     })

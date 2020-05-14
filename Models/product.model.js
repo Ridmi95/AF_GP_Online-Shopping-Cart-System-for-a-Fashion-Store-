@@ -39,7 +39,7 @@ let Product = new Schema(
       required: true,
     },
     rating: {
-      type: Number,
+      type: Array,
     },
     comment: {
       type: Array,

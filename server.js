@@ -1,20 +1,19 @@
 // server.js
 
-const express = require('express');
+const express = require("express");
 const app = express();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const PORT = 4000;
-const cors = require('cors');
+const cors = require("cors");
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const config = require('./DB.js');
+const config = require("./DB.js");
 
-const categoryRoute = require('./Route/category.router');
-const loginRoute    = require('./Route/login.router');
+const categoryRoute = require("./Route/category.router");
+const loginRoute = require("./Route/login.router");
 const productRoute = require("./Route/product.router");
 const orderRoute = require("./Route/order.router");
-
 
 mongoose.Promise = global.Promise;
 mongoose
@@ -33,14 +32,14 @@ mongoose
   );
 
 app.use(cors());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/category', categoryRoute);
-app.use('/login', loginRoute);
+app.use("/category", categoryRoute);
+app.use("/login", loginRoute);
 app.use("/product", productRoute);
 app.use("/order", orderRoute);
 
-app.listen(PORT, function(){
-  console.log('Server is running on Port:',PORT);
+app.listen(PORT, function () {
+  console.log("Server is running on Port:", PORT);
 });
