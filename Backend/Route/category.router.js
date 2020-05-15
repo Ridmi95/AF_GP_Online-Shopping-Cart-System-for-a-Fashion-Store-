@@ -39,9 +39,9 @@ categoryRoutes.route('/add').post(function (req, res) {
 
 // Defined get data(index or listing) route
 categoryRoutes.route('/').get(function (req, res) {
-  if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
-    return;
-  }
+  // if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
+  //   return;
+  // }
   Category.find(function (err, categories) {
     if (err) {
       res.status(400).json({ success: false, data: "data not found" });

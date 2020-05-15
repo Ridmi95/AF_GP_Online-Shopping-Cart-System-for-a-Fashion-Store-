@@ -25,7 +25,7 @@ class ProductFormPage extends Component<ProductFormPageProps> {
     super(props);
 
     this.state = {
-      quantity: 1,
+      buyQuantity: 1,
       rate: 0,
     };
   }
@@ -34,12 +34,12 @@ class ProductFormPage extends Component<ProductFormPageProps> {
     if (value === "increase") {
       this.setState({
         ...this.state,
-        quantity: this.state.quantity + 1,
+        buyQuantity: this.state.buyQuantity + 1,
       });
     } else {
       this.setState({
         ...this.state,
-        quantity: this.state.quantity > 0 ? this.state.quantity - 1 : 0,
+        buyQuantity: this.state.buyQuantity > 0 ? this.state.buyQuantity - 1 : 0,
       });
     }
   };
@@ -94,7 +94,7 @@ class ProductFormPage extends Component<ProductFormPageProps> {
   render() {
     const { productNotification, product } = this.props;
 
-    const { quantity } = this.state;
+    const { buyQuantity } = this.state;
 
     return (
       <Layout>
@@ -157,7 +157,7 @@ class ProductFormPage extends Component<ProductFormPageProps> {
                       -
                     </div>
                     <div className="product-page-quantity-container-data">
-                      {quantity}
+                      {buyQuantity}
                     </div>
                     <div
                       className="product-page-quantity-container-icon"
@@ -176,7 +176,7 @@ class ProductFormPage extends Component<ProductFormPageProps> {
                         onClick={() =>
                           this.props.addToCart({
                             ...product,
-                            quantity: this.state.quantity,
+                            buyQuantity: this.state.buyQuantity,
                           })
                         }
                       >
