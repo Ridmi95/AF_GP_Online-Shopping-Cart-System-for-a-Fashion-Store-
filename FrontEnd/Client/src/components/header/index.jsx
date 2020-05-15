@@ -4,12 +4,10 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import Link from "components/Link";
-import buyportLogo from "assets/image/buyport-logo.svg";
+import buyportLogo from "assets/image/logo.png";
 import Input from "components/Input";
 import Button from "components/button";
-import ButtonDropdown from "components/ButtonDropdown";
 
-import { getLoggedUserName } from "selectors/auth";
 import { authSignOut } from "action/auth";
 import { ASYNC_STATUS } from "constants/async";
 import { handleCart } from "action/cart";
@@ -26,19 +24,19 @@ type HeaderProps = {
   authSignOut: Function,
   userName: string,
   searchable?: boolean,
-  handleCart: Function
+  handleCart: Function,
 };
 
 type HeaderState = {
   isSignUpClicked: Boolean,
   isSignInClicked: Boolean,
   searchProduct: Boolean,
-  searchText: string
+  searchText: string,
 };
 
 class Header extends PureComponent<HeaderProps, HeaderState> {
   static defaultProps = {
-    searchable: true
+    searchable: false,
   };
   constructor(props) {
     super(props);
@@ -47,7 +45,7 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
       isSignUpClicked: false,
       isSignInClicked: false,
       searchProduct: false,
-      searchText: ""
+      searchText: "",
     };
     //$FlowFixMe
     this.handleSingUpButtonClick = this.handleSingUpButtonClick.bind(this);
@@ -62,21 +60,21 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
   handleSignInButtonClick() {
     this.setState({
       ...this.state,
-      isSignInClicked: !this.state.isSignInClicked
+      isSignInClicked: !this.state.isSignInClicked,
     });
   }
 
   handleSingUpButtonClick() {
     this.setState({
       ...this.state,
-      isSignUpClicked: !this.state.isSignUpClicked
+      isSignUpClicked: !this.state.isSignUpClicked,
     });
   }
 
   onSearchTextChange(field) {
     this.setState({
       ...this.state,
-      ...field
+      ...field,
     });
   }
 
@@ -84,7 +82,7 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
     if (event.key === "Enter") {
       this.setState({
         ...this.state,
-        searchProduct: !this.state.searchProduct
+        searchProduct: !this.state.searchProduct,
       });
     }
   }
@@ -94,15 +92,14 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
       isAuthenticated,
       status,
       isAuthSuccess,
-      userName,
       searchable,
-      handleCart
+      handleCart,
     } = this.props;
     const {
       isSignUpClicked,
       isSignInClicked,
       searchProduct,
-      searchText
+      searchText,
     } = this.state;
 
     if (isSignUpClicked) {
@@ -136,7 +133,7 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
                 <Input
                   id="searchBar"
                   text={searchText}
-                  onChange={searchText =>
+                  onChange={(searchText) =>
                     this.onSearchTextChange({ searchText })
                   }
                   onKeyPress={this.onEnterKeyPress}
@@ -146,34 +143,24 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
             )}
             <div className="main-button-container">
               {isAuthenticated || isAuthSuccess ? (
-                <Fragment>
-                  <div className="cart-wrapper">
-                    <Icon icon="cart" onClick={handleCart} />
-                  </div>
-                  <Button>ERP Dashboard</Button>
-                  <ButtonDropdown
-                    name={`Hi ${userName}`}
-                    options={[
-                      {
-                        buttonName: "My Profile",
-                        type: ButtonDropdown.HTML_TYPE.LINK,
-                        onClickButton: "/profile/myAccount"
-                      },
-                      {
-                        buttonName: "Sign Out",
-                        type: ButtonDropdown.HTML_TYPE.BUTTON,
-                        onClickButton: this.props.authSignOut
-                      }
-                    ]}
-                  />
-                </Fragment>
+                <Fragment></Fragment>
               ) : (
                 <Fragment>
                   <div className="btn-wrapper">
+                    <div className="wishlist-wrapper">
+                      <Button htmlType={Button.HTML_TYPE.LINK} link="/wishlist">
+                        My Wishlist
+                      </Button>
+                    </div>
+                    <div className="cart-wrapper">
+                      <Icon icon="cart" onClick={handleCart} />
+                    </div>
                     <div className="auth-button">
                       <Button
                         loading={status === ASYNC_STATUS.LOADING}
                         onClick={this.handleSignInButtonClick}
+                        htmlType={Button.HTML_TYPE.LINK}
+                        link="/home"
                       >
                         Sign In
                       </Button>
@@ -182,6 +169,8 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
                       <Button
                         loading={status === ASYNC_STATUS.LOADING}
                         onClick={this.handleSingUpButtonClick}
+                        htmlType={Button.HTML_TYPE.LINK}
+                        link="/"
                       >
                         Sign Up
                       </Button>
@@ -199,12 +188,12 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
 
 function mapStateToProps(state) {
   return {
-    errors: state.auth.errors,
-    isAuthSuccess: state.auth.isAuthSuccess,
-    isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user,
-    status: state.auth.status,
-    userName: getLoggedUserName(state)
+    errors: null,
+    isAuthSuccess: false,
+    isAuthenticated: false,
+    user: {},
+    status: ASYNC_STATUS.INIT,
+    userName: "user",
   };
 }
 

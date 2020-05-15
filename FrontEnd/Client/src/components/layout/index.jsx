@@ -10,18 +10,18 @@ type LayoutProps = {
   children: Element,
   breadcrumbs?: String[],
   actions?: Element,
-  status?: string
+  status?: string,
 };
 
 export default function layout({
   children,
   breadcrumbs,
   actions,
-  status
+  status,
 }: LayoutProps) {
   const breadcrumbsContent =
     breadcrumbs !== undefined
-      ? breadcrumbs.map(breadcrumb => <li key={breadcrumb}>{breadcrumb}</li>)
+      ? breadcrumbs.map((breadcrumb) => <li key={breadcrumb}>{breadcrumb}</li>)
       : null;
   return (
     <div className="dashboard">
