@@ -58,6 +58,7 @@ export default class productList extends Component {
 
             products: [],
             search: '',
+            orders:[]
             
 
         };
@@ -133,7 +134,7 @@ export default class productList extends Component {
     <div class="row">
     <div class="col-md-3">
       <div class="card-counter primary">
-        <i class="fa fa-code-fork"></i>
+      <i class="fas fa-tshirt"></i>
         <span class="count-numbers">{this.state.products.length}</span>
         <span class="count-name">Total Products</span>
       </div>
@@ -141,9 +142,9 @@ export default class productList extends Component {
 
     <div class="col-md-3">
       <div class="card-counter danger">
-        <i class="fa fa-ticket"></i>
+      <i class="fas fa-dollar-sign"></i>
         <span class="count-numbers">599</span>
-        <span class="count-name">Instances</span>
+        <span class="count-name">Purchases</span>
       </div>
     </div>
 

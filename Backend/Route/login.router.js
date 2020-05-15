@@ -3,6 +3,8 @@ const loginRoutes = express.Router();
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 
+const jwt = require('jsonwebtoken');
+
 
 // Require Category model in our routes module
 let login = require('../Models/login.model');
@@ -81,6 +83,49 @@ loginRoutes.route('/hash').get(function (req, res) {
 });
 */
 
+
+loginRoutes.post("/manager-login" ,async (req,res)=>{
+
+    try{
+        const {username, password } = req.body;
+
+        const manager = await login.findOne({username:username});
+
+        if(!manager)
+        return res.status(400).json({msg:"Invalid Username"});
+
+        if(manager['role'] !=="manager")
+        return res.status(400).json({msg:"Store Manager Account is Required to Login !"});
+
+        if(manager['is_active'] ===0)
+        return res.status(400).json({msg:"Account is Not Activated !"});
+
+        const validate = await bcrypt.compare(password, manager.password);
+
+        if(!validate)
+        return res.status(400).json({msg:"Password is Invalid!"});
+
+        const JWT_SECRET="F9qy&s)?4=33s%$2h#F~";
+
+        const token = jwt.sign({id : manager._id}, JWT_SECRET);
+        res.status(200).json({
+            token,
+            manager :{
+                id: manager._id,
+                username: manager.username,
+                email : manager.email
+
+
+            },
+        });
+
+
+    }catch(err){
+        res.status(400).json({msg:"Validation Error"});
+        console.log("Error is " ,err);
+    }
+
+})
 
 
 

@@ -31,8 +31,9 @@ export default class Navbar extends Component{
         </a>
         
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" >
-          <a class="dropdown-item" href="#">Log Out</a>
-          <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#"><i class="fas fa-user-circle"></i> Profile</a>
+        <span style={{backgroundColor:"red"}}><a class="dropdown-item" href="#"> <i class="fas fa-sign-out-alt"></i> Log Out</a></span>
+          
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>

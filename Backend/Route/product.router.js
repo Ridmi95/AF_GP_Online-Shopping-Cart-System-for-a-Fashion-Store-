@@ -98,7 +98,7 @@ productRoutes.route('/list/:id').get((req, res) =>{
 });
 
 //add product
-productRoutes.route('/add').post((req, res) =>{
+productRoutes.route('/add').post( async (req, res) =>{
 
   const productCode = req.body.productCode;
   const productName = req.body.productName;
@@ -112,7 +112,15 @@ productRoutes.route('/add').post((req, res) =>{
 
   const newProduct = new Product({productCode,productName,price,color,categoryName,discount,quantity,description,size});
 
-  newProduct.save().then(()=> res.json('success')).catch(err=> res.status(400).json('Erro' + err));
+  const existingProduct = await Product.findOne({productCode:productCode})
+
+  if(existingProduct)
+    return res.status(400).json({msg:"Product Code is existing in the Inventory !"})
+
+  await newProduct.save().then(()=> res.json({msg:"Product Added Successfully !"})).catch(err=> res.status(400).json({msg:"Required Fields are Empty !"}));
+
+  
+
 
 
 });

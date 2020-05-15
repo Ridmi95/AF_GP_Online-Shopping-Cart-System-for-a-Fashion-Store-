@@ -16,14 +16,16 @@ async function hashPassword(pass) {
 
     try {
         let password = pass
-        let saltRounds = 10;
+        const round = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(password, round);
+        // let saltRounds = 10;
     
-        let hashedPassword = await new Promise((resolve, reject) => {
-            bcrypt.hash(password, 10, function (err, hash) {
-                if (err) reject(err)
-                resolve(hash)
-            });
-        })
+        // let hashedPassword = await new Promise((resolve, reject) => {
+        //     bcrypt.hash(password, 10, function (err, hash) {
+        //         if (err) reject(err)
+        //         resolve(hash)
+        //     });
+        // })
     
         return hashedPassword
         
