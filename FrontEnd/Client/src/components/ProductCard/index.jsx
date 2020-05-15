@@ -2,33 +2,36 @@
 import React, { PureComponent } from "react";
 
 import Link from "components/Link";
-import Checkbox from "components/checkbox";
-import classNames from "classnames";
 
 import { textTruncate } from "shared/utils";
 import { Rating } from "components/Rate";
 
 import "./styles.scss";
+import Button from "components/button";
+import Icon from "components/icon";
 
 type ProductCardProps = {
   link: string,
   title: string,
   image: string,
   rating: object,
-  prices?: Array<any> | null,
+  prices: number,
   currency?: string,
-  selectable?: boolean,
-  selected: boolean,
-  onChange: Function
+  show: boolean,
+  onClickCart?: Function,
+  onClickWishList?: Function,
 };
 
 class ProductCard extends PureComponent<ProductCardProps> {
   static defaultProps = {
-    prices: null,
-    currency: "",
+    prices: 0,
+    currency: "LKR",
     selectable: false,
     selected: false,
-    onChange: () => {}
+    onChange: () => {},
+    onClickCart: () => {},
+    show: false,
+    onClickWishList: () => {},
   };
 
   render() {
@@ -39,35 +42,35 @@ class ProductCard extends PureComponent<ProductCardProps> {
       rating,
       prices,
       currency,
-      selectable,
-      selected,
-      onChange
+      show,
+      onClickCart,
+      onClickWishList,
     } = this.props;
     return (
       <div className="product">
-        {selectable && (
-          <div
-            className={classNames(`product-selector`, { selected: selected })}
-          >
-            <Checkbox isChecked onChange={onChange} />
-          </div>
-        )}
         <div className="featured-image">
           <img src={image} alt={title} />
         </div>
         <div className="product-content">
           <Link to={`${link}`}>
             <div className="product-title">{textTruncate(title, 20)}</div>
-            {prices ? (
-              prices.length > 1 ? (
-                <span className="product-currency">{`${currency} ${prices[0]} -
-                  ${prices[1]}`}</span>
-              ) : (
-                <span className="product-currency">{`${currency} ${prices[0]}`}</span>
-              )
-            ) : null}
+            <span className="product-currency">{`${currency} ${prices}`}</span>
             <Rating rate={rating.rate} reviews={rating.reviews} />
           </Link>
+          {show && (
+            <div className="product-content-buttons">
+              <Button className="add-to-cart" onClick={onClickCart}>
+                Add to Cart
+              </Button>
+              <Button
+                className="wish-list"
+                size={Button.SIZE.SMALL}
+                onClick={onClickWishList}
+              >
+                <Icon icon="star" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     );

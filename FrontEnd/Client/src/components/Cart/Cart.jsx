@@ -3,27 +3,22 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import {
   type AsyncStatusType,
-  type NotificationType
+  type NotificationType,
 } from "shared/types/General";
 
 import CartForm from "./components/CartForm";
 import Loader from "components/loader";
 import classNames from "classnames";
 
-import {
-  getCartItems,
-  removeCartItems,
-  editCartItems,
-  onEditCArtItems,
-  handleCart
-} from "action/cart";
+import { handleCart, removeFromCart, editCartItems } from "action/cart";
 import { ASYNC_STATUS } from "constants/async";
-import { getUserBaseCurrency } from "selectors/product";
 
 import "./styles.scss";
 
 type CartProps = {
   getCartItems: Function,
+  removeFromCart: Function,
+  editCartItems: Function,
   cartItems: Array<any>,
   status: AsyncStatusType,
   notification: NotificationType,
@@ -32,34 +27,24 @@ type CartProps = {
   onEditCArtItems: Function,
   handleCart: Function,
   open: boolean,
-  baseCurrency: string
 };
 
 class Cart extends PureComponent<CartProps, CartState> {
-  componentDidMount() {
-    const { getCartItems } = this.props;
-
-    getCartItems({ page: 1, pageSize: 50 });
-  }
-
   render() {
     const {
       cartItems,
       status,
-      notification,
-      removeCartItems,
       editCartItems,
-      onEditCArtItems,
       handleCart,
       open,
-      baseCurrency
+      removeFromCart,
     } = this.props;
 
     if (status === ASYNC_STATUS.LOADING) {
       return (
         <div
           className={classNames("cart-modal-container", {
-            open: this.props.open
+            open: this.props.open,
           })}
         >
           <Loader isLoading />
@@ -71,36 +56,25 @@ class Cart extends PureComponent<CartProps, CartState> {
       cartItems !== null && (
         <CartForm
           cartItems={cartItems}
-          status={status}
-          notification={notification}
-          removeCartItems={removeCartItems}
-          editCartItems={editCartItems}
-          onEditCArtItems={onEditCArtItems}
           handleCart={handleCart}
+          removeFromCart={removeFromCart}
+          editCartItems={editCartItems}
           open={open}
-          baseCurrency={baseCurrency}
         />
       )
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     cartItems: state.cart.cartItems,
     status: state.cart.status,
     notification: state.cart.notification,
     open: state.cart.open,
-    baseCurrency: getUserBaseCurrency(state)
   };
 };
 
-const Action = {
-  getCartItems,
-  removeCartItems,
-  editCartItems,
-  onEditCArtItems,
-  handleCart
-};
+const Action = { handleCart, removeFromCart, editCartItems };
 
 export default connect(mapStateToProps, Action)(Cart);

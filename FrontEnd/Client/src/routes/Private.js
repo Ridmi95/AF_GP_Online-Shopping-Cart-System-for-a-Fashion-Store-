@@ -15,18 +15,18 @@ const PrivateRoute = ({
   currentUserRole: $PropertyType<AuthStateType, "role">,
   roles: $PropertyType<AuthStateType, "role">[],
   path: string,
-  location?: Object
+  location?: Object,
 }) => {
   return (
     <Route
       {...rest}
-      render={props =>
+      render={(props) =>
         isAuthenticated && roles.includes(currentUserRole) ? (
           <Component {...props} />
         ) : (
           <Redirect
             to={{
-              pathname: "/"
+              pathname: "/",
             }}
           />
         )
