@@ -9,7 +9,6 @@ import NotFoundPage from "modules/common/pages/404";
 
 import { history } from "store";
 import { type AuthStateType } from "reducers/auth";
-import { isAuthenticated, isUserInitiated } from "selectors/auth";
 
 import routes from "./routes";
 import PrivateRoute from "./Private";
@@ -18,7 +17,7 @@ import PublicRoute from "./Public";
 type RoutesProps = {
   isAuthenticated: Boolean,
   isUserInitiated: Boolean,
-  currentUserRole: $PropertyType<AuthStateType, "role">
+  currentUserRole: $PropertyType<AuthStateType, "role">,
 };
 
 class Routes extends PureComponent<RoutesProps> {
@@ -60,13 +59,10 @@ const Actions = {};
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: isAuthenticated(state),
-    isUserInitiated: isUserInitiated(state),
-    currentUserRole: state.auth.role
+    isAuthenticated: true,
+    isUserInitiated: true,
+    currentUserRole: "admin",
   };
 }
 
-export default connect(
-  mapStateToProps,
-  Actions
-)(Routes);
+export default connect(mapStateToProps, Actions)(Routes);

@@ -11,7 +11,7 @@ import "./index.scss";
 
 const settings = {
   api: {
-    baseUrl: "",
+    baseUrl: "http://localhost:4000",
   },
 };
 

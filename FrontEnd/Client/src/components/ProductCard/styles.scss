@@ -1,33 +1,10 @@
 .product {
-  background-color: rgb(235, 235, 235);
+  background-color: rgb(228, 238, 245);
+  box-shadow: 0 0 10px 0 #999;
   border-radius: 10px;
   a {
     text-decoration: none;
     color: initial;
-  }
-  .product-selector {
-    .checkbox-container {
-      padding-left: 0px;
-      float: right;
-      .checkmark {
-        border-radius: 15px;
-      }
-      input:checked ~ .checkmark {
-        background-color: rgba(163, 163, 163, 0.603);
-        padding: 1px;
-      }
-    }
-    &.selected {
-      .checkbox-container {
-        .checkmark {
-          border-radius: 15px;
-        }
-        input:checked ~ .checkmark {
-          background-color: #4ed02e;
-          padding: 1px;
-        }
-      }
-    }
   }
   .featured-image {
     position: relative;
@@ -44,17 +21,39 @@
     }
     font-size: 14px;
     padding: 15px;
+    .product-content-buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      .add-to-cart {
+        margin-right: 5px;
+        white-space: nowrap;
+        background-color: #0081fa9d;
+        border: #0081fa9d;
+        color: #ffffff;
+        font-weight: 800;
+      }
+      .wish-list {
+        background-color: #ff6767cc;
+        border: #ff6767cc;
+        i {
+          color: #ffffff;
+        }
+      }
+    }
     .product-title {
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 2px;
-      height: 40px;
+      height: 30px;
+      font-weight: 900;
+      color: #011753;
     }
     .product-currency {
       margin-top: 10px;
       color: #ff6000;
       font-weight: 800;
-      font-size: 12px;
+      font-size: 14px;
     }
     .ratings {
       margin-top: 10px;
@@ -70,19 +69,5 @@
         font-size: 15px;
       }
     }
-  }
-}
-.product:hover {
-  background-color: rgb(110, 20, 255);
-  transform: scale(1.1);
-  .product-content {
-    .product-title {
-      color: white;
-    }
-  }
-}
-@media screen and (max-width: 875px) {
-  .product {
-    margin-bottom: 15px;
   }
 }
