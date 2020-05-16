@@ -2,6 +2,8 @@ const express = require('express');
 const loginRoutes = express.Router();
 const bcrypt = require('bcrypt');
 const session = require('express-session');
+const manager_auth = require('./managerAuth');
+const config = require('../configure.js');
 
 const jwt = require('jsonwebtoken');
 
@@ -86,6 +88,8 @@ loginRoutes.route('/hash').get(function (req, res) {
 
 loginRoutes.post("/manager-login" ,async (req,res)=>{
 
+    console.log("Secret is :" , config.JWT_SECRET);
+
     try{
         const {username, password } = req.body;
 
@@ -105,9 +109,9 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
         if(!validate)
         return res.status(400).json({msg:"Password is Invalid!"});
 
-        const JWT_SECRET="F9qy&s)?4=33s%$2h#F~";
+       
 
-        const token = jwt.sign({id : manager._id}, JWT_SECRET);
+        const token = jwt.sign({id : manager._id}, config.JWT_SECRET);
         res.status(200).json({
             token,
             manager :{

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET="F9qy&s)?4=33s%$2h#F~";
+const config = require('../configure.js');
 
 const auth = (req,res,location) =>{
 
@@ -8,12 +8,15 @@ const auth = (req,res,location) =>{
 
         if(!token)
         return res.status(401).json({msg:'Access Denied !'});
-        const validate = jwt.verify(token,JWT_SECRET);
+        const validate = jwt.verify(token,config.JWT_SECRET);
 
 
         if(!validate)
-        res.status(401).json({msg:"Faild Token Verification. Access Denied!"})
+        res.status(401).json({msg:"Faild Token Verification. Access Denied!"});
 
+        res.manager = validate.id;
+
+        location();
 
 
     }catch(err){
@@ -22,4 +25,4 @@ const auth = (req,res,location) =>{
     }
 
 }
-module.exports = managerAuth
+module.exports = auth;

@@ -9,7 +9,7 @@ const session = require('express-session');
 
 const mongoose = require('mongoose');
 
-const config = require('./DB.js');
+const config = require('./configure.js');
 
 const categoryRoute = require('./Route/category.router');
 const loginRoute    = require('./Route/login.router');
