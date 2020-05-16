@@ -85,6 +85,7 @@ loginRoutes.route('/hash').get(function (req, res) {
 });
 */
 
+//manger login
 
 loginRoutes.post("/manager-login" ,async (req,res)=>{
 
@@ -110,7 +111,7 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
         return res.status(400).json({msg:"Password is Invalid!"});
 
        
-
+        //jwt secret
         const token = jwt.sign({id : manager._id}, config.JWT_SECRET);
         res.status(200).json({
             token,
