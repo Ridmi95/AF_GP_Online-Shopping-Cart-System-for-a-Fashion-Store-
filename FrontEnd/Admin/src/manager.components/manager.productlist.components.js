@@ -68,7 +68,7 @@ export default class productList extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:4000/product').then(res => {
+        axios.get('http://localhost:4000/product/admin').then(res => {
             this.setState({
 
                 products: res.data

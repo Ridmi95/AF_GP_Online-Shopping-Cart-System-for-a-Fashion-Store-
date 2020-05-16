@@ -21,6 +21,20 @@ categoryRoutes.route('/getall').get(function (req, res) {
   });
 });
 
+categoryRoutes.route('/admin').get(function (req, res) {
+  if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
+    return;
+  }
+  Category.find(function (err, categories) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.json(categories);
+    }
+  });
+});
+
 
 // Defined store route
 categoryRoutes.route('/add').post(function (req, res) {

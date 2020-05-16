@@ -153,7 +153,7 @@ export default class CreateCategory extends Component {
 
   //Get categories from db and display
   componentDidMount() {
-    axios.get('http://localhost:4000/Category')
+    axios.get('http://localhost:4000/Category/admin')
       .then(response => {
         this.setState({ all_categories: response.data });
       })

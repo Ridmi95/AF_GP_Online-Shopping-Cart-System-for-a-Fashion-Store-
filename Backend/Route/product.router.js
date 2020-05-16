@@ -17,6 +17,16 @@ let Product = require("../Models/product.model");
 //     });
 // });
 
+productRoutes.route("/admin").get(function (req, res) {
+  Product.find(function (err, products) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(products);
+    }
+  });
+});
+
 productRoutes.route("/").get(function (req, res) {
   let category = req.query.category;
 
