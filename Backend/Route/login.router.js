@@ -133,6 +133,32 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
 })
 
 
+//token validate
+loginRoutes.post("/manager-token-validate" ,async (req,res)=>{
+
+    try {
+
+        const token = req.header("manager-token");
+        if(!token) return res.json(false);
+
+        const validate = jwt.verify(token,config.JWT_SECRET);
+        if(!validate) return res.json(false);
+
+        const manager = await login.findById(validate.id);
+        if(!manager) return res.json(false);
+
+        return res.json(true);
+
+        
+    } catch (error) {
+        res.status(400).json({msg:"Validation Error"});
+        console.log("Error is " ,error);
+        
+    }
+
+
+
+})
 
 
 
