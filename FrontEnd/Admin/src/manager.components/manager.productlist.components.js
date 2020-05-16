@@ -5,6 +5,16 @@ import Title from "./manager.title.components";
 import axios from 'axios';
 
 
+function getAvgRating(ratings) {
+    const total = ratings.reduce((acc, c) => acc + c, 0);
+    if(total)
+    return total / ratings.length;
+
+    else
+    return 0;
+    
+  }
+
 function searchItems(item){
 
     return function(e){
@@ -28,6 +38,7 @@ const ProductRow = props => (
         <td>{props.product.productName}</td>
         <td>{props.product.quantity}</td>
         <td>{props.product.size}</td>
+        <td>{getAvgRating(props.product.rating)}</td>
         <td>
             <Link to={"/edit-product/" + props.product._id}>Edit</Link> | <a href="#" onClick={() => {
                 props.deleteProduct(props.product._id) ; console.log("Deleted ID: ",props.product._id)
@@ -67,11 +78,13 @@ export default class productList extends Component {
 
     }
 
+   
+
     componentDidMount() {
-        axios.get('http://localhost:4000/product/admin').then(res => {
+        axios.get('http://localhost:4000/product/recent').then(res => {
             this.setState({
 
-                products: res.data
+                products: res.data.data
                 
             })
         }).catch(err => {
@@ -217,6 +230,7 @@ export default class productList extends Component {
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Size</th>
+                                <th scope="col">Rating</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>

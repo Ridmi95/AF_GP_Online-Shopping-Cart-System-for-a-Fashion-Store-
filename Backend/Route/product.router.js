@@ -22,10 +22,21 @@ productRoutes.route("/admin").get(function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.json(products);
+      res.status(200).json({ success: true, data: products});
     }
   });
 });
+
+productRoutes.route("/recent").get(function (req, res) {
+  Product.find(function (err, products) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: products});
+    }
+  }).limit(5).sort({updatedAt:-1});
+});
+
 
 productRoutes.route("/").get(function (req, res) {
   let category = req.query.category;
@@ -48,6 +59,8 @@ productRoutes.route("/").get(function (req, res) {
     });
   }
 });
+
+
 
 productRoutes.route("/:id").get(function (req, res) {
   let id = req.params.id;
