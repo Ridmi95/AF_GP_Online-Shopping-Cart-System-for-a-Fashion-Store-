@@ -270,6 +270,7 @@ ManagerRoutes.route('/activate/:email').get(function (req, res) {
 
                 Manager.save().then(Manager => {
                     res.json("Account activated successfully.");
+                   
                 }).catch(err => {
                     res.json("Unable to activate this account.");
                     console.log(err);
