@@ -1,10 +1,7 @@
 //User
 import React, { Component } from 'react';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import { CardContent } from '@material-ui/core';
 
 export default class Users extends Component {
 
@@ -54,7 +51,8 @@ export default class Users extends Component {
     return (<div>
 
       <Card className="mt-1">
-        <h4 className="mb-0 pl-5 ml-1 mt-3 mb-3">All Users</h4>
+        <h1 className="text-center mb-0 pt-5">Registered Users</h1>
+        <hr />
 
         <div
           className="p-2"

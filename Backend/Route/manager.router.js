@@ -35,7 +35,7 @@ async function hashPassword(pass) {
 
 }
 
-//Senda activation mail
+//Send a activation mail
 function sendMail(mailOptions) {
 
     var transporter = nodemailer.createTransport({

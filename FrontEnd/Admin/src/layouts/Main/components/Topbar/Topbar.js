@@ -49,6 +49,13 @@ const Topbar = props => {
     >
       <Toolbar>
 
+        <RouterLink to="/">
+          <img
+            alt="Logo"
+            src="/images/logos/logo--white.svg"
+          />
+        </RouterLink>
+
         <div className={classes.flexGrow} />
         <Hidden mdDown>
           <IconButton color="inherit">
@@ -56,9 +63,7 @@ const Topbar = props => {
               badgeContent={notifications.length}
               color="primary"
               variant="dot"
-            >
-
-            </Badge>
+            />
           </IconButton>
           <IconButton
             className={classes.signOutButton}

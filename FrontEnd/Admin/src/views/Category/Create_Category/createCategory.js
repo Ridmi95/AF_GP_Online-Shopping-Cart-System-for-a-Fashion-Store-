@@ -210,7 +210,7 @@ export default class CreateCategory extends Component {
     return (
       <div>
         <Card>
-          <h1 className="text-center mb-0 pt-2">Product Categories</h1>
+          <h1 className="text-center mb-0 pt-5">Product Categories</h1>
           <hr />
           <CardContent>
 

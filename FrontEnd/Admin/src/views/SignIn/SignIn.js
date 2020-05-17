@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
@@ -7,9 +7,7 @@ import axios from 'axios';
 import {
   Grid,
   Button,
-  IconButton,
   TextField,
-  Link,
   Typography
 } from '@material-ui/core';
 import {blue, lightBlue} from '@material-ui/core/colors';
@@ -187,7 +185,7 @@ const SignIn = props => {
       console.log(response);
 
       if (response.data === true) {
-        history.push('/category');
+        history.push('/dashboard');
       } else {
         alert('Invalid username or password');
       }

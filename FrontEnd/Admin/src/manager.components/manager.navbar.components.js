@@ -3,43 +3,85 @@ import {Link} from 'react-router-dom';
 
 export default class Navbar extends Component{
 
-    render(){
+  render(){
 
-        return(
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#"> <h2>Store Manager          |   </h2></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <Link to="/dashboard-manager" className="nav-link"><h4><i class="zmdi zmdi-balance"> </i> Dashboard</h4> <span class="sr-only">(current)</span></Link>
-      </li>
-      <li class="nav-item">
-      <Link to="/manager/purchases" className="nav-link"><h4><i class="zmdi zmdi-shopping-cart"></i> Purchases</h4></Link>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"></a>
-      </li>
+    return(
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <a
+          className="navbar-brand"
+          href="#"
+        > <h2>Store Manager          |   </h2></a>
+        <button
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          className="navbar-toggler"
+          data-target="#navbarNavDropdown"
+          data-toggle="collapse"
+          type="button"
+        >
+          <span className="navbar-toggler-icon" />
+        </button>
+        <div
+          className="collapse navbar-collapse"
+          id="navbarNavDropdown"
+        >
+          <ul className="navbar-nav">
+            <li className="nav-item active">
+              <Link
+                className="nav-link"
+                to="/dashboard-manager"
+              ><h4><i className="zmdi zmdi-balance"> </i> Dashboard</h4> <span className="sr-only">(current)</span></Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to="/manager/purchases"
+              ><h4><i className="zmdi zmdi-shopping-cart" /> Purchases</h4></Link>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="#"
+              />
+            </li>
       
-      <li  class="nav-item dropdown">
+            <li  className="nav-item dropdown">
      
       
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <text style={{fontSize:'16px'}}> <i class="zmdi zmdi-settings"></i><b> Settings</b> </text>
-        </a>
+              <a
+                aria-expanded="false"
+                aria-haspopup="true"
+                className="nav-link dropdown-toggle"
+                data-toggle="dropdown"
+                href="#"
+                id="navbarDropdownMenuLink"
+              >
+                <text style={{fontSize:'16px'}}> <i className="zmdi zmdi-settings" /><b> Settings</b> </text>
+              </a>
         
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" >
-        <a class="dropdown-item" href="#"><i class="fas fa-user-circle"></i> Profile</a>
-        <span style={{backgroundColor:"red"}}><a class="dropdown-item" href="#"> <i class="fas fa-sign-out-alt"></i> Log Out</a></span>
+              <div
+                aria-labelledby="navbarDropdownMenuLink"
+                className="dropdown-menu"
+              >
+                <a
+                  className="dropdown-item"
+                  href="#"
+                ><i className="fas fa-user-circle" /> Profile</a>
+                <span style={{backgroundColor:'red'}}><a
+                  className="dropdown-item"
+                  href="#"
+                > <i className="fas fa-sign-out-alt" /> Log Out</a></span>
           
-          <a class="dropdown-item" href="#">Something else here</a>
+                <a
+                  className="dropdown-item"
+                  href="#"
+                >Something else here</a>
+              </div>
+            </li>
+          </ul>
         </div>
-      </li>
-    </ul>
-  </div>
-</nav>
+      </nav>
 
 
 
@@ -48,13 +90,13 @@ export default class Navbar extends Component{
 
 
 
-        )
+    )
 
 
 
 
 
-    }
+  }
 
 
 

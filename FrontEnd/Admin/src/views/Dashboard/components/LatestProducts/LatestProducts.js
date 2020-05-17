@@ -1,94 +1,253 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Button,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  IconButton
-} from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import React, { Component } from 'react';
+import axios from 'axios';
+import {Card} from "react-bootstrap";
 
-import mockData from './data';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    height: '100%'
-  },
-  content: {
-    padding: 0
-  },
-  image: {
-    height: 48,
-    width: 48
-  },
-  actions: {
-    justifyContent: 'flex-end'
+function getAvgRating(ratings) {
+  const total = ratings.reduce((acc, c) => acc + c, 0);
+  if(total)
+    return total / ratings.length;
+
+  else
+    return 0;
+
+}
+
+function searchItems(item){
+
+  return function(e){
+    return e.productCode.toLowerCase().includes(item.toLowerCase())
+      ||e.productName.toLowerCase().includes(item.toLowerCase())||
+
+      e.size.toLowerCase().includes(item.toLowerCase()) ||
+      !item;
   }
-}));
 
-const LatestProducts = props => {
-  const { className, ...rest } = props;
+}
 
-  const classes = useStyles();
+const ProductRow = props => (
 
-  const [products] = useState(mockData);
 
-  return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <CardHeader
-        subtitle={`${products.length} in total`}
-        title="Latest products"
-      />
-      <Divider />
-      <CardContent className={classes.content}>
-        <List>
-          {products.map((product, i) => (
-            <ListItem
-              divider={i < products.length - 1}
-              key={product.id}
+
+  <tr>
+
+    <td>{props.product._id}</td>
+    <td>{props.product.productCode}</td>
+    <td>{props.product.productName}</td>
+    <td>{props.product.quantity}</td>
+    <td>{props.product.size}</td>
+    <td>{getAvgRating(props.product.rating)}</td>
+
+
+
+
+  </tr>
+);
+
+
+
+export default class LatestProducts extends Component {
+
+  constructor(props) {
+
+    super(props);
+
+
+
+
+
+    this.onChangeSearch = this.onChangeSearch.bind(this);
+
+    this.state = {
+
+      products: [],
+      search: '',
+      orders:[]
+
+
+    };
+
+
+
+  }
+
+
+
+  componentDidMount() {
+    axios.get('http://localhost:4000/product/recent').then(res => {
+      this.setState({
+
+        products: res.data.data
+
+      })
+    }).catch(err => {
+      console.log(err);
+
+
+    })
+
+  }
+
+
+
+  productList() {
+
+    return this.state.products.filter(searchItems(this.state.search)).map(productCurrent => {
+
+      return <ProductRow
+        deleteProduct={this.deleteProduct}
+        key={productCurrent._id}
+        product={productCurrent}
+      />;
+
+    })
+  }
+
+  onChangeSearch(e) {
+
+    this.setState({
+
+      search: e.target.value
+
+
+    });
+
+  }
+
+
+
+  render() {
+
+
+
+    return (
+
+
+      <div>
+
+
+        <div clss="Managercard">
+          <div className="managerStat">
+            <div
+              className="container "
+              style={{padding:'15px'}}
             >
-              <ListItemAvatar>
-                <img
-                  alt="Product"
-                  className={classes.image}
-                  src={product.imageUrl}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary={product.name}
-                secondary={`Updated ${product.updatedAt.fromNow()}`}
+              <div className="row">
+                <div className="col-md-3">
+                  <div className="card-counter primary">
+                    <i className="fas fa-tshirt" />
+                    <span className="count-numbers">{this.state.products.length}</span>
+                    <span className="count-name">Total Products</span>
+                  </div>
+                </div>
+
+                <Card>
+                  <h1 className="text-center mb-0 pt-3">Product Description</h1>
+                  <hr />
+                </Card>
+
+                <div className="col-md-3">
+                  <div className="card-counter danger">
+                    <i className="fas fa-dollar-sign" />
+                    <span className="count-numbers">599</span>
+                    <span className="count-name">Purchases</span>
+                  </div>
+                </div>
+
+
+
+
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+
+
+
+
+
+
+
+        <div
+          className="row"
+          style={{ float: 'left', margin: '10px' }}
+        >
+
+          <h4>
+
+            <div className="form-group">
+              <label htmlFor="name"><i
+                className="zmdi zmdi-search"
+                style={{paddingRight:'20px', paddingLeft:'10px'}}
+              >  </i> </label>
+              <input
+                id="productName"
+                name="name"
+                onChange={this.onChangeSearch}
+                placeholder="Search Items"
+                required
+                type="text"
+                value={this.state.search}
               />
-              <IconButton
-                edge="end"
-                size="small"
-              >
-                <MoreVertIcon />
-              </IconButton>
-            </ListItem>
-          ))}
-        </List>
-      </CardContent>
-      <Divider />
+            </div></h4>
 
-    </Card>
-  );
-};
 
-LatestProducts.propTypes = {
-  className: PropTypes.string
-};
+          {/* <div class="col-md" style={{width:'22%'}}>
+            
+                <input placeholder='Search Products...' class='js-search' type="text" /></div> */}
 
-export default LatestProducts;
+          {/* <div class="col-md" > */}
+
+          {/* <Link to="/add-product" className="nav-link"><button className="btn btn-primary" ><i class="zmdi zmdi-plus-square">  Add Products</i> </button></Link></div> */}
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Product ID</th>
+                <th scope="col">Product Code</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Size</th>
+                <th scope="col">Rating</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {this.productList()}
+            </tbody>
+          </table>
+        </div>
+
+
+
+
+      </div>
+
+    )
+
+
+
+
+
+  }
+
+
+
+
+
+} 

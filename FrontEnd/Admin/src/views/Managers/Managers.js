@@ -243,7 +243,7 @@ export default class Managers extends Component {
   render() {
     return (<div>
       <Card>
-        <h1 className="text-center mb-0 pt-2">Managers</h1>
+        <h1 className="text-center mb-0 pt-5">Store Managers</h1>
         <hr />
         <CardContent>
 

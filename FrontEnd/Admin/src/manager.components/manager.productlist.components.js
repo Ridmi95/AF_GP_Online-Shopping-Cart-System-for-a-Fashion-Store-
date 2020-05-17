@@ -1,29 +1,29 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from "./manager.navbar.components";
-import Title from "./manager.title.components";
+import Navbar from './manager.navbar.components';
+import Title from './manager.title.components';
 import axios from 'axios';
 
 
 function getAvgRating(ratings) {
-    const total = ratings.reduce((acc, c) => acc + c, 0);
-    if(total)
+  const total = ratings.reduce((acc, c) => acc + c, 0);
+  if(total)
     return total / ratings.length;
 
-    else
+  else
     return 0;
     
-  }
+}
 
 function searchItems(item){
 
-    return function(e){
-        return e.productCode.toLowerCase().includes(item.toLowerCase()) 
+  return function(e){
+    return e.productCode.toLowerCase().includes(item.toLowerCase()) 
         ||e.productName.toLowerCase().includes(item.toLowerCase())||
         
         e.size.toLowerCase().includes(item.toLowerCase()) ||
          !item;
-    }
+  }
         
 }
 
@@ -31,189 +31,213 @@ const ProductRow = props => (
 
 
 
-    <tr>
+  <tr>
 
-        <td>{props.product._id}</td>
-        <td>{props.product.productCode}</td>
-        <td>{props.product.productName}</td>
-        <td>{props.product.quantity}</td>
-        <td>{props.product.size}</td>
-        <td>{getAvgRating(props.product.rating)}</td>
-        <td>
-            <Link to={"/edit-product/" + props.product._id}>Edit</Link> | <a href="#" onClick={() => {
-                props.deleteProduct(props.product._id) ; console.log("Deleted ID: ",props.product._id)
-            }
-            }>delete</a>
-        </td>
+    <td>{props.product._id}</td>
+    <td>{props.product.productCode}</td>
+    <td>{props.product.productName}</td>
+    <td>{props.product.quantity}</td>
+    <td>{props.product.size}</td>
+    <td>{getAvgRating(props.product.rating)}</td>
+    <td>
+      <Link to={'/edit-product/' + props.product._id}>Edit</Link> | <a
+        href="#"
+        onClick={() => {
+          props.deleteProduct(props.product._id) ; console.log('Deleted ID: ',props.product._id)
+        }
+        }
+      >delete</a>
+    </td>
 
 
 
-    </tr>
+  </tr>
 );
 
 
 
 export default class productList extends Component {
 
-    constructor(props) {
+  constructor(props) {
 
-        super(props);
+    super(props);
 
-        this.deleteProduct = this.deleteProduct.bind(this);
+    this.deleteProduct = this.deleteProduct.bind(this);
 
 
 
-        this.onChangeSearch = this.onChangeSearch.bind(this);
+    this.onChangeSearch = this.onChangeSearch.bind(this);
 
-        this.state = {
+    this.state = {
 
-            products: [],
-            search: '',
-            orders:[]
+      products: [],
+      search: '',
+      orders:[]
             
 
-        };
+    };
 
 
 
-    }
+  }
 
    
 
-    componentDidMount() {
-        axios.get('http://localhost:4000/product/recent').then(res => {
-            this.setState({
+  componentDidMount() {
+    axios.get('http://localhost:4000/product/recent').then(res => {
+      this.setState({
 
-                products: res.data.data
+        products: res.data.data
                 
-            })
-        }).catch(err => {
-            console.log(err);
+      })
+    }).catch(err => {
+      console.log(err);
 
 
-        })
+    })
 
-    }
+  }
 
-    deleteProduct(id) {
+  deleteProduct(id) {
 
-        axios.delete('http://localhost:4000/product/delete/' + id).then(res => console.log(res.data));
+    axios.delete('http://localhost:4000/product/delete/' + id).then(res => console.log(res.data));
 
-        this.setState({
+    this.setState({
 
-            products: this.state.products.filter(e => e._id !== id),
+      products: this.state.products.filter(e => e._id !== id),
             
-        })
+    })
 
-    }
+  }
 
-    productList() {
+  productList() {
 
-        return this.state.products.filter(searchItems(this.state.search)).map(productCurrent => {
+    return this.state.products.filter(searchItems(this.state.search)).map(productCurrent => {
 
-            return <ProductRow product={productCurrent}
-                deleteProduct={this.deleteProduct} key={productCurrent._id} />;
+      return <ProductRow
+        deleteProduct={this.deleteProduct}
+        key={productCurrent._id}
+        product={productCurrent}
+             />;
 
-        })
-    }
+    })
+  }
 
-    onChangeSearch(e) {
+  onChangeSearch(e) {
 
-        this.setState({
+    this.setState({
 
-            search: e.target.value
+      search: e.target.value
 
 
-        });
+    });
 
-    }
+  }
 
     
 
-    render() {
+  render() {
 
 
 
-        return (
+    return (
 
 
-            <div>
-                <Title />
-                <Navbar />
+      <div>
+        <Title />
+        <Navbar />
 
-                <div clss="Managercard">
-<div class="managerStat">
-<div class="container " style={{padding:"15px"}}>
-    <div class="row">
-    <div class="col-md-3">
-      <div class="card-counter primary">
-      <i class="fas fa-tshirt"></i>
-        <span class="count-numbers">{this.state.products.length}</span>
-        <span class="count-name">Total Products</span>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-counter danger">
-      <i class="fas fa-dollar-sign"></i>
-        <span class="count-numbers">599</span>
-        <span class="count-name">Purchases</span>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-counter success">
-        <i class="fa fa-database"></i>
-        <span class="count-numbers">6875</span>
-        <span class="count-name">Data</span>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-counter info">
-        <i class="fa fa-users"></i>
-        <span class="count-numbers">35</span>
-        <span class="count-name">Users</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-</div>
-</div>
-
-
-
-
-
-                <div style={{ float: 'right' }}>
-                    <Link to="/add-product" className="nav-link"><button className="btn btn-primary"><i class="zmdi zmdi-plus-square">  Add Products</i> <span class="sr-only">(current)</span></button></Link>
+        <div clss="Managercard">
+          <div className="managerStat">
+            <div
+              className="container "
+              style={{padding:'15px'}}
+            >
+              <div className="row">
+                <div className="col-md-3">
+                  <div className="card-counter primary">
+                    <i className="fas fa-tshirt" />
+                    <span className="count-numbers">{this.state.products.length}</span>
+                    <span className="count-name">Total Products</span>
+                  </div>
                 </div>
 
-                <div class="row" style={{ float: 'left', margin: "10px" }}>
+                <div className="col-md-3">
+                  <div className="card-counter danger">
+                    <i className="fas fa-dollar-sign" />
+                    <span className="count-numbers">599</span>
+                    <span className="count-name">Purchases</span>
+                  </div>
+                </div>
 
-            <h4>
+                <div className="col-md-3">
+                  <div className="card-counter success">
+                    <i className="fa fa-database" />
+                    <span className="count-numbers">6875</span>
+                    <span className="count-name">Data</span>
+                  </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="name"><i class="zmdi zmdi-search" style={{paddingRight:"20px", paddingLeft:'10px'}}>  </i> </label>
-                        <input type="text" name="name" id="productName" placeholder="Search Items" onChange={this.onChangeSearch} value={this.state.search} required />
-                    </div></h4>
+                <div className="col-md-3">
+                  <div className="card-counter info">
+                    <i className="fa fa-users" />
+                    <span className="count-numbers">35</span>
+                    <span className="count-name">Users</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
-                    {/* <div class="col-md" style={{width:'22%'}}>
+
+          </div>
+        </div>
+
+
+
+
+
+        <div style={{ float: 'right' }}>
+          <Link
+            className="nav-link"
+            to="/add-product"
+          ><button className="btn btn-primary"><i className="zmdi zmdi-plus-square">  Add Products</i> <span className="sr-only">(current)</span></button></Link>
+        </div>
+
+        <div
+          className="row"
+          style={{ float: 'left', margin: '10px' }}
+        >
+
+          <h4>
+
+            <div className="form-group">
+              <label htmlFor="name"><i
+                className="zmdi zmdi-search"
+                style={{paddingRight:'20px', paddingLeft:'10px'}}
+              >  </i> </label>
+              <input
+                id="productName"
+                name="name"
+                onChange={this.onChangeSearch}
+                placeholder="Search Items"
+                required
+                type="text"
+                value={this.state.search}
+              />
+            </div></h4>
+
+
+          {/* <div class="col-md" style={{width:'22%'}}>
             
                 <input placeholder='Search Products...' class='js-search' type="text" /></div> */}
 
-                    {/* <div class="col-md" > */}
+          {/* <div class="col-md" > */}
 
-                    {/* <Link to="/add-product" className="nav-link"><button className="btn btn-primary" ><i class="zmdi zmdi-plus-square">  Add Products</i> </button></Link></div> */}
-
-
-                </div>
+          {/* <Link to="/add-product" className="nav-link"><button className="btn btn-primary" ><i class="zmdi zmdi-plus-square">  Add Products</i> </button></Link></div> */}
 
 
+        </div>
 
 
 
@@ -221,37 +245,39 @@ export default class productList extends Component {
 
 
 
-                <div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Product ID</th>
-                                <th scope="col">Product Code</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Size</th>
-                                <th scope="col">Rating</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.productList()}
-                        </tbody>
-                    </table>
-                </div>
+
+
+        <div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Product ID</th>
+                <th scope="col">Product Code</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Size</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.productList()}
+            </tbody>
+          </table>
+        </div>
 
 
 
 
-            </div>
+      </div>
 
-        )
-
-
+    )
 
 
 
-    }
+
+
+  }
 
 
 

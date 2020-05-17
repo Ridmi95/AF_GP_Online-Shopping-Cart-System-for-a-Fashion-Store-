@@ -57,7 +57,7 @@ const LatestSales = props => {
           size="small"
           variant="text"
         >
-          Overview <ArrowRightIcon />
+
         </Button>
       </CardActions>
     </Card>
