@@ -3,6 +3,27 @@ import {Link} from 'react-router-dom';
 
 export default class Navbar extends Component{
 
+  constructor(props){
+
+    super(props);
+    this.logout=this.logout.bind(this);
+  
+  }
+
+
+  logout(){
+
+    localStorage.setItem('manager_token',"false");
+
+    const token=localStorage.getItem('manager_token');
+
+    console.log("Logout method called : Token is : " , token );
+      
+    
+
+
+  }
+
   render(){
 
     return(
@@ -68,10 +89,12 @@ export default class Navbar extends Component{
                   className="dropdown-item"
                   href="#"
                 ><i className="fas fa-user-circle" /> Profile</a>
-                <span style={{backgroundColor:'red'}}><a
+               <Link
+                className="nav-link"
+                onClick={this.logout} to="/manager-Sign-In/" > <span ><a
                   className="dropdown-item"
                   href="#"
-                > <i className="fas fa-sign-out-alt" /> Log Out</a></span>
+                > <i className="fas fa-sign-out-alt" /> Log Out</a></span></Link>
           
                 <a
                   className="dropdown-item"

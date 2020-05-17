@@ -20,6 +20,8 @@ constructor(props){
     this.onChangeProductName=this.onChangeProductName.bind(this)
     this.onChangeQuantity=this.onChangeQuantity.bind(this)
     this.onChangeSize=this.onChangeSize.bind(this)
+
+    this.validateUser=this.validateUser.bind(this)
     
 
     this.state = {
@@ -42,7 +44,16 @@ constructor(props){
 
 
 componentDidMount(){
-    axios.get('http://localhost:4000/category/getall').then(res =>{
+
+    this.validateUser();
+    const token = localStorage.getItem('manager_token');
+    axios.get('http://localhost:4000/category/getall',{
+        headers:
+        {
+            manager_token :token
+
+        }
+    }).then(res =>{
 
         if(res.data.length>0){
             this.setState({
@@ -60,6 +71,22 @@ componentDidMount(){
 
         
 }
+
+validateUser(){
+
+    
+
+    const token = localStorage.getItem('manager_token');
+
+    
+
+    if(token==="false"){
+
+      
+      this.props.history.push('/manager-Sign-In/');
+    }
+
+  }
 
 onChangeProductCode(e){
 
