@@ -85,12 +85,12 @@ onSubmit=(e)=>{
 
         const token = res.data.token;
        localStorage.setItem('manager_token',token )
+       
 
        if(token){
-       console.log("token is : " , localStorage.getItem('manager_token'))
-    // window.location("/dashboard-manager");
+        this.props.history.push('/dashboard-manager/');
 
-    this.props.history.push('/dashboard-manager/');}
+    }
 
        
     //    alert('Successfuly Loged In')

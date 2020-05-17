@@ -46,7 +46,11 @@ constructor(props){
 componentDidMount(){
 
     this.validateUser();
+
+
+    
     const token = localStorage.getItem('manager_token');
+
     axios.get('http://localhost:4000/category/getall',{
         headers:
         {

@@ -9,6 +9,7 @@ const auth = (req,res,location) =>{
 
         if(!token)
         return res.status(401).json({msg:'Access Denied !'});
+        
         const validate = jwt.verify(token,config.JWT_SECRET);
 
 
