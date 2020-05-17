@@ -89,7 +89,7 @@ loginRoutes.route('/hash').get(function (req, res) {
 
 loginRoutes.post("/manager-login" ,async (req,res)=>{
 
-    console.log("Secret is :" , config.JWT_SECRET);
+    // console.log("Secret is :" , config.JWT_SECRET);
 
     try{
         const {username, password } = req.body;
