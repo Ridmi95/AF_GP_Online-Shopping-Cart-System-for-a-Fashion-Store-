@@ -89,15 +89,21 @@ loginRoutes.route('/hash').get(function (req, res) {
 
 loginRoutes.post("/manager-login" ,async (req,res)=>{
 
-    console.log("Secret is :" , config.JWT_SECRET);
+    // console.log("Secret is :" , config.JWT_SECRET);
 
     try{
         const {username, password } = req.body;
 
         const manager = await login.findOne({username:username});
 
+        if(username=="" ||password=="" )
+        return res.status(400).json({msg:"Username or Password fields are empty"});
+
         if(!manager)
         return res.status(400).json({msg:"Invalid Username"});
+
+        if(username=="" ||password=="" )
+        return res.status(400).json({msg:"Username or Password fields are empty"});
 
         if(manager['role'] !=="manager")
         return res.status(400).json({msg:"Store Manager Account is Required to Login !"});
@@ -112,13 +118,14 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
 
        
         //jwt secret
-        const token = jwt.sign({id : manager._id}, config.JWT_SECRET);
+        const token = jwt.sign({id : manager._id}, config.JWT_SECRET,{expiresIn: 5});
         res.status(200).json({
             token,
             manager :{
                 id: manager._id,
                 username: manager.username,
-                email : manager.email
+                email : manager.email,
+                role : manager.role
 
 
             },
@@ -138,7 +145,7 @@ loginRoutes.post("/manager-token-validate" ,async (req,res)=>{
 
     try {
 
-        const token = req.header("manager-token");
+        const token = req.body.manager_token;
         if(!token) return res.json(false);
 
         const validate = jwt.verify(token,config.JWT_SECRET);

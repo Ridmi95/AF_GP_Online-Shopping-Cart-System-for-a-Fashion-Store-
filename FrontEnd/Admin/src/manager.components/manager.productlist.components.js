@@ -63,6 +63,7 @@ export default class productList extends Component {
     super(props);
 
     this.deleteProduct = this.deleteProduct.bind(this);
+    this.validateUser = this.validateUser.bind(this);
 
 
 
@@ -72,7 +73,8 @@ export default class productList extends Component {
 
       products: [],
       search: '',
-      orders:[]
+      orders:[],
+      
             
 
     };
@@ -84,7 +86,18 @@ export default class productList extends Component {
    
 
   componentDidMount() {
-    axios.get('http://localhost:4000/product/recent').then(res => {
+
+    this.validateUser();
+
+    const token = localStorage.getItem('manager_token');
+
+    axios.get('http://localhost:4000/product/recent',{
+      headers:
+      {
+          manager_token :token
+
+      }
+  }).then(res => {
       this.setState({
 
         products: res.data.data
@@ -95,6 +108,22 @@ export default class productList extends Component {
 
 
     })
+
+  }
+
+  validateUser(){
+
+    
+
+    const token = localStorage.getItem('manager_token');
+
+    
+
+    if(token==="false"){
+
+      
+      this.props.history.push('/manager-Sign-In/');
+    }
 
   }
 
@@ -109,6 +138,8 @@ export default class productList extends Component {
     })
 
   }
+
+
 
   productList() {
 

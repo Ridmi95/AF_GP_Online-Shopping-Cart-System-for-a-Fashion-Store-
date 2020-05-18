@@ -1,6 +1,7 @@
 "use strict";
 const express = require("express");
 const productRoutes = express.Router();
+const auth = require('./managerAuth.js');
 
 let Product = require("../Models/product.model");
 
@@ -27,8 +28,10 @@ productRoutes.route("/admin").get(function (req, res) {
   });
 });
 
-productRoutes.route("/recent").get(function (req, res) {
-  Product.find(function (err, products) {
+
+
+productRoutes.get("/recent",auth , async (req, res) =>{
+  await Product.find(function (err, products) {
     if (err) {
       console.log(err);
     } else {
@@ -133,7 +136,7 @@ productRoutes.route('/list/:id').get((req, res) =>{
 });
 
 //add product
-productRoutes.route('/add').post( async (req, res) =>{
+productRoutes.post('/add', auth, async (req, res) =>{
 
   const productCode = req.body.productCode;
   const productName = req.body.productName;

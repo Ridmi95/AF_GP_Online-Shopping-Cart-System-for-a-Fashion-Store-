@@ -4,10 +4,12 @@ const config = require('../configure.js');
 const auth = (req,res,location) =>{
 
     try{
-        const token = req.header("manager-token");
+        const token = req.header('manager_token');
+        console.log("Token is: " , token);
 
         if(!token)
         return res.status(401).json({msg:'Access Denied !'});
+        
         const validate = jwt.verify(token,config.JWT_SECRET);
 
 

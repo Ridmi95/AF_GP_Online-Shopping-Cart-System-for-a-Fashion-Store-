@@ -3,6 +3,7 @@
 const express = require('express');
 const categoryRoutes = express.Router();
 const session = require('express-session');
+const auth = require('./managerAuth.js');
 
 // Require Category model in our routes module
 let Category = require('../Models/category.model');
@@ -10,7 +11,10 @@ let Category = require('../Models/category.model');
 
 
 // Defined get data(index or listing) route
-categoryRoutes.route('/getall').get(function (req, res) {
+
+
+
+categoryRoutes.get('/getall',auth, (req, res) => {
   Category.find(function (err, categories) {
     if (err) {
       console.log(err);

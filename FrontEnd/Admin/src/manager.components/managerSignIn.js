@@ -1,15 +1,35 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import Navbar from "./manager.navbar.components";
 import Title from "./manager.title.components";
 import styleManager from "./css/manager-add-style.css"
 
+
 export default class managerSignIn extends Component{
+
+    
 
 constructor(props){
 
   super(props);
+
+  
+
+  
+
+  this.onChangeUsername=this.onChangeUsername.bind(this);
+  this.onChangePassoword=this.onChangePassoword.bind(this);
+  this.onSubmit=this.onSubmit.bind(this);
+
+  this.state = {
+
+    username:'',
+    password:'',
+    manager_token:''
+   
+
+}
     
 }
 
@@ -20,8 +40,25 @@ componentDidMount(){
         
 }
 
-onChangeProductCode(e){
+onChangeUsername(e){
+    this.setState({
 
+        username:e.target.value
+
+
+    });
+
+   
+
+}
+
+onChangePassoword(e){
+    this.setState({
+
+        password:e.target.value
+
+
+    });
    
 
 }
@@ -29,6 +66,52 @@ onChangeProductCode(e){
 
 
 onSubmit=(e)=>{
+
+    e.preventDefault();
+
+    const manager ={
+
+        username: this.state.username,
+        password:this.state.password,
+        
+       
+
+
+
+    }
+
+   const response = axios.post('http://localhost:4000/login/manager-login',manager).then(
+       (res)=> {
+
+        const token = res.data.token;
+       localStorage.setItem('manager_token',token )
+       
+
+       if(token){
+        this.props.history.push('/dashboard-manager/');
+
+    }
+
+       
+    //    alert('Successfuly Loged In')
+
+        }
+    
+    
+       
+       ).catch(err=>alert('Error Occured. Please Try Again'));
+
+   
+
+
+
+
+
+
+   
+   
+   
+
 
 
     
@@ -61,20 +144,23 @@ onSubmit=(e)=>{
             <div class="container">
                 <div class="signin-content">
                     <div class="signin-image">
-                        <figure><img src="images/signin-image.jpg" alt="sing up image"/></figure>
+                        <figure><img src="http://localhost:3000/images/signin-image.jpg" alt="sing up image"/></figure>
                         {/* <a href="#" class="signup-image-link">Create an account</a> */}
                     </div>
 
                     <div class="signin-form">
                         <h2 class="form-title">Sign In</h2><br/>
-                        <form method="POST" class="register-form" id="login-form">
+                        <form onSubmit={this.onSubmit} class="register-form" id="login-form">
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="your_name" id="your_name" placeholder="Your Name"/>
+                                <input type="text" name="your_name" id="your_name" placeholder="Your Name"
+                                onChange={this.onChangeUsername} value={this.state.username}
+                                />
                             </div>
                             <div class="form-group">
                                 <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"
+                                onChange={this.onChangePassoword} value={this.state.password}/>
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
