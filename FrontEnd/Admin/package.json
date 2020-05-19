@@ -56,6 +56,8 @@
     "react-scripts": "^3.0.1",
     "recompose": "^0.30.0",
     "redis": "^3.0.2",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^9.10.13",
     "underscore": "^1.9.1",
     "uuid": "^3.3.2",
     "validate.js": "^0.13.1"

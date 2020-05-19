@@ -4,7 +4,9 @@ import Navbar from './manager.navbar.components';
 import Title from './manager.title.components';
 import axios from 'axios';
 import swal from 'sweetalert';
+import { Grid } from '@material-ui/core';
 import Swal from 'sweetalert2'
+
 
 
 
@@ -16,30 +18,6 @@ function getAvgRating(ratings) {
 
 
     return output;
-
-  }else
-    return 0;
-    
-}
-
-
-function getTotProducts(items) {
-
-  var total=0;
-  
-  for (let index = 0; index < items.length; index++) {
-    total = total + items[index].quantity;
-    
-  }
-
-
-
-
-  if(total){
-
-
-
-    return total;
 
   }else
     return 0;
@@ -58,27 +36,32 @@ function searchItems(item){
         
 }
 
+
+
+
 const ProductRow = props => (
+
+ 
 
 
 
   <tr>
 
-    <td>{props.product._id}</td>
+    {/* <td>{props.product._id}</td> */}
     <td>{props.product.productCode}</td>
     <td>{props.product.productName}</td>
     <td>{props.product.quantity}</td>
     <td>{props.product.size}</td>
     <td>{getAvgRating(props.product.rating)}</td>
-    <td>
-      <Link to={'/edit-product/' + props.product._id}><a style={{color:"white"}} class="btn btn-primary"><i class="fas fa-pen-square"></i>   Edit</a></Link> | <a style={{color:"white"}} class="btn btn-danger"
-        
+    {/* <td>
+      <Link to={'/edit-product/' + props.product._id}>Edit</Link> | <a
+        href="#"
         onClick={() => {
           props.deleteProduct(props.product._id) ; console.log('Deleted ID: ',props.product._id)
         }
         }
-      > <i class="fas fa-trash-alt"></i>  Delete</a>
-    </td>
+      >delete</a>
+    </td> */}
 
 
 
@@ -89,12 +72,16 @@ const ProductRow = props => (
 
 export default class productList extends Component {
 
+  
+
   constructor(props) {
 
     super(props);
 
     this.deleteProduct = this.deleteProduct.bind(this);
     this.validateUser = this.validateUser.bind(this);
+
+    
     
 
     
@@ -107,9 +94,10 @@ export default class productList extends Component {
 
     this.state = {
 
-      products: [],
+      recentproducts: [],
       search: '',
       orders:[],
+      totproductList:[]
       
             
 
@@ -129,6 +117,28 @@ export default class productList extends Component {
 
     const token = localStorage.getItem('manager_token');
 
+    // recent list
+
+    axios.get('http://localhost:4000/product/recent',{
+      headers:
+      {
+          manager_token :token
+
+      }
+  }).then(res => {
+      this.setState({
+
+        recentproducts: res.data.data
+                
+      })
+    }).catch(err => {
+      console.log(err);
+
+
+    })
+
+// total List
+
     axios.get('http://localhost:4000/product/all',{
       headers:
       {
@@ -138,7 +148,7 @@ export default class productList extends Component {
   }).then(res => {
       this.setState({
 
-        products: res.data.data
+        totproductList: res.data.data
                 
       })
     }).catch(err => {
@@ -148,6 +158,9 @@ export default class productList extends Component {
     })
 
   }
+
+  
+
 
   validateUser(){
 
@@ -224,100 +237,13 @@ export default class productList extends Component {
 
   deleteProduct(id) {
 
-    swal({
-      title: "Are you sure?",
-      text: "Once you deleted this product, you will not be able to recover this Product details and all the details will be deleted!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((stat) => {
-      if (stat) {
+    axios.delete('http://localhost:4000/product/delete/' + id).then(res => console.log(res.data));
 
-
-        // 
-
-        const token = localStorage.getItem('manager_token');
-    axios.delete('http://localhost:4000/product/delete/' + id,
-    {
-      headers:
-      {
-          manager_token :token
-
-      }
-  }).then(
-    (res) =>
-
-    {
-    
     this.setState({
 
-      products: this.state.products.filter(e => e._id !== id),
-      
-    
-    }
-    
-    );
-    swal("File Deleted Permenently!", {
-      icon: "success",
-    });
-
-    
+      recentproducts: this.state.recentproducts.filter(e => e._id !== id),
             
-    }).catch((err)=>{
-
-      if(token=="null"){
-        swal({
-          title: "Unauthorized Access",
-          text: "You have to Log-In First!",
-          icon: "error",
-          button: "ok",
-        });
-       
-        this.props.history.push('/manager-Sign-In/');
-
-      }else{
-
-      Swal.fire({
-        position: 'bottom-end',
-        icon: 'error',
-        title: 'Session Has Expired',
-        showConfirmButton: false,
-        timer: 3000
-      })
-
-      this.props.history.push('/manager-Sign-In/');
-    }
-
-
     })
-
-
-        // 
-
-        // swal("File Deleted Permenently!", {
-        //   icon: "success",
-        // });
-      } else {
-        swal("Product Deletion Terminated!");
-      }
-    });
-
-  //   const token = localStorage.getItem('manager_token');
-  //   axios.delete('http://localhost:4000/product/delete/' + id,
-  //   {
-  //     headers:
-  //     {
-  //         manager_token :token
-
-  //     }
-  // }).then(res => console.log(res.data));
-
-  //   this.setState({
-
-  //     products: this.state.products.filter(e => e._id !== id),
-            
-  //   })
 
   }
 
@@ -325,7 +251,7 @@ export default class productList extends Component {
 
   productList() {
 
-    return this.state.products.filter(searchItems(this.state.search)).map(productCurrent => {
+    return this.state.recentproducts.filter(searchItems(this.state.search)).map(productCurrent => {
 
       return <ProductRow
         deleteProduct={this.deleteProduct}
@@ -347,9 +273,12 @@ export default class productList extends Component {
 
   }
 
+ 
     
 
   render() {
+
+    
 
 
 
@@ -358,17 +287,21 @@ export default class productList extends Component {
 
       <div>
         <Title />
+        
         <Navbar />
-        <header>
+        {/* <header>
 
-        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
 
-        </header>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
+
+        </header> */}
         <div style={{padding:"20px"}}>
-        <h6 style={{color:"#78909C"}}><i class="fas fa-info-circle"></i>  Store Manager Portal / Products</h6>
+        <h6 style={{color:"#78909C"}}><i class="fas fa-info-circle"></i>  Store Manager Portal / Dashboard</h6>
         </div>
-
         <div clss="Managercard">
           <div className="managerStat">
             <div
@@ -379,8 +312,8 @@ export default class productList extends Component {
                 <div className="col-md-3">
                   <div className="card-counter primary">
                     <i className="fas fa-tshirt" />
-                    <span className="count-numbers">{this.state.products.length}</span>
-                    <span className="count-name">Products Types</span>
+                    <span className="count-numbers">{this.state.totproductList.length}</span>
+                    <span className="count-name">Total Products</span>
                   </div>
                 </div>
 
@@ -388,15 +321,15 @@ export default class productList extends Component {
                   <div className="card-counter danger">
                     <i className="fas fa-dollar-sign" />
                     <span className="count-numbers">599</span>
-                    <span className="count-name">Total Categories</span>
+                    <span className="count-name">Purchases</span>
                   </div>
                 </div>
 
                 <div className="col-md-3">
                   <div className="card-counter success">
-                  <i class="fas fa-store"/>
-    <span className="count-numbers">{getTotProducts(this.state.products)}</span>
-                    <span className="count-name">Total Products</span>
+                    <i className="fa fa-database" />
+                    <span className="count-numbers">6875</span>
+                    <span className="count-name">Data</span>
                   </div>
                 </div>
 
@@ -419,12 +352,12 @@ export default class productList extends Component {
 
 
 
-        <div >
+        {/* <div >
           <Link
             className="nav-link"
             to="/add-product"
           ><button className="btn btn-primary"><i className="zmdi zmdi-plus-square">  Add Products</i> <span className="sr-only">(current)</span></button></Link>
-        </div>
+        </div> */}
 
         <div
           className="row"
@@ -469,53 +402,162 @@ export default class productList extends Component {
 
 
 
-        <div style={{padding:'30px'}}>
-  
-   
+        <div style={{padding:"40px"}}>
+          <center>
+
+        <Grid
+        container
+        spacing={10}
+      >
+        <Grid
+          item
+          lg={6}
+          sm={6}
+          xl={6}
+          xs={12}
+        >
+ <div className="container" >
+ 
+ <h1>Latest Products</h1>
+   <table className="table" style={{color:"#546E7A"}}>
+    
+     <thead style={{color:"#3F51B5"}}>
+       <tr>
         
-        <h1 style={{fontFamily:"'DM Serif Display"}}>Product Details</h1>
-          <table className="table">
+         <th scope="col">Product Code</th>
+         <th scope="col">Product Name</th>
+         <th scope="col">Quantity</th>
+         <th scope="col">Size</th>
+         <th scope="col">Rating</th>
+         
+       </tr>
+     </thead>
+     <tbody>
+       {this.productList()}
+     </tbody>
+   </table>
+   </div>
+       
+
+</Grid>  
+
+<Grid
+          item
+          lg={6}
+          sm={6}
+          xl={6}
+          xs={12}
+        >
+ 
+ <div className="container" style={{backgroundColor:"#00ACC1" , color:"#FAFAFA"}}>
+ 
+        <h1>Product Summary</h1>
+          <table className="table" style={{color:"#FAFAFA"}}>
            
-            <thead style={{color:"#3949AB"}}>
+            <thead>
               <tr>
-                <th scope="col">Product ID</th>
+               
                 <th scope="col">Product Code</th>
                 <th scope="col">Product Name</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Size</th>
                 <th scope="col">Rating</th>
-                <th scope="col">Actions</th>
+                
               </tr>
             </thead>
             <tbody>
               {this.productList()}
             </tbody>
           </table>
-        </div>
-
-
-      
-
-
-
-        </div>
-        
-
-
-
+          </div>
        
+
+</Grid> 
+</Grid> 
+
+
+<Grid
+        container
+        spacing={10}
+      >
+        <Grid
+          item
+          
+          lg={6}
+          sm={6}
+          xl={6}
+          xs={12}
+        >
+ <div className="container" style={{backgroundColor:"#FF7043" , color:"#FBE9E7"}}>
+ 
+ <h1>Product Summary</h1>
+   <table className="table" style={{color:"#FBE9E7"}}>
     
-
-
-       
-
-
-
+     <thead>
+       <tr>
         
+         <th scope="col">Product Code</th>
+         <th scope="col">Product Name</th>
+         <th scope="col">Quantity</th>
+         <th scope="col">Size</th>
+         <th scope="col">Rating</th>
+         
+       </tr>
+     </thead>
+     <tbody>
+       {this.productList()}
+     </tbody>
+   </table>
+   </div>
+      
+</Grid>  
+
+<Grid
+         item
+         lg={6}
+         sm={6}
+         xl={6}
+         xs={12}
+        >
+ <div className="container" style={{backgroundColor:"#263238" , color:"#CDDC39"}}>
+ 
+        <h1>Product Summary</h1>
+          <table className="table" style={{color:"#E6EE9C"}}>
+           
+            <thead>
+              <tr>
+               
+                <th scope="col">Product Code</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Size</th>
+                <th scope="col">Rating</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              {this.productList()}
+            </tbody>
+          </table>
+          </div>
+  
+
+</Grid> 
+</Grid>
 
 
 
 
+
+</center>
+
+
+
+
+</div>
+
+
+</div>
     )
 
 

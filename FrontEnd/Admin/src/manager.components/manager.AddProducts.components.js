@@ -3,7 +3,9 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Navbar from "./manager.navbar.components";
 import Title from "./manager.title.components";
-import styleManager from "./css/manager-add-style.css"
+import styleManager from "./css/manager-add-style.css";
+import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 export default class addproducts extends Component{
 
@@ -79,16 +81,73 @@ componentDidMount(){
 validateUser(){
 
     
-
     const token = localStorage.getItem('manager_token');
+    axios.get('http://localhost:4000/login/manager-token-validate', {
+    
+      headers:
+    {    
+      // Authorization : ` bearer $(token) ` 
+      
+      manager_token :token
+
+    } }
+    ).then((res)=> {
+
+        console.log("Validation Response: " , res.data);
+
+ 
+        }
+    
+    
+       
+       ).catch((err)=>{
+
+        if(token==="null"){
+
+          console.log("Token is null Box called");
+          
+          swal({
+            title: "Unauthorized Access",
+            text: "You have to Log-In First!",
+            icon: "error",
+            button: "ok",
+          });
+         
+          this.props.history.push('/manager-Sign-In/');
+        }
+           
+      else{
+
+          
+          
+          console.log("the token value is :" , token);
+              
+          Swal.fire({
+            position: 'bottom-end',
+            icon: 'error',
+            title: 'Session Has Expired',
+            html:
+            '<h4>Last Session Details</h4><br/><b>User ID :</b> '+ localStorage.getItem("id") +'<br/>'+
+            '<b>User Name :</b> '+ localStorage.getItem("username") +'<br/><br/>',
+            showConfirmButton: false,
+            timer: 4000})
+
+            this.props.history.push('/manager-Sign-In/');
+          
+          
+      }
+          
+    });
 
     
 
-    if(token==="false"){
+    
+
+    
 
       
-      this.props.history.push('/manager-Sign-In/');
-    }
+      
+    
 
   }
 
@@ -210,8 +269,140 @@ onSubmit=(e)=>{
 
 
     }
+    const token = localStorage.getItem('manager_token');
 
-    axios.post('http://localhost:4000/product/add',product).then(res=>alert('Successful')).catch(err=>alert('Error Occured. Please Try Again'));
+    axios.post('http://localhost:4000/product/add',product,{
+        headers:
+        {
+            manager_token :token
+
+        }
+    }).then((res)=>{
+
+        if(res.data.warn){
+
+            
+            swal({
+                title: "Failed",
+                text: res.data.warn,
+                icon: "error",
+                // buttons: true,
+                dangerMode: true,
+              })
+
+        }else{
+
+        swal({
+            title: "Successful",
+            text: "Product Added Successfully!",
+            icon: "success",
+            button: "Continue",
+          });
+        }
+
+    }
+    ).catch((err)=>{
+
+        if(token==="null"){
+
+            console.log("Token is null Box called");
+            
+            swal({
+              title: "Unauthorized Access",
+              text: "You have to Log-In First!",
+              icon: "error",
+              button: "ok",
+            });
+           
+            this.props.history.push('/manager-Sign-In/');
+          }
+             
+        else{
+
+
+            // 
+            axios.get('http://localhost:4000/login/manager-token-validate', {
+    
+      headers:
+    {    
+      // Authorization : ` bearer $(token) ` 
+      
+      manager_token :token
+
+    } }
+    ).then((res)=> {
+          swal({
+                title: "Failed",
+                text: "Information format is Unsupported",
+                icon: "error",
+                // buttons: true,
+                dangerMode: true,
+              })
+
+        
+
+ 
+        }
+    
+    
+       
+       ).catch((err)=>{
+
+       
+
+          
+          
+               
+            Swal.fire({
+              position: 'bottom-end',
+              icon: 'error',
+              title: 'Session Has Expired',
+              html:
+              '<h4>Last Session Details</h4><br/><b>User ID :</b> '+ localStorage.getItem("id") +'<br/>'+
+              'Please Log In again and come back to this page to Continue. <br/><a class="btn btn-success" href="http://localhost:3000/manager-Sign-In/" target="_blank">Log In Here</a>',
+              showConfirmButton: false,
+              timer: 10000,
+              backdrop: `
+              rgba(255,0,0,0.4)`
+              })
+  
+          
+      
+          
+    });
+
+
+            // 
+
+            // swal({
+            //     title: "Failed",
+            //     text: "Information format is Unsupported",
+            //     icon: "error",
+            //     // buttons: true,
+            //     dangerMode: true,
+            //   })
+
+            
+            
+            // console.log("the token value is :" , token);
+                
+            // Swal.fire({
+            //   position: 'bottom-end',
+            //   icon: 'error',
+            //   title: 'Session Has Expired',
+            //   html:
+            //   '<h4>Last Session Details</h4><br/><b>User ID :</b> '+ localStorage.getItem("id") +'<br/>'+
+            //   'Please Log In again and come back to this page to Continue. <br/><a class="btn btn-success" href="http://localhost:3000/manager-Sign-In/" target="_blank">Log In Here</a>',
+            //   showConfirmButton: false,
+            //   timer: 10000})
+  
+              
+            
+            
+        }
+        
+    
+    });
 
    
 
@@ -249,6 +440,10 @@ onSubmit=(e)=>{
                 </header>
                 <Title/>
                 <Navbar />
+
+                <div style={{padding:"20px"}}>
+        <h6 style={{color:"#78909C"}}><i class="fas fa-info-circle"></i>  Store Manager Portal / Products / Add Product</h6>
+        </div>
             
 
             <div class="main">
@@ -275,7 +470,7 @@ onSubmit=(e)=>{
 
 {/* category */}
                             <div class="form-group">
-                            <i class="zmdi zmdi-info-outline"></i>  Choose Category
+                            <i class="zmdi zmdi-info-outline"></i>  Category
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="categoryName"></label>
@@ -285,6 +480,7 @@ onSubmit=(e)=>{
                                     onChange={this.onChangeCategoryName}
                                     
                                     >
+                                         <option value="">Choose a Category</option>
                                         
                                         
                                         

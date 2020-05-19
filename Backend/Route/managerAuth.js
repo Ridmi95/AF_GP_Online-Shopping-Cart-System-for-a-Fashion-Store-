@@ -5,7 +5,7 @@ const auth = (req,res,location) =>{
 
     try{
         const token = req.header('manager_token');
-        console.log("Token is: " , token);
+        console.log("Token is in auth : " , token);
 
         if(!token)
         return res.status(401).json({msg:'Access Denied !'});

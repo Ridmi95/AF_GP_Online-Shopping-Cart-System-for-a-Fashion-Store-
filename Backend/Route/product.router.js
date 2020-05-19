@@ -18,15 +18,16 @@ let Product = require("../Models/product.model");
 //     });
 // });
 
-productRoutes.route("/admin").get(function (req, res) {
-  Product.find(function (err, products) {
+productRoutes.get("/all",auth , async (req, res) =>{
+  await Product.find(function (err, products) {
     if (err) {
       console.log(err);
     } else {
       res.status(200).json({ success: true, data: products});
     }
-  });
+  }).sort({updatedAt:-1});
 });
+
 
 
 
@@ -37,7 +38,7 @@ productRoutes.get("/recent",auth , async (req, res) =>{
     } else {
       res.status(200).json({ success: true, data: products});
     }
-  }).limit(5).sort({updatedAt:-1});
+  }).limit(5).sort({createdAt:-1});
 });
 
 
@@ -143,19 +144,30 @@ productRoutes.post('/add', auth, async (req, res) =>{
   const price = req.body.price;
   const color = req.body.color;
   const categoryName = req.body.categoryName;
-  const discount = req.body.discount;
+  let discount = req.body.discount;
   const quantity = req.body.quantity;
   const description = req.body.description;
   const size = req.body.size;
 
-  const newProduct = new Product({productCode,productName,price,color,categoryName,discount,quantity,description,size});
+  if(discount==null){
 
-  const existingProduct = await Product.findOne({productCode:productCode})
+    discount=0;
+
+  }
+
+  if(productCode=="" ||productName=="" ||price=="" ||color=="" ||categoryName=="" ||quantity=="" ||size=="" )              
+        return res.status(200).json({warn:"Important fields are empty"});
+
+        const existingProduct = await Product.findOne({productCode:productCode})
 
   if(existingProduct)
-    return res.status(400).json({msg:"Product Code is existing in the Inventory !"})
+    return res.status(200).json({warn:"Product Code is existing in the Inventory !"})
 
-  await newProduct.save().then(()=> res.json({msg:"Product Added Successfully !"})).catch(err=> res.status(400).json({msg:"Required Fields are Empty !"}));
+  const newProduct = new Product({productCode,productName,price,color,categoryName,discount,quantity,description,size});
+
+  
+
+  await newProduct.save().then(()=> res.json({msg:"Product Added Successfully !"})).catch(err=> res.status(400).json({msg:"Error!"}));
 
   
 
@@ -164,9 +176,9 @@ productRoutes.post('/add', auth, async (req, res) =>{
 });
 
 //delete product by ID
-productRoutes.route('/delete/:id').delete((req, res) =>{
+productRoutes.delete('/delete/:id',auth,async (req, res) =>{
 
-  Product.findByIdAndDelete(req.params.id).then(product => res.json('products deleted'))
+  await Product.findByIdAndDelete(req.params.id).then(product => res.json('products deleted'))
   .catch(err => res.status(400).json('Error: ' + err));
 
 

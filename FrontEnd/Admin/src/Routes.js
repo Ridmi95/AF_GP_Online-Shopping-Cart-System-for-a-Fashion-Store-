@@ -26,9 +26,9 @@ import {
 
 import Navbar from "./manager.components/manager.navbar.components";
 import addproducts from "./manager.components/manager.AddProducts.components";
-import productList from "./manager.components/manager.productlist.components";
+import ManagerDashboard from "./manager.components/manager.dashboard.components";
 import updateproduct from "./manager.components/manager.updateProduct.components";
-
+import productList  from "./manager.components/manager.productlist.components";
 import ManagerSignIn from "./manager.components/managerSignIn";
 
 
@@ -51,10 +51,17 @@ const Routes = () => {
       />
 
 <RouteWithLayout
-        component={productList}
+        component={ManagerDashboard}
         exact
         layout={MinimalLayout}
         path="/dashboard-manager"
+      />
+
+<RouteWithLayout
+        component={productList}
+        exact
+        layout={MinimalLayout}
+        path="/product-List"
       />
 
 
