@@ -18,7 +18,7 @@ const productRoute = require("./Route/product.router");
 const authRoute = require('./Route/auth.router');
 const orderRoute = require("./Route/order.router");
 const usersRoute = require('./Route/users.router');
-
+const userLoginRoute = require('./Route/usersLogin.router');
 
 mongoose.Promise = global.Promise;
 mongoose
@@ -47,6 +47,7 @@ app.use("/order", orderRoute);
 app.use('/managers', managerRoute);
 app.use('/auth', authRoute);
 app.use('/users', usersRoute);
+app.use('/loginuser', userLoginRoute);
 
 app.use(session({
   secret: 'kjcxlchiy48236',
