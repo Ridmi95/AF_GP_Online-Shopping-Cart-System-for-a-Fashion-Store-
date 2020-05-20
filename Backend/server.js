@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const PORT = 4000;
 const cors = require('cors');
 const session = require('express-session');
+const fileupload = require('express-fileupload');
 
 const mongoose = require('mongoose');
 
@@ -39,6 +40,9 @@ mongoose
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(fileupload({
+   useTempFiles:true
+}));
 
 app.use('/category', categoryRoute);
 app.use('/login', loginRoute);

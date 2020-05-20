@@ -15,14 +15,14 @@ let Category = require('../Models/category.model');
 
 
 categoryRoutes.get('/getall',auth, (req, res) => {
-  Category.find(function (err, categories) {
+  Category.find({ is_active: 1 }, function (err, categories) {
     if (err) {
       console.log(err);
     }
     else {
       res.json(categories);
     }
-  });
+  })
 });
 
 categoryRoutes.route('/admin').get(function (req, res) {

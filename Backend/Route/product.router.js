@@ -2,8 +2,22 @@
 const express = require("express");
 const productRoutes = express.Router();
 const auth = require('./managerAuth.js');
+const admin_auth = require('./managerAuth.js');
 
 let Product = require("../Models/product.model");
+
+const cloudinary = require("cloudinary").v2;
+const fileupload = require('express-fileupload');
+
+
+
+cloudinary.config({
+  cloud_name :"fashionistaimage",
+  api_key : "822148795585776",
+  api_secret : "1FbjgHZVhCiU_XRO-rHY7SNE4v0"
+
+
+});
 
 // productRoutes.route("/add").post(function (req, res) {
 //   let product = new Product(req.body);
@@ -18,6 +32,7 @@ let Product = require("../Models/product.model");
 //     });
 // });
 
+//manager
 productRoutes.get("/all",auth , async (req, res) =>{
   await Product.find(function (err, products) {
     if (err) {
@@ -28,6 +43,16 @@ productRoutes.get("/all",auth , async (req, res) =>{
   }).sort({updatedAt:-1});
 });
 
+//admin
+productRoutes.get("/admin-all",admin_auth , async (req, res) =>{
+  await Product.find(function (err, products) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: products});
+    }
+  }).sort({updatedAt:-1});
+});
 
 
 
@@ -111,7 +136,48 @@ productRoutes.route("/update/bycode/").put(function (req, res) {
   );
 });
 
+// upload file
 
+productRoutes.post('/upload', auth,(req,res) =>{
+
+  let imageUrl="";
+  if(req.files===null){
+    return res.status(200).json({msg :"No file is Selected to upload"})
+  }
+  const file = req.files.photo;
+  console.log("uplod file is:" , file);
+  
+
+  cloudinary.uploader.upload(file.tempFilePath, function(err, result){
+    
+    if(err){
+
+      console.log("Error is :" , err);
+      
+      return res.status(400).json({msg :"Server Error not Uploaded"})
+
+    }else{
+    console.log("Result is :" , res);
+    
+
+   
+
+   console.log("response URL: " , result.url);
+   res.status(200).json({URL :result.url})
+
+  }
+   
+
+});
+
+
+
+
+
+  
+
+
+})
 
 
 
@@ -148,7 +214,12 @@ productRoutes.post('/add', auth, async (req, res) =>{
   const quantity = req.body.quantity;
   const description = req.body.description;
   const size = req.body.size;
+  const image = req.body.image;
 
+  
+
+
+  // 
   if(discount==null){
 
     discount=0;
@@ -163,7 +234,9 @@ productRoutes.post('/add', auth, async (req, res) =>{
   if(existingProduct)
     return res.status(200).json({warn:"Product Code is existing in the Inventory !"})
 
-  const newProduct = new Product({productCode,productName,price,color,categoryName,discount,quantity,description,size});
+
+
+  const newProduct = new Product({productCode,productName,price,color,categoryName,discount,quantity,description,size,image});
 
   
 

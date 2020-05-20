@@ -118,7 +118,7 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
 
        
         //jwt secret
-        const token = jwt.sign({id : manager._id}, config.JWT_SECRET,{expiresIn: 10});
+        const token = jwt.sign({id : manager._id}, config.JWT_SECRET,{expiresIn: 500});
         res.status(200).json({
             token,
             manager :{

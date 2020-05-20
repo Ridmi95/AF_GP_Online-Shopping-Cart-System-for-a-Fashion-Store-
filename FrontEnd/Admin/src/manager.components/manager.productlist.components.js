@@ -66,6 +66,7 @@ const ProductRow = props => (
 
     <td>{props.product._id}</td>
     <td>{props.product.productCode}</td>
+    <td><img src={props.product.image} style={{height:"80px"}}/></td>
     <td>{props.product.productName}</td>
     <td>{props.product.quantity}</td>
     <td>{props.product.size}</td>
@@ -480,6 +481,7 @@ export default class productList extends Component {
               <tr>
                 <th scope="col">Product ID</th>
                 <th scope="col">Product Code</th>
+                <th scope="col">Product Image</th>
                 <th scope="col">Product Name</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Size</th>

@@ -37,10 +37,13 @@ let Product = new Schema(
     },
     description: {
       type: String,
-      required: true,
+      
     },
     rating: {
       type: Array,
+    },
+    image: {
+      type: String,
     },
     comment: {
       type: Array,
