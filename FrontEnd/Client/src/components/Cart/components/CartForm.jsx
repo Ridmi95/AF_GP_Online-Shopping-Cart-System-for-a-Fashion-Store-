@@ -34,8 +34,8 @@ class CartForm extends PureComponent<CartProps> {
 
     let subTotal = 0;
     cartItems.length > 0 &&
-      cartItems.map(({ price, quantity }) => {
-        subTotal = subTotal + parseFloat(price) * parseFloat(quantity);
+      cartItems.map(({ price, buyQuantity }) => {
+        subTotal = subTotal + parseFloat(price) * parseFloat(buyQuantity);
         return null;
       });
 

@@ -65,6 +65,8 @@ class HomePage extends Component<HomePageProps> {
       categories,
     } = this.props;
 
+    console.log(products)
+
     return (
       <Layout>
         <div className="homepage-container">
@@ -125,7 +127,7 @@ class HomePage extends Component<HomePageProps> {
                               key={index}
                               link={``}
                               title={product.productName}
-                              image={ImagePlaceHolder}
+                              image={product.image ? product.image:ImagePlaceHolder}
                               prices={parseFloat(product.price).toFixed(2)}
                               rating={{ rate: this.getRating(product.rating) }}
                             />
