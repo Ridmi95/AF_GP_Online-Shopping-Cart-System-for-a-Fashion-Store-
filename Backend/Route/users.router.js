@@ -4,11 +4,9 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 let Users = require('../Models/users.model');
 const loginauth = require('../Route/userLoginAuth.router');
+const adminAuth = require('./auth.router.js');
 
-usersRoutes.route('/').get(function (req, res) {
-    if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
-        return;
-    }
+usersRoutes.get('/', adminAuth, (req, res) => {
     Users.find(function (err, users) {
         if (err) {
             console.log(err);
@@ -18,7 +16,6 @@ usersRoutes.route('/').get(function (req, res) {
         }
     });
 });
-
 //view all users
 usersRoutes.route('/userlist').get(function (req, res) {
     if (session.user === null || session.user === '' ) {

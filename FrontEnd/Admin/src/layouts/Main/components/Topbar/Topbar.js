@@ -13,11 +13,9 @@ const logout = function () {
 
   let logout = async () => {
 
-    let response = await axios.get('http://localhost:4000/auth/logout');
+   localStorage.setItem('admin_token', "");
+   window.location.replace('/sign-in')
 
-    if (response.data === false) {
-      window.location.replace('/sign-in')
-    }
   }
   logout();
 }

@@ -11,7 +11,7 @@ export default class CreateCategory extends Component {
   constructor(props) {
     super(props);
 
-    //Bind 
+    //Bind
     this.delete                       = this.delete.bind(this);
     this.onChangeCategoryName         = this.onChangeCategoryName.bind(this);
     this.onChangeCategoryDescription  = this.onChangeCategoryDescription.bind(this);
@@ -33,19 +33,18 @@ export default class CreateCategory extends Component {
     //Set document title
     document.title = 'Categories';
     this.validateSession();
+    this.token = localStorage.getItem('admin_token');
   }
 
+
+
   /**Define methods*/
-
   validateSession() {
-    let auth = async () => {
-      let response = await axios.get('http://localhost:4000/auth');
-      if (response.data !== true) {
-        window.location.replace('/sign-in');
-      }
+    const token = localStorage.getItem('admin_token');
+    console.log(token);
+    if (token === false || typeof token === "undefined" || token === "" || token == null) {
+      this.props.history.push('/sign-In');
     }
-
-    auth();
   }
 
 
@@ -109,7 +108,12 @@ export default class CreateCategory extends Component {
 
         let insertCat = async () => {
 
-          let response = await axios.post('http://localhost:4000/Category/add', obj);
+          let response = await axios.post('http://localhost:4000/Category/add', obj, {
+            headers:
+            {
+              admin_token: this.token
+            }
+          });
           if (response.data) {
             alert(response.data['message']);
             this.setState({
@@ -127,7 +131,12 @@ export default class CreateCategory extends Component {
       }else {
 
         let updateCat = async () => {
-          let response = await axios.post('http://localhost:4000/Category/update/' + this.state.UpdateId, obj);
+          let response = await axios.post('http://localhost:4000/Category/update/' + this.state.UpdateId, obj, {
+            headers:
+            {
+              admin_token: this.token
+            }
+          });
 
           if (response.data) {
             alert(response.data['message']);
@@ -153,8 +162,15 @@ export default class CreateCategory extends Component {
 
   //Get categories from db and display
   componentDidMount() {
-    axios.get('http://localhost:4000/Category/admin')
+    console.log(this.token)
+    axios.get('http://localhost:4000/Category/admin', {
+      headers:
+      {
+        admin_token: this.token
+      }
+    })
       .then(response => {
+        console.log(response.data['msg']);
         this.setState({ all_categories: response.data });
       })
       .catch(function (error) {
@@ -164,10 +180,25 @@ export default class CreateCategory extends Component {
 
   //Delete category
   delete(id) {
-    axios.get('http://localhost:4000/Category/delete/' + id)
-      .then(console.log('Deleted'))
-      .catch(err => console.log(err))
-    this.componentDidMount();
+
+    let del = async () => {
+      let response = await axios.get('http://localhost:4000/Category/delete/' + id, {
+        headers:
+        {
+          admin_token: this.token
+        }
+      });
+
+      if (response.data) {
+        alert(response.data['message']);
+        this.componentDidMount();
+      }
+
+    }
+
+    del();
+  
+    
   }
 
   //Load category to form : to edit
@@ -177,7 +208,12 @@ export default class CreateCategory extends Component {
       UpdateId : id
     });
 
-    axios.get('http://localhost:4000/Category/edit/' + id)
+    axios.get('http://localhost:4000/Category/edit/' + id, {
+      headers:
+      {
+        admin_token: this.token
+      }
+    })
       .then(response => {
         this.setState({
           category_name: response.data.category_name,
@@ -295,7 +331,7 @@ export default class CreateCategory extends Component {
                 {this.state.all_categories.map((item, index) => (
 
                   <tr key={index}>
-                    <td>{index+1}</td>
+                    <td>{index + 1}</td>
                     <td>{item.category_name}</td>
                     <td>{item.category_description}</td>
                     <td>{item.is_active === 1 ? <span className="text-success">Active</span> : <span className="text-danger">Deactivated</span>}</td>

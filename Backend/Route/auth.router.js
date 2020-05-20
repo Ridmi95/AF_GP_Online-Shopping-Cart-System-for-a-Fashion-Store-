@@ -1,23 +1,30 @@
-const express = require('express');
-const authRoutes = express.Router();
-const session = require('express-session');
+const jwt = require('jsonwebtoken');
+const config = require('../configure.js');
+
+const adminAuth = (req, res, location) => {
+
+    try {
+        const token = req.header('admin_token');
+        //console.log("Admin Token : ", token);
+        if (!token) {
+            return res.status(401).json({ msg: 'Access Denied !' });
+        }
+
+        const validate = jwt.verify(token, config.JWT_SECRET);
+
+        if (!validate) {
+            res.status(401).json({ msg: "Faild Token Verification. Access Denied!" });
+        }
+
+        res.admin = validate.id;
+
+        location();
 
 
-authRoutes.route('/').get(function (req, res) {
-    if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
-        res.json(false);
+    } catch (err) {
+        res.status(500).json({ erro: err });
+
     }
-});
 
-authRoutes.route('/logout').get(function (req, res) {
-    /*session.destroy((err)=> {
-        
-    });
-    res.json(false);  */
-    session.user = null;
-    session.role = null;
-    res.json(false);
-});
-
-
-module.exports = authRoutes;
+}
+module.exports = adminAuth;
