@@ -52,4 +52,27 @@ orderRoutes.route("/add").post(async (req, res) => {
     });
 });
 
+//get all 
+// get by id 
+orderRoutes.route("/").get(function (req, res) {
+  orders.find(function (err, orders) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(200).json({ success: true, data: orders });
+      }
+    });
+
+});
+
+orderRoutes.route("/:id").get(function (req, res) {
+  let id = req.params.id;
+  orders.findOne({ orderId: id }, function (err, order) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: order });
+    }
+  });
+});
 module.exports = orderRoutes;

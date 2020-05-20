@@ -130,7 +130,7 @@ class HomePage extends Component<HomePageProps> {
                               link={`product/${product.productCode}`}
                               show
                               title={product.productName}
-                              image={ImagePlaceHolder}
+                              image={product.image ? product.image:ImagePlaceHolder}
                               prices={parseFloat(product.price).toFixed(2)}
                               rating={{ rate: this.getRating(product.rating) }}
                               onClickCart={() =>

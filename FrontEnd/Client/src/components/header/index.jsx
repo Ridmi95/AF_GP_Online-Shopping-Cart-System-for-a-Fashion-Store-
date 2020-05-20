@@ -161,6 +161,7 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
                         onClick={this.handleSignInButtonClick}
                         htmlType={Button.HTML_TYPE.LINK}
                         link="/home"
+                        
                       >
                         Sign In
                       </Button>
