@@ -199,6 +199,7 @@ const SignIn = props => {
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
 
+  document.title = 'Login';
   return (
     <div className={classes.root}>
       <Grid
@@ -252,7 +253,7 @@ const SignIn = props => {
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
+                  Administrator Area
                 </Typography>
                 <Typography
                   color="textSecondary"
@@ -302,7 +303,7 @@ const SignIn = props => {
                   type="submit"
                   variant="contained"
                 >
-                  Sign In
+                  LOGIN
                 </Button>
  
               </form>
