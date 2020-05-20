@@ -32,6 +32,10 @@ export default class addproducts extends Component {
         this.uploadImage = this.uploadImage.bind(this)
         this.showImage = this.showImage.bind(this)
         this.validateUser = this.validateUser.bind(this)
+        this.showHelp = this.showHelp.bind(this)
+        this.RemoveImage = this.RemoveImage.bind(this)
+
+        
 
 
         this.state = {
@@ -298,6 +302,52 @@ export default class addproducts extends Component {
 
     }
 
+    RemoveImage(){
+
+        if(this.state.image){
+
+            swal({
+                title: "Are you sure?",
+                text: "Attached image will be De-Attached. Do You wish to Continue?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+              })
+              .then((stat) => {
+                if (stat) {
+
+
+                    this.state.image=null;
+
+                    swal("Image De-Attached Successfully!", {
+                        title:"Image De-Attached Successfully!",
+                        text:'To Re-Attach Press View or Attach',
+                        icon: "info",
+                      });
+                  
+                } else {
+                    swal("Image De-Attached Cancelled!", {
+                        title:"Image De-Attached Cancelled!",
+                        text:'Your Image Attachment is Safe',
+                        icon: "success",
+                      });
+                }
+              });
+
+        }else{
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'No Attachment Found',
+                text:"No Attachment is  found for this product",
+                showConfirmButton: false,
+                timer: 3000
+              })
+
+
+        }
+    }
+
     
 
     async uploadImage() {
@@ -317,6 +367,9 @@ export default class addproducts extends Component {
                 onOpen: (toast) => {
                   toast.addEventListener('mouseenter', Swal.stopTimer)
                   toast.addEventListener('mouseleave', Swal.resumeTimer)
+                },
+                onBeforeOpen: () => {
+                    Swal.showLoading()
                 }
                 
                 
@@ -348,7 +401,7 @@ export default class addproducts extends Component {
                     console.log("percentage inside ", this.state.uploadPercentage);
 
                     Toast.fire({
-                        icon: 'success',
+                        icon: 'info',
                         title: 'Uploading on Progress.',
                         text:'Please wait a moment',
                         
@@ -380,6 +433,14 @@ export default class addproducts extends Component {
                         cancelButtonText: 'No,cancel',
                         reverseButtons: true,
                         preConfirm: (e) => {
+
+                            swal({
+                                title: "Image Attached",
+                                text: "This Image File is Attached to Your Product",
+                                icon: "success",
+                                // buttons: true,
+                                dangerMode: false,
+                            })
                             this.state.image = res.data.URL;
 
                             console.log(this.state.image);
@@ -407,7 +468,7 @@ export default class addproducts extends Component {
                 } if (res.data.msg) {
                     swal({
                         title: "No File is Selected",
-                        text: res.data.msg,
+                        text: res.data.msg ,
                         icon: "error",
                         // buttons: true,
                         dangerMode: true,
@@ -443,7 +504,7 @@ export default class addproducts extends Component {
         }}else{
             swal({
                 title: "No File is Selected",
-                text: "No file is selected",
+                text: "No file is selected Please Select a File First!",
                 icon: "error",
                 // buttons: true,
                 dangerMode: true,
@@ -486,8 +547,8 @@ export default class addproducts extends Component {
         }else if(this.state.uploadedimg){
 
             Swal.fire({
-                title: 'Confirm',
-                text: "Uploaded Image is not attached to your Product, Do You Want To Set This As the Product Image?",
+                title: 'Image Not Attached',
+                html: "Uploaded Image is <b>not attached</b> to the Product,<br/>Do you wish to <b>Attach</b> this as the Product Image?",
                 // html:'<figure> <img src="'+res.data.URL+'" alt="sing up image"/></figure>',
                 imageUrl: this.state.uploadedimg,
                 icon:"question",
@@ -598,6 +659,23 @@ export default class addproducts extends Component {
 
 
     }
+
+    showHelp(){
+        Swal.fire({
+          title: '<strong>File Upload Details</strong>',
+          icon: 'info',
+          html:
+            '<div style="text-align:justify;"><b>1. </b>   Upload file type should be in Image Format <br/><b>2. </b>  Select file to Upload by Pressing <b>Browse</b> button.<br/><b>3. </b>  To Upload the file Press <b> Upload Image </b> button. <br/><b>4. </b>   If you want to attach file to product Press <b>yes</b><br/><b>5. </b>  To view or attach the uploaded image to the product press <b>View or Attach Image</b></div>',
+            
+          showCloseButton: true,
+          
+          focusConfirm: false,
+          confirmButtonText:
+            '<i class="fas fa-check-circle"></i> Got it',
+         
+          
+        })
+      }
 
      onSubmit = async (e) => {
 
@@ -943,13 +1021,16 @@ export default class addproducts extends Component {
                                 </div>
                                 <div class="signup-image">
                                     
+                                
 
                                     
                                     <div className="shadow-box-example z-depth-5" style={{backgroundImage: "linear-gradient(to bottom right, #ECEFF1, #FAFAFA)", padding:"20px"}}>
+                                    <button class="btn btn-outline-info" style={{ margin:"5px", marginLeft:"85%" ,}} onClick={this.showHelp}><i class="zmdi zmdi-help"></i></button>
                                         <h5><i class="zmdi zmdi-image-alt"></i> Image Settings</h5>
                                         <div className="input-group">
-                                            
+                                        
                                             <div className="input-group-prepend" >
+                                            
 
                                             </div>
                                             <div className="custom-file">
@@ -966,9 +1047,12 @@ export default class addproducts extends Component {
                                             </div>
                                         </div><br /><center>
                                             <div class="form-group" >
-                                                <button style={{padding:"15px", margin:"5px"}} class="btn btn-outline-info" onClick={this.uploadImage}><i class="fas fa-cloud-upload-alt"></i> Upload Image</button><br/>
-                                                <button class="btn btn-outline-primary" onClick={this.showImage}><i class="fas fa-eye"></i> Show Image</button>
+                                                <button style={{padding:"15px", margin:"5px"}} class="btn btn-outline-success" onClick={this.uploadImage}><i class="fas fa-cloud-upload-alt"></i> Upload Image</button><br/>
+                                                <button class="btn btn-outline-primary" style={{margin:"5px"}} onClick={this.showImage}><i class="fas fa-eye"></i> View or Attach Image</button>
+                                                <button class="btn btn-outline-danger" style={{margin:"5px"}} onClick={this.RemoveImage}><i class="fas fa-unlink"></i> Remove Attached Image</button>
                                             </div></center>
+
+                                           
                                             </div>
 
                                             <figure>

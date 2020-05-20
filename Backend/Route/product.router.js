@@ -142,7 +142,7 @@ productRoutes.post('/upload', auth,(req,res) =>{
 
   let imageUrl="";
   if(req.files===null){
-    return res.status(200).json({msg :"No file is Selected to upload"})
+    return res.status(200).json({msg :"No file is Selected to upload. Please select a file first!"})
   }
   const file = req.files.photo;
   console.log("uplod file is:" , file);
