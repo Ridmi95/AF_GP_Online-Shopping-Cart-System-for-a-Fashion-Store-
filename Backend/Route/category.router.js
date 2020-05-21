@@ -13,16 +13,15 @@ let Category = require('../Models/category.model');
 
 // Defined get data(index or listing) route
 categoryRoutes.get('/getall',auth, (req, res) => {
-  Category.find(function (err, categories) {
+  Category.find({ is_active: 1 }, function (err, categories) {
     if (err) {
       console.log(err);
     }
     else {
       res.json(categories);
     }
-  });
+  })
 });
-
 
 
 // Defined get data(index or listing) route

@@ -102,7 +102,6 @@ loginRoutes.route('/hash').get(function (req, res) {
     });
 });
 */
-
 //manger login
 
 loginRoutes.post("/manager-login" ,async (req,res)=>{
@@ -114,29 +113,29 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
 
         const manager = await login.findOne({username:username});
 
-        if(username=="" ||password=="" )
-        return res.status(400).json({msg:"Username or Password fields are empty"});
+        if(username=="" ||password=="" )              
+        return res.status(200).json({msg:"Username or Password fields are empty"});
 
         if(!manager)
-        return res.status(400).json({msg:"Invalid Username"});
+        return res.status(200).json({msg:"Invalid Username"});
 
         if(username=="" ||password=="" )
-        return res.status(400).json({msg:"Username or Password fields are empty"});
+        return res.status(200).json({msg:"Username or Password fields are empty"});
 
         if(manager['role'] !=="manager")
-        return res.status(400).json({msg:"Store Manager Account is Required to Login !"});
+        return res.status(200).json({msg:"Store Manager Account is Required to Login !"});
 
         if(manager['is_active'] ===0)
-        return res.status(400).json({msg:"Account is Not Activated !"});
+        return res.status(200).json({msg:"Account is Not Activated !"});
 
         const validate = await bcrypt.compare(password, manager.password);
 
         if(!validate)
-        return res.status(400).json({msg:"Password is Invalid!"});
+        return res.status(200).json({msg:"Password is Invalid!"});
 
        
         //jwt secret
-        const token = jwt.sign({id : manager._id}, config.JWT_SECRET,{expiresIn: 5});
+        const token = jwt.sign({id : manager._id}, config.JWT_SECRET,{expiresIn: 500});
         res.status(200).json({
             token,
             manager :{
@@ -159,11 +158,13 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
 
 
 //token validate
-loginRoutes.post("/manager-token-validate" ,async (req,res)=>{
+loginRoutes.get("/manager-token-validate" ,async (req,res)=>{
 
     try {
 
-        const token = req.body.manager_token;
+        const token = req.header('manager_token');
+
+        console.log("validation is :" , token);
         if(!token) return res.json(false);
 
         const validate = jwt.verify(token,config.JWT_SECRET);
@@ -181,8 +182,9 @@ loginRoutes.post("/manager-token-validate" ,async (req,res)=>{
         
     }
 
-})
 
+
+})
 
 
 

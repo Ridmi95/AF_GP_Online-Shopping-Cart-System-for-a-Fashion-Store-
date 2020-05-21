@@ -479,9 +479,9 @@ export default class addproducts extends Component {
 
             }).catch((err=>{
 
-                swal({
-                    title: "Unsupported Format",
-                    text: "Selected File is not an Image or in unsupported file format, Upload failed! ",
+                Swal.fire({
+                    title: "Upload Interrupted",
+                    text: "Selected File is not an Image or in unsupported file format or Upload is interrupted Due to Server Error, Upload failed! ",
                     icon: "error",
                     // buttons: true,
                     dangerMode: true,
@@ -493,6 +493,8 @@ export default class addproducts extends Component {
 
         } else {
 
+            if(!this.state.NewUpload){
+
             swal({
                 title: "Existing Upload",
                 text: "This File is Already Uploaded",
@@ -500,7 +502,8 @@ export default class addproducts extends Component {
                 // buttons: true,
                 dangerMode: false,
             })
-
+            }
+        
         }}else{
             swal({
                 title: "No File is Selected",

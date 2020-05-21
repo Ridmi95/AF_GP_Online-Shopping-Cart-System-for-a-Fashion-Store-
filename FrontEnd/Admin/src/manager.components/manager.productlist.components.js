@@ -143,7 +143,7 @@ export default class productList extends Component {
                 
       })
     }).catch(err => {
-      console.log(err);
+      console.log("Error Occured",err);
 
 
     })
@@ -164,6 +164,7 @@ export default class productList extends Component {
 
     } }
     ).then((res)=> {
+      
 
         console.log("Validation Response: " , res.data);
 

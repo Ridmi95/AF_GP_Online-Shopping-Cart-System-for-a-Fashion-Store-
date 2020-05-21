@@ -486,38 +486,7 @@ export default class productList extends Component {
           
           </Grid> 
 
-          <Grid
-        container
-        spacing={10}
-      >
-        <Grid
-          item
-          lg={6}
-          sm={6}
-          xl={6}
-          xs={12}
-        > 
-
-
-
-<div style={{position:"relative"}} >
-
-  <h3>Pie Chart</h3>
-  <canvas id="myChart"></canvas>
-  
-  
-  
-  
-  />
-
-  
-
- </div>
-
-
-
-
-</Grid></Grid>
+        
 
          
 

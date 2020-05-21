@@ -43,6 +43,11 @@ productRoutes.get("/all",auth , async (req, res) =>{
   }).sort({updatedAt:-1});
 });
 
+
+
+
+
+
 //admin
 productRoutes.get("/admin-all",admin_auth , async (req, res) =>{
   await Product.find(function (err, products) {
