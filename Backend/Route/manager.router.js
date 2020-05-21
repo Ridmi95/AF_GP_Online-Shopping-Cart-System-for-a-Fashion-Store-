@@ -6,7 +6,7 @@ const bodyParser = require('body-parser'); //Read body
 const bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 const session = require('express-session');
-
+const adminAuth = require('./auth.router.js');
 // Require Manager model in our routes module
 let login = require('../Models/login.model');
 
@@ -19,16 +19,16 @@ async function hashPassword(pass) {
         const round = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, round);
         // let saltRounds = 10;
-    
+
         // let hashedPassword = await new Promise((resolve, reject) => {
         //     bcrypt.hash(password, 10, function (err, hash) {
         //         if (err) reject(err)
         //         resolve(hash)
         //     });
         // })
-    
+
         return hashedPassword
-        
+
     } catch (err) {
         console.log(err)
     }
@@ -61,14 +61,14 @@ function sendMail(mailOptions) {
 // ManagerRoutes.route('/login').post(function (req, res) {
 
 //     const postBody = req.body;
-    
+
 //     let user = postBody['username'];
 //     let pass = postBody['password'];
-   
+
 //    // console.log(user); return;
 
 //     login.findOne({ username: user }, function (err, login) {
-        
+
 
 //         if (err) {
 //             console.log(err);
@@ -98,12 +98,12 @@ function sendMail(mailOptions) {
 //                             }
 //                         }
 //                     })
-                    
+
 //                 } else {
 //                     console.log("Invalid Username");
 //                     res.json(false);
 //                 }
-                
+
 //             } catch (error) {
 //                 console.log(error);
 //             }
@@ -118,10 +118,8 @@ function sendMail(mailOptions) {
 
 
 // Add new manager
-ManagerRoutes.route('/add').post(function (req, res) {
-    if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
-        return;
-    }
+ManagerRoutes.post('/add',adminAuth,(req, res) => {
+
     //Validate user input
     function validate(){
         res.status(400).json({ 'message': 'You must fill all fields in form' });
@@ -134,40 +132,53 @@ ManagerRoutes.route('/add').post(function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            
+
             if (managers.length == 0) {
 
-                hashPassword(req.body.password).then(function (hash) {
-                    
-                    let _p = req.body.password;
+                login.find({ email: req.body['email'] }, function (err, managers2) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(managers2);
+                        if (managers2.length == 0) {
+                            hashPassword(req.body.password).then(function (hash) {
 
-                    req.body.role = 'manager';
-                    req.body.password = hash;
-                    req.body.is_active = 0;
+                                let _p = req.body.password;
 
-                    let Manager = new login(req.body);
-                    Manager.save()
-                    .then(Manager => {
-                        res.status(200).json({ 'message': 'Manager added successfully', 'status': 200 });
+                                req.body.role = 'manager';
+                                req.body.password = hash;
+                                req.body.is_active = 0;
 
-                        mailOptions = {
-                            from: 'ptester473@gmail.com',
-                            to: req.body.email,
-                            subject: 'Activate Your Account',
-                            text: 'http://localhost:4000/managers/activate/'+req.body.email + " username : " + req.body.username + " , password : " + _p 
+                                let Manager = new login(req.body);
+                                Manager.save()
+                                .then(Manager => {
+                                    res.status(200).json({ 'message': 'Manager added successfully', 'status': 200 });
+
+                                    mailOptions = {
+                                        from: 'ptester473@gmail.com',
+                                        to: req.body.email,
+                                        subject: 'Activate Your Account',
+                                        text: 'http://localhost:4000/managers/activate/'+req.body.email + " username : " + req.body.username + " , password : " + _p
+                                    }
+
+
+                                    sendMail(mailOptions);
+                                })
+                                .catch(err => {
+                                    res.status(400).json({ 'message': 'Unable to save Manager', 'status': 400 });
+                                });
+                            });
+                        } else {
+                            res.json({ 'message': 'This email already in this system', 'status': 400 });
                         }
+                    }
 
-
-                        sendMail(mailOptions);
-                    })
-                    .catch(err => {
-                        res.status(400).json({ 'message': 'Unable to save Manager', 'status': 400 });
-                    });                
                 });
 
+
             } else {
-                res.status(400).json({ 'message': 'This username has been taken already', 'status': 400 });
-            }  
+                res.json({ 'message': 'This username has been taken already', 'status': 400 });
+            }
        }
     });
 
@@ -176,24 +187,25 @@ ManagerRoutes.route('/add').post(function (req, res) {
 
 // Get all managers to display
 ManagerRoutes.route('/').get(function (req, res) {
-    if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
-        return;
-    }
-    login.find({role:'manager'},function (err, managers) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.json(managers);
-        }
+
+        //login.find({role:'manager'},function (err, managers) {
+            login.find(function(err, managers){
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(managers);
+            }
+        });
     });
-});
+
+
 
 // Get data for edit
-ManagerRoutes.route('/edit/:id').get(function (req, res) {
-    if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
-        return;
-    }
+//ManagerRoutes.route('/edit/:id').get(function (req, res) {
+ManagerRoutes.get('/edit/:id',adminAuth,(req,res)=>{
+    let id = req.param.id;
+
     login.findById({ _id: req.params.id }, function (err, Manager) {
         if (err) {
             console.log(err)
@@ -204,12 +216,10 @@ ManagerRoutes.route('/edit/:id').get(function (req, res) {
 });
 
 // Update manager info
-ManagerRoutes.route('/update/:id').post(function (req, res) {
-    if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
-        return;
-    }
+ManagerRoutes.post('/update/:id',adminAuth,(req, res)=>{
+
     login.findById({ _id: req.params.id }, function (err, Manager) {
-        
+
         if (err) {
             console.log(err)
         } else {
@@ -226,7 +236,7 @@ ManagerRoutes.route('/update/:id').post(function (req, res) {
                 if (req.body.password) {
                     Manager.password = req.body.password;
                 }
-    
+
                 Manager.save().then(Manager => {
                     res.json({ 'message': 'Manager updated', 'status': 200 });
                 })
@@ -240,10 +250,8 @@ ManagerRoutes.route('/update/:id').post(function (req, res) {
 });
 
 // Delete manager
-ManagerRoutes.route('/delete/:id').get(function (req, res) {
-    if (session.user === null || session.user === '' || session.role === null || session.role === "" || session.role !== 'admin') {
-        return;
-    }
+ManagerRoutes.get('/delete/:id',adminAuth,(req, res)=> {
+
     login.findByIdAndRemove({ _id: req.params.id }, function (err, Manager) {
         if (err) {
             res.json(err)
@@ -270,7 +278,7 @@ ManagerRoutes.route('/activate/:email').get(function (req, res) {
 
                 Manager.save().then(Manager => {
                     res.json("Account activated successfully.");
-                   
+
                 }).catch(err => {
                     res.json("Unable to activate this account.");
                     console.log(err);

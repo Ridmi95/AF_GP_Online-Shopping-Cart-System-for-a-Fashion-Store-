@@ -111,15 +111,15 @@ class OrderPage extends Component<OrderPageProps, OrderPageState> {
 
     let subTotal = 0;
     cartItems.length > 0 &&
-      cartItems.map(({ price, quantity }) => {
-        subTotal = subTotal + parseFloat(price) * parseFloat(quantity);
+      cartItems.map(({ price, buyQuantity }) => {
+        subTotal = subTotal + parseFloat(price) * parseFloat(buyQuantity);
         return null;
       });
 
     if (status === ASYNC_STATUS.LOADING) {
       return <Loader isLoading />;
     }
-
+console.log(cartItems);
     return (
       <Layout>
         {notification && (
@@ -158,11 +158,11 @@ class OrderPage extends Component<OrderPageProps, OrderPageState> {
                           <td>{product.productCode}</td>
                           <td>{product.productName}</td>
                           <td>{product.color}</td>
-                          <td>{product.quantity}</td>
+                          <td>{product.buyQuantity}</td>
                           <td>{product.price}</td>
                           <td>
                             {parseFloat(product.price) *
-                              parseFloat(product.quantity)}
+                              parseFloat(product.buyQuantity)}
                           </td>
                           <td>
                             <Button

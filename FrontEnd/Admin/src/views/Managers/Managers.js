@@ -25,7 +25,7 @@ export default class Managers extends Component {
     this.state = {
       manager_username: '',
       manager_password: '',
-      manager_email:'',
+      manager_email: '',
       is_active: false,
       role: 'manager',
       buttonName: 'Add New Manager',
@@ -37,17 +37,15 @@ export default class Managers extends Component {
     //Set document title
     document.title = 'Managers';
     this.validateSession();
+    this.token = localStorage.getItem('admin_token');
   }
 
   validateSession() {
-    let auth = async () => {
-      let response = await axios.get('http://localhost:4000/auth');
-      if (response.data !== true) {
-        window.location.replace('/sign-in');
-      }
+    const token = localStorage.getItem('admin_token');
+    console.log(token);
+    if (token === false || typeof token === "undefined" || token === "" || token == null) {
+      this.props.history.push('/sign-In');
     }
-
-    auth();
   }
 
   //Form reset
@@ -104,7 +102,7 @@ export default class Managers extends Component {
   componentDidMount() {
 
     try {
-      axios.get('http://localhost:4000/managers')
+      axios.get('http://localhost:4000/managers',)
         .then(response => {
           this.setState({ all_managers: response.data });
         })
@@ -123,19 +121,23 @@ export default class Managers extends Component {
     e.preventDefault();
 
     const obj = {
-      username: this.state.manager_username,
+      username: this.state.manager_username.toLowerCase(),
       password: this.state.manager_password,
-      email:this.state.manager_email,
+      email: this.state.manager_email.toLowerCase(),
       is_active: this.state.is_active !== null ? this.state.is_active : 0,
       role: this.state.role
     };
 
     if (this.UpdateId == null) {
-
-      if (this.state.manager_username !== '' && this.state.manager_password !== '') {
+      if (this.state.manager_username !== '' && this.state.manager_password !== '' && this.state.manager_email !== '') {
 
         let insertManager = async () => {
-          let response = await axios.post('http://localhost:4000/managers/add', obj);
+          let response = await axios.post('http://localhost:4000/managers/add', obj,{
+            headers:
+            {
+              admin_token: this.token
+            }
+          });
           if (response.data) {
             alert(response.data['message']);
             this.componentDidMount();
@@ -158,11 +160,16 @@ export default class Managers extends Component {
 
     } else {
 
-      if (this.state.manager_username !== '') {
+      if (this.state.manager_username !== '' && this.state.manager_email !== '') {
 
         let updateManager = async () => {
 
-          let response = await axios.post('http://localhost:4000/managers/update/' + this.UpdateId, obj);
+          let response = await axios.post('http://localhost:4000/managers/update/' + this.UpdateId, obj,{
+            headers:
+            {
+              admin_token: this.token
+            }
+          });
           if (response.data) {
             alert(response.data['message']);
             this.componentDidMount();
@@ -171,13 +178,12 @@ export default class Managers extends Component {
           this.setState({
             manager_username: '',
             manager_password: '',
-            manager_email:'',
+            manager_email: '',
             is_active: false,
             buttonChecked: '',
-            buttonName: 'Add New Category',
-            UpdateId: null
+            buttonName: 'Add New Manager',
           });
-
+          this.UpdateId = null;
         }
 
         updateManager();
@@ -194,34 +200,39 @@ export default class Managers extends Component {
 
     this.UpdateId = id;
 
-    axios.get('http://localhost:4000/managers/edit/' + id)
-      .then(response => {
+    axios.get('http://localhost:4000/managers/edit/' + id,{
+      headers:
+      {
+        admin_token: this.token
+      }
+    })
+        .then(response => {
 
-        this.setState({
-          manager_username: response.data.username,
-          manager_email : response.data.email,
-          is_active: response.data.is_active
-        });
-
-        if (response.data.is_active === 1) {
           this.setState({
-            is_active: true,
-            buttonChecked: 'checked'
+            manager_username: response.data.username,
+            manager_email: response.data.email,
+            is_active: response.data.is_active
           });
-        } else {
-          this.setState({
-            is_active: false,
-            buttonChecked: ''
-          });
-        }
 
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-    this.setState({
-      buttonName: 'Update Manager'
-    });
+          if (response.data.is_active === 1) {
+            this.setState({
+              is_active: true,
+              buttonChecked: 'checked'
+            });
+          } else {
+            this.setState({
+              is_active: false,
+              buttonChecked: ''
+            });
+          }
+
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      this.setState({
+          buttonName: 'Update Manager'
+      });
   }
 
   //Delete manager
@@ -229,13 +240,18 @@ export default class Managers extends Component {
   deleteManager(id) {
 
     let delManager = async () => {
-      let response = await axios.get('http://localhost:4000/managers/delete/' + id);
+      let response = await axios.get('http://localhost:4000/managers/delete/' + id,{
+        headers:
+            {
+              admin_token: this.token
+            }
+      });
       if (response.data) {
         alert(response.data['message']);
         this.componentDidMount();
       }
-    } 
-        
+    }
+
     delManager();
   }
 
@@ -305,7 +321,7 @@ export default class Managers extends Component {
                   onClick={this.resetForm}
                   type="button"
                 >
-                            Clear
+                  Clear
                 </button>
 
               </Form>
@@ -322,7 +338,7 @@ export default class Managers extends Component {
 
         <div
           className="p-2"
-          style={{ overflow:'auto'}}
+          style={{ overflow: 'auto' }}
         >
           <table className="table w-100 table-striped mx-auto">
             <thead className="thead-dark">

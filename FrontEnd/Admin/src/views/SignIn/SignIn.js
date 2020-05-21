@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
@@ -182,12 +183,17 @@ const SignIn = props => {
 
       let response = await axios.post('http://localhost:4000/login', obj);
 
-      console.log(response);
+      if (typeof response.data.msg !== 'undefined') {
+        alert(response.data.msg);
+      }
 
-      if (response.data === true) {
+      const token = response.data.token;
+      localStorage.setItem('admin_token', token);
+
+      if (token) {
         history.push('/dashboard');
       } else {
-        alert('Invalid username or password');
+        alert(response.data.msg);
       }
 
     }
@@ -198,6 +204,8 @@ const SignIn = props => {
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
+
+    document.title = 'Login';
 
   return (
     <div className={classes.root}>
@@ -252,7 +260,7 @@ const SignIn = props => {
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
+                  Administrator Area
                 </Typography>
                 <Typography
                   color="textSecondary"
@@ -302,7 +310,7 @@ const SignIn = props => {
                   type="submit"
                   variant="contained"
                 >
-                  Sign In
+                  LOGIN
                 </Button>
  
               </form>

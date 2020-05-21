@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 
 const Dashboard = () => {
   const classes = useStyles();
+  document.title = 'Dashboard';
 
   return (
 

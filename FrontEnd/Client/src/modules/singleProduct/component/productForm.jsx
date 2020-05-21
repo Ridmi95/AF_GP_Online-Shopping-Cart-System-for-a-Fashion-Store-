@@ -107,7 +107,7 @@ class ProductFormPage extends Component<ProductFormPageProps> {
           <Row>
             <Col>
               <div className="product-page-image">
-                <img src={ImagePlaceHolder} alt="product" />
+                <img src={product.image?product.image:ImagePlaceHolder} alt="product" />
               </div>
             </Col>
             <Col>

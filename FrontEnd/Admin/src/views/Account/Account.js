@@ -13,6 +13,8 @@ const useStyles = makeStyles(theme => ({
 const Account = () => {
   const classes = useStyles();
 
+  document.title = 'Account';
+
   return (
     <div className={classes.root}>
       <Grid

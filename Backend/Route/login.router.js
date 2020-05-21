@@ -14,62 +14,80 @@ let login = require('../Models/login.model');
 // let manager = require('../Models/manager.model');
 
 // Defined get data(index or listing) route
-loginRoutes.route('/').post(function (req, res) {
 
-    const postBody = req.body;
-    
-    let user = postBody['username'];
-    let pass = postBody['password'];
-   
-   // console.log(user); return;
+loginRoutes.post("/", async (req, res) => {
 
-    login.findOne({ username: user }, function (err, login) {
-        
+    try {
 
-        if (err) {
-            console.log(err);
-        }
-        else {
+        const { username, password } = req.body;
 
-            try {
+        const admin = await login.findOne({ username: username });
 
-                if (login !== null) {
-                    let db_user = login['username'] !== null ? login['username'] : '';
-                    let db_pass = login['password'] !== null ? login['password'] : ''; //password hash
-                    let db_id   = login['id'] !== null ? login['id'] : '';
-                    let db_role = login['role'] !== null ? login['role'] : '';
+        if (username == "" || password == "")
+            return res.json({ status:403,msg: "Username or Password fields are empty" });
 
+        if (!admin)
+            return res.json({ status:403,msg: "Invalid Username" });
 
-                    bcrypt.compare(pass, db_pass, function (err, response) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            if (response === true) {
-                                session.user = db_user;
-                                session.role = db_role;
-                                res.json(true);
-                            } else {
-                                console.log("Invalid Username");
-                                res.json(false);
-                            }
-                        }
-                    })
-                    
-                } else {
-                    console.log("Invalid Username");
-                    res.json(false);
-                }
-                
-            } catch (error) {
-                console.log(error);
-            }
+        if (username == "" || password == "")
+            return res.json({ status:403,msg: "Username or Password fields are empty" });
+
+        if (admin['role'] !== "admin")
+            return res.json({ status:403,msg: "Store admin Account is Required to Login !" });
+
+        if (admin['is_active'] === 0)
+            return res.json({ status:403,msg: "Account is Not Activated !" });
+
+        const validate = await bcrypt.compare(password, admin.password);
+
+        if (!validate)
+            return res.json({ status:403,msg: "Password is Invalid!" });
 
 
-        }
-    });
+        //jwt secret
+        const token = jwt.sign({ id: admin._id }, config.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({
+            token,
+            admin: {
+                id: admin._id,
+                username: admin.username,
+                email: admin.email,
+                role: admin.role
+            },
+        });
+
+
+    } catch (err) {
+        res.status(400).json({ msg: "Validation Error" });
+        console.log("Error is ", err);
+    }
 
 });
 
+//token validate
+loginRoutes.post("/admin-token-validate", async (req, res) => {
+
+    try {
+
+        const token = req.body.admin_token;
+        if (!token) return res.json(false);
+
+        const validate = jwt.verify(token, config.JWT_SECRET);
+        if (!validate) return res.json(false);
+
+        const admin = await login.findById(validate.id);
+        if (!admin) return res.json(false);
+
+        return res.json(true);
+
+
+    } catch (error) {
+        res.status(400).json({ msg: "Validation Error" });
+        console.log("Error is ", error);
+
+    }
+
+});
 
 
 /*
@@ -96,29 +114,29 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
 
         const manager = await login.findOne({username:username});
 
-        if(username=="" ||password=="" )              
-        return res.status(200).json({msg:"Username or Password fields are empty"});
+        if(username=="" ||password=="" )
+        return res.status(400).json({msg:"Username or Password fields are empty"});
 
         if(!manager)
-        return res.status(200).json({msg:"Invalid Username"});
+        return res.status(400).json({msg:"Invalid Username"});
 
         if(username=="" ||password=="" )
-        return res.status(200).json({msg:"Username or Password fields are empty"});
+        return res.status(400).json({msg:"Username or Password fields are empty"});
 
         if(manager['role'] !=="manager")
-        return res.status(200).json({msg:"Store Manager Account is Required to Login !"});
+        return res.status(400).json({msg:"Store Manager Account is Required to Login !"});
 
         if(manager['is_active'] ===0)
-        return res.status(200).json({msg:"Account is Not Activated !"});
+        return res.status(400).json({msg:"Account is Not Activated !"});
 
         const validate = await bcrypt.compare(password, manager.password);
 
         if(!validate)
-        return res.status(200).json({msg:"Password is Invalid!"});
+        return res.status(400).json({msg:"Password is Invalid!"});
 
        
         //jwt secret
-        const token = jwt.sign({id : manager._id}, config.JWT_SECRET,{expiresIn: 500});
+        const token = jwt.sign({id : manager._id}, config.JWT_SECRET,{expiresIn: 5});
         res.status(200).json({
             token,
             manager :{
@@ -141,13 +159,11 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
 
 
 //token validate
-loginRoutes.get("/manager-token-validate" ,async (req,res)=>{
+loginRoutes.post("/manager-token-validate" ,async (req,res)=>{
 
     try {
 
-        const token = req.header('manager_token');
-
-        console.log("validation is :" , token);
+        const token = req.body.manager_token;
         if(!token) return res.json(false);
 
         const validate = jwt.verify(token,config.JWT_SECRET);
@@ -164,8 +180,6 @@ loginRoutes.get("/manager-token-validate" ,async (req,res)=>{
         console.log("Error is " ,error);
         
     }
-
-
 
 })
 

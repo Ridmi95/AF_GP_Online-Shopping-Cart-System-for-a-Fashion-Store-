@@ -15,25 +15,28 @@ export default class Users extends Component {
 
     document.title = 'Users';
     this.validateSession();
+    this.token = localStorage.getItem('admin_token');
   }
 
 
   validateSession() {
-    let auth = async () => {
-      let response = await axios.get('http://localhost:4000/auth');
-      if (response.data !== true) {
-        window.location.replace('/sign-in');
-      }
+    const token = localStorage.getItem('admin_token');
+    console.log(token);
+    if (token === false || typeof token === "undefined" || token === "" || token ==null) {
+      this.props.history.push('/sign-In');
     }
-
-    auth();
   }
 
   //Get all users for display
   componentDidMount() {
 
     try {
-      axios.get('http://localhost:4000/users')
+      axios.get('http://localhost:4000/users', {
+        headers:
+        {
+          admin_token: this.token
+        }
+      })
         .then(response => {
           this.setState({ all_users: response.data });
         })
@@ -66,8 +69,7 @@ export default class Users extends Component {
                 <th>Email</th>
                 <th>Address</th>
                 <th>Phone</th>
-                <th>Username</th>
-                <th>PassWord</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -80,8 +82,7 @@ export default class Users extends Component {
                   <td>{item.email}</td>
                   <td>{item.address}</td>
                   <td>{item.phone}</td>
-                  <td>{item.username}</td>
-                  <td>{item.password}</td>
+                  
                 </tr>
               ))}
 
