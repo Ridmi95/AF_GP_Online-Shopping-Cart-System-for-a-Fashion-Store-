@@ -75,4 +75,20 @@ orderRoutes.route("/:id").get(function (req, res) {
     }
   });
 });
+
+
+
+orderRoutes.get('/getbyProduct/:id', (req, res) => {
+
+  let id = req.params.id;
+
+  Order.find({products: {$elemMatch: {_id:id}}} , function (err, orders) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.json(orders);
+    }
+  })
+});
 module.exports = orderRoutes;
