@@ -6,7 +6,8 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { Grid } from '@material-ui/core';
 import Swal from 'sweetalert2'
-
+import {Line} from 'react-chartjs-2';
+import {Pie} from 'react-chartjs-2';
 
 
 
@@ -97,7 +98,15 @@ export default class productList extends Component {
       recentproducts: [],
       search: '',
       orders:[],
-      totproductList:[]
+      totproductList:[],
+      Chartdata:{
+        labels : ['1','2','3','4','5'],
+        datasets:[{
+          label:"medium",
+          backgroundColor:"rgba(255,0,255,0.75)",
+        data:[4,5,1,10,32,2,12]
+        }]
+      }
       
             
 
@@ -289,16 +298,12 @@ export default class productList extends Component {
         <Title />
         
         <Navbar />
-        {/* <header>
+         <header>
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
-
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        
 
 
-        </header> */}
+        </header>
         <div style={{padding:"20px"}}>
         <h6 style={{color:"#78909C"}}><i class="fas fa-info-circle"></i>  Store Manager Portal / Dashboard</h6>
         </div>
@@ -397,6 +402,126 @@ export default class productList extends Component {
 
 
 
+        <div style={{padding:"40px"}}>
+         
+
+         <Grid
+        container
+        spacing={10}
+      >
+        <Grid
+          item
+          lg={6}
+          sm={6}
+          xl={6}
+          xs={12}
+        > 
+
+<div style={{position:"relative"}} >
+
+  <h3>Sample Chart</h3>
+
+  <Line
+  
+  options={{
+    
+    responsive:true
+  }}
+  data={
+
+      this.state.Chartdata
+
+  }
+  
+  
+  
+  
+  
+  
+  />
+
+
+
+</div>
+           </Grid>
+
+
+
+
+           <Grid
+          item
+          lg={6}
+          sm={6}
+          xl={6}
+          xs={12}
+        > 
+
+<div style={{position:"relative"}} >
+
+  <h3>Sample Chart</h3>
+
+  <Line
+
+  options={{
+    responsive:true
+  }}
+  data={
+
+      this.state.Chartdata
+
+  }
+  
+  
+  
+  
+  
+  
+  />
+
+
+
+</div>
+           </Grid>
+          
+          
+          </Grid> 
+
+          <Grid
+        container
+        spacing={10}
+      >
+        <Grid
+          item
+          lg={6}
+          sm={6}
+          xl={6}
+          xs={12}
+        > 
+
+
+
+<div style={{position:"relative"}} >
+
+  <h3>Pie Chart</h3>
+  <canvas id="myChart"></canvas>
+  
+  
+  
+  
+  />
+
+  
+
+ </div>
+
+
+
+
+</Grid></Grid>
+
+         
+
+          </div>
 
 
 
