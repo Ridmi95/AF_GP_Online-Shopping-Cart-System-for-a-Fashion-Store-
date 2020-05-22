@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+//define collection for product
 let Product = new Schema(
   {
     productCode: {
