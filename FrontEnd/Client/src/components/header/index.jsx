@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent, Fragment } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 
 import Link from "components/Link";
 import buyportLogo from "assets/image/logo.png";
@@ -14,6 +14,7 @@ import { handleCart } from "action/cart";
 
 import "./styles.scss";
 import Icon from "components/icon";
+
 
 type HeaderProps = {
   isAuthenticated: Boolean,
@@ -160,9 +161,7 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
                         loading={status === ASYNC_STATUS.LOADING}
                         onClick={this.handleSignInButtonClick}
                         htmlType={Button.HTML_TYPE.LINK}
-                        link="/home"
-                        
-                      >
+                        link="/home">
                         Sign In
                       </Button>
                     </div>
@@ -171,8 +170,7 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
                         loading={status === ASYNC_STATUS.LOADING}
                         onClick={this.handleSingUpButtonClick}
                         htmlType={Button.HTML_TYPE.LINK}
-                        link="/"
-                      >
+                        link="/">
                         Sign Up
                       </Button>
                     </div>
@@ -183,6 +181,8 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
           </div>
         </div>
       </Fragment>
+
+
     );
   }
 }
