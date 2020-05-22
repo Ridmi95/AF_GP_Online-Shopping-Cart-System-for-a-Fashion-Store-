@@ -9,7 +9,7 @@ export default class Navbar extends Component{
       <div className="jumbotron jumbotron-fluid">
         <div className="container">
           <center>
-            <h3 className="display-3">Store Manager Dashboard</h3>
+            <h3 className="display-3"><b>Store Manager Portal</b></h3>
             <h2  />
           </center>
         </div>

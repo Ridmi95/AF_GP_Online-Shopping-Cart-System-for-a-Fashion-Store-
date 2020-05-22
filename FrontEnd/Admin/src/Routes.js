@@ -30,6 +30,8 @@ import ManagerDashboard from "./manager.components/manager.dashboard.components"
 import updateproduct from "./manager.components/manager.updateProduct.components";
 import productList  from "./manager.components/manager.productlist.components";
 import ManagerSignIn from "./manager.components/managerSignIn";
+import ViewProduct from "./manager.components/manager.viewproduct.components";
+import orderList from "./manager.components/manager.orderlist.components";
 
 
 // manager
@@ -51,10 +53,23 @@ const Routes = () => {
       />
 
 <RouteWithLayout
+        component={orderList}
+        exact
+        layout={MinimalLayout}
+        path="/order-list"
+      />
+      <RouteWithLayout
         component={ManagerDashboard}
         exact
         layout={MinimalLayout}
         path="/dashboard-manager"
+      />
+
+<RouteWithLayout
+        component={ViewProduct}
+        exact
+        layout={MinimalLayout}
+        path="/view-product/:id"
       />
 
 <RouteWithLayout

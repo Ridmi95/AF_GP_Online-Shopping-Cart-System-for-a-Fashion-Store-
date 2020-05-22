@@ -74,7 +74,16 @@ export default class LatestProducts extends Component {
 
 
   componentDidMount() {
-    axios.get('http://localhost:4000/product/recent').then(res => {
+
+    const token = localStorage.getItem("admin_token");
+    
+    axios.get('http://localhost:4000/product/admin-all',{
+
+      headers:
+      {
+          admin_token: token
+
+      }}).then(res => {
       this.setState({
 
         products: res.data.data

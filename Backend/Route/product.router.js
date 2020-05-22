@@ -2,7 +2,7 @@
 const express = require("express");
 const productRoutes = express.Router();
 const auth = require('./managerAuth.js');
-const admin_auth = require('./managerAuth.js');
+const admin_auth = require('./auth.router.js');
 
 let Product = require("../Models/product.model");
 
@@ -68,8 +68,41 @@ productRoutes.get("/recent",auth , async (req, res) =>{
     } else {
       res.status(200).json({ success: true, data: products});
     }
-  }).limit(5).sort({createdAt:-1});
+  }).limit(10).sort({createdAt:-1});
 });
+
+productRoutes.get("/updated",auth , async (req, res) =>{
+  await Product.find(function (err, products) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: products});
+    }
+  }).limit(10).sort({updatedAt:-1});
+});
+
+productRoutes.get("/lowstock",auth , async (req, res) =>{
+  await Product.find(function (err, products) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: products});
+    }
+  }).limit(10).sort({quantity:1});
+});
+
+productRoutes.get("/top-rated",auth , async (req, res) =>{
+  await Product.find(function (err, products) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: products});
+    }
+  }).limit(10).sort($sum(rating));
+});
+
+
+
 
 
 productRoutes.route("/").get(function (req, res) {
@@ -96,13 +129,15 @@ productRoutes.route("/").get(function (req, res) {
 
 
 
-productRoutes.route("/:id").get(function (req, res) {
+productRoutes.get("/:id",auth,async (req, res) =>{
   let id = req.params.id;
-  Product.findOne({ productCode: id }, function (err, product) {
+  await Product.findOne({ _id: id }, function (err, product) {
     if (err) {
       console.log(err);
     } else {
       res.status(200).json({ success: true, data: product });
+      console.log("Passed product is", product);
+      
     }
   });
 });
@@ -264,7 +299,7 @@ productRoutes.delete('/delete/:id',auth,async (req, res) =>{
 
 //update product
 
-productRoutes.route('/update/:id').post((req, res) =>{
+productRoutes.post('/update/:id' , auth,async (req, res) =>{
 
   Product.findById(req.params.id).then(
 
@@ -278,6 +313,7 @@ productRoutes.route('/update/:id').post((req, res) =>{
         productObj.quantity = req.body.quantity;
         productObj.description = req.body.description;
         productObj.size = req.body.size;
+        productObj.image = req.body.image;
 
           productObj.save().then(()=> res.json('Updated')).catch(err => res.status(400).json('Erro ' + err));
 

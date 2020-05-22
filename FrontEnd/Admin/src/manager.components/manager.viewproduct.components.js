@@ -6,14 +6,156 @@ import Title from "./manager.title.components";
 import styleManager from "./css/manager-add-style.css";
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
+import { Grid } from '@material-ui/core';
 
+let reset =false;
 let imgname = '';
 let token = localStorage.getItem('manager_token');
 let addvalid=false;
-let sub = false;
+let updatedURL = null;
+
+function setImage() {
+
+  var img = document.getElementById("imageSrc");
+
+  img.src=updatedURL;
+
+}
+
+function showUpdate() {
+  var updatebutton = document.getElementById("updateButton");
+  var enableupdate = document.getElementById("enableupdate");
+  var resetupdate = document.getElementById("resetupdate");
+  var preview = document.getElementById("preview");
+  
+  var previewBox = document.getElementById("previewBox");
+  var updateBox = document.getElementById("updateBox");
+
+  if (updatebutton.style.display === "none") {
+    updatebutton.style.display = "block";
+    resetupdate.style.display="block";
+    enableupdate.style.display="none";
+    preview.style.display="block";
+    
+    previewBox.style.display="none";
+    updateBox.style.display="block";
+    
 
 
-export default class addproducts extends Component {
+  } else {
+    updatebutton.style.display = "none";
+    enableupdate.style.display="block";
+    resetupdate.style.display="none";
+    preview.style.display="none";
+    
+    
+   
+    
+  }
+}
+
+function resetButtons() {
+
+  window.location.reload(false); 
+
+ 
+
+  reset=true;
+  var preview = document.getElementById("preview");
+  
+
+  var updatebutton = document.getElementById("updateButton");
+  var enableupdate = document.getElementById("enableupdate");
+  var resetupdate = document.getElementById("resetupdate");
+  var previewBox = document.getElementById("previewBox");
+  var updateBox = document.getElementById("updateBox");
+
+  
+   
+  updatebutton.style.display = "none";
+  enableupdate.style.display="block";
+  resetupdate.style.display="none";
+
+  preview.style.display="none";
+    
+    previewBox.style.display="block";
+    updateBox.style.display="none";
+  
+}
+
+
+function getAvgRating(ratings) {
+  const total = ratings.reduce((acc, c) => acc + c, 0);
+  if(total){
+
+    const output =parseFloat(total / ratings.length).toFixed(2);
+
+
+    return output;
+
+  }else
+    return 0;
+    
+}
+
+
+const OrderRow = props => (
+
+ 
+
+
+
+  <tr>
+
+    {/* <td>{props.product._id}</td> */}
+    <td>{props.order.orderId}</td>
+    <td>{props.order.userId}</td>
+    <td>{props.order.orderDate.substring(0,10)}</td>
+    <td>{props.order.paymentMethod}</td>
+    <td></td>
+    {/* <td>
+      <Link to={'/edit-product/' + props.product._id}>Edit</Link> | <a
+        href="#"
+        onClick={() => {
+          props.deleteProduct(props.product._id) ; console.log('Deleted ID: ',props.product._id)
+        }
+        }
+      >delete</a>
+    </td> */}
+
+
+
+  </tr>
+);
+
+const CommentRow = props => (
+
+ 
+
+
+
+  <tr>
+
+    {/* <td>{props.product._id}</td> */}
+    <td>{props.comment}</td>
+    
+    {/* <td>
+      <Link to={'/edit-product/' + props.product._id}>Edit</Link> | <a
+        href="#"
+        onClick={() => {
+          props.deleteProduct(props.product._id) ; console.log('Deleted ID: ',props.product._id)
+        }
+        }
+      >delete</a>
+    </td> */}
+
+
+
+  </tr>
+);
+
+
+export default class viewproduct extends Component {
 
     constructor(props) {
 
@@ -34,6 +176,12 @@ export default class addproducts extends Component {
         this.validateUser = this.validateUser.bind(this)
         this.showHelp = this.showHelp.bind(this)
         this.RemoveImage = this.RemoveImage.bind(this)
+        this.getProduct = this.getProduct.bind(this)
+        this.orderList = this.orderList.bind(this)
+        this.CommentList = this.CommentList.bind(this)
+        this.getOrders = this.getOrders.bind(this)
+        this.resetDetails = this.resetDetails.bind(this)
+        
 
         
 
@@ -56,13 +204,22 @@ export default class addproducts extends Component {
             photo: null,
             NewUpload: false,
             uploadedimg: null,
-            uploadPercentage:0
+            uploadPercentage:0,
+            createdDate:null,
+            orders:[],
+            
+            commentArray:[],
+            newimage:null
+
 
         }
     }
 
 
     componentDidMount() {
+
+      this.getOrders();
+      this.getProduct();
 
         this.validateUser();
 
@@ -95,6 +252,117 @@ export default class addproducts extends Component {
         })
 
 
+    }
+
+    resetDetails(){
+
+     
+     
+        
+      
+
+
+
+      
+    }
+
+    getProduct(){
+      const token = localStorage.getItem('manager_token');
+      axios.get('http://localhost:4000/product/'+this.props.match.params.id,{
+        headers:
+        {
+            manager_token :token
+  
+        }
+    }).then(res => {
+
+      
+        this.setState({
+  
+          productCode: res.data.data.productCode,
+          commentArray: res.data.data.comment,
+          productName: res.data.data.productName,
+          price:res.data.data.price,
+          color:res.data.data.color,
+          categoryName : res.data.data.categoryName,
+          discount:res.data.data.discount,
+          quantity:res.data.data.quantity,
+          description:res.data.data.description,
+          size : res.data.data.size,
+          rating: res.data.data.rating,
+
+          newimage: res.data.data.image,
+          uploadedimg:res.data.data.image,
+          image:res.data.data.image,
+
+          createdDate :res.data.data.createdAt.substring(0,10)
+
+
+                  
+        })
+
+        reset=false;
+      }).catch(err => {
+        console.log(err);
+  
+  
+      })
+     }
+
+    orderList() {
+
+      return this.state.orders.map(orderCurrent => {
+  
+        return <OrderRow
+        
+          order={orderCurrent}
+               />;
+  
+      })
+    }
+
+    CommentList() {
+
+      return this.state.commentArray.map(comment => {
+  
+        return <CommentRow
+        
+        comment={comment}
+               />;
+  
+      })
+    }
+
+    getOrders(){
+
+      const token = localStorage.getItem('manager_token');
+
+      console.log("id is" , this.props.match.params.id);
+      
+
+    axios.get('http://localhost:4000/order/getbyProduct/'+this.props.match.params.id,{
+      headers:
+      {
+          manager_token :token
+
+      }
+  }).then(res => {
+
+   
+      this.setState({
+
+        orders: res.data
+
+                
+      })
+
+      console.log("Recieved orders is:" , this.state.orders)
+
+    }).catch(err => {
+      console.log("Error Occured",err);
+
+
+    })
     }
 
     validateUser() {
@@ -423,7 +691,7 @@ export default class addproducts extends Component {
 
                     Swal.fire({
                         title: 'Confirm',
-                        text: "Do You Want To Set This As the Product Image?",
+                        text: "Do You Want To Attach This As the Product Image?",
                         // html:'<figure> <img src="'+res.data.URL+'" alt="sing up image"/></figure>',
                         imageUrl: res.data.URL,
 
@@ -442,6 +710,10 @@ export default class addproducts extends Component {
                                 dangerMode: false,
                             })
                             this.state.image = res.data.URL;
+                            updatedURL=res.data.URL;
+                            setImage();
+
+
 
                             console.log(this.state.image);
 
@@ -597,37 +869,30 @@ export default class addproducts extends Component {
 
         }else{
 
-            if(!sub){
-            swal({
-                title: "No File is Uploaded",
-                text: "No file is Uploaded, First Upload an Image file",
-                icon: "error",
-                // buttons: true,
-                dangerMode: true,
-            })
             
-        }else{
+            
+
 
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                   confirmButton: 'btn btn-danger',
                   cancelButton: 'btn btn-success',
-                  margin :'50px'
+                  padding :'100px'
                 },
                 buttonsStyling: false
               })
 
-            swalWithBootstrapButtons.fire({
+            Swal.fire({
                 title: 'No file is Uploaded',
-                text: "Do you wish to continue without uploading a Product Image?",
+                text: "Please Upload an Image file",
                 // html:'<figure> <img src="'+res.data.URL+'" alt="sing up image"/></figure>',
-                imageUrl: this.state.uploadedimg,
+               
                 icon:"warning",
 
                 imageHeight: 400,
-                showCancelButton: true,
-                confirmButtonText: 'Continue',
-                cancelButtonText: 'Cancel',
+               
+                confirmButtonText: 'Okay',
+                
                 reverseButtons: true,
                 
                 preConfirm: (e) => {
@@ -658,7 +923,6 @@ export default class addproducts extends Component {
 
                 addvalid= false;
             }
-        }
 
         }
 
@@ -709,17 +973,14 @@ export default class addproducts extends Component {
         token = localStorage.getItem('manager_token')
 
       
-        sub=true;
 
-      if(!addvalid){
-
-        this.showImage();
+    
 
 
-      }else{
+     
         
 
-        axios.post('http://localhost:4000/product/add', product, {
+        axios.post('http://localhost:4000/product/update/'+this.props.match.params.id, product, {
             headers:
             {
                 manager_token: token
@@ -740,15 +1001,42 @@ export default class addproducts extends Component {
 
             } else {
 
-                swal({
-                    title: "Successful",
-                    text: "Product Added Successfully!",
-                    icon: "success",
-                    button: "Continue",
-                });
-
-                addvalid=false;
+                Swal.fire({
+                    title: 'Product Updated',
+                    text: "Product is Updated Successfully!",
+                    // html:'<figure> <img src="'+res.data.URL+'" alt="sing up image"/></figure>',
+                    
+                    icon:"success",
+    
+                   
+                    confirmButtonText: 'Continue',
+                    
+                    reverseButtons: true,
+                    
+                    preConfirm: (e) => {
+                       
+    
+                       
+    
+                        addvalid=false;
                 this.state.image=null;
+                this.getProduct();
+                
+                resetButtons();
+    
+                       
+    
+                        
+    
+                    }
+    
+                    
+    
+    
+    
+                })
+
+                
             }
 
         }
@@ -787,7 +1075,7 @@ export default class addproducts extends Component {
                 ).then((res) => {
                     swal({
                         title: "Failed",
-                        text: "Information format is Unsupported",
+                        text: "Information format is Unsupported or Product code is Assigned to another Product",
                         icon: "error",
                         // buttons: true,
                         dangerMode: true,
@@ -874,7 +1162,7 @@ export default class addproducts extends Component {
 
 
 
-    }}
+    }
 
 
 
@@ -898,8 +1186,188 @@ export default class addproducts extends Component {
                 <Navbar />
 
                 <div style={{ padding: "20px" }}>
-                    <h6 style={{ color: "#78909C" }}><i class="fas fa-info-circle"></i>  Store Manager Portal / Products / Add Product</h6>
+                    <h6 style={{ color: "#78909C" }}><i class="fas fa-info-circle"></i>  Store Manager Portal / Products / View Product</h6>
                 </div>
+
+                {/* cards */}
+                <div clss="Managercard" id="tab-cards">
+          <div className="managerStat">
+            <div
+              className="container "
+              style={{padding:'15px'}}
+            >
+              <div className="row">
+                <div className="col-md-3">
+                  <div className="card-counter primary">
+                  <i class="fas fa-shopping-cart"></i>
+        <span className="count-numbers">{this.state.orders.length}</span>
+                    <span className="count-name"> Purchase Orders</span>
+                  </div>
+                </div>
+
+                <div className="col-md-3">
+                  <div className="card-counter danger">
+                  <i className="fas fa-dollar-sign" />
+        <span className="count-numbers">Rs. {this.state.price*this.state.orders.length}</span>
+                    <span className="count-name"> Product Revenue</span>
+                  </div>
+                </div>
+
+                <div className="col-md-3">
+                  <div className="card-counter success">
+                  <i class="fas fa-comments"></i>
+        <span className="count-numbers">{this.state.commentArray.length}</span>
+                    <span className="count-name"> User Comments</span>
+                  </div>
+                </div>
+
+                <div className="col-md-3">
+                  <div className="card-counter" style={{backgroundColor:"#FFC107"}}>
+                  <i class="fas fa-star-half-alt"></i>
+                    <span className="count-numbers">{this.state.rating.length}</span>
+                    <span className="count-name"> Rates</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+
+{/* cards end */}
+
+                <div >
+         
+
+         <Grid
+        container
+        spacing={0}
+      >
+       
+        <Grid id="previewBox"
+          item
+          lg={12}
+          sm={12}
+          xl={12}
+          xs={12}
+        > 
+
+
+                <div class="main" id="profile">
+
+            
+
+                    <section class="signup">
+                        <div class="container" id ="previewContainer" style={{paddingBottom:"55px" , paddingTop:"55px"}}>
+                        <div id="preview" style={{display:"none"}}><center><h1  class="form-title">Preview</h1></center></div>
+
+                            <div class="signup-content">
+                                <div class="signup-form" style={{margin:"20px"}}>
+                                    <h2 class="form-title">Product Details</h2>
+                                    <form class="register-form" onSubmit={this.onSubmit}>
+                                        {/* product code */}
+                                        <text style={{fontSize:"30px"}}>
+                                        <div class="form-group" style={{padding:"15px"}}>
+                                            <h6>Product Code</h6>
+                                            {this.state.productCode}
+                                        </div>
+                                        {/* product name */}
+                                        <div class="form-group" style={{paddingLeft:"15px"}}>
+                                            <h6>Product Name</h6>
+                                            {this.state.productName}
+                                        </div>
+
+                                        <div class="form-group" style={{paddingLeft:"15px"}}>
+                                            <h6>Product Price</h6>
+                                            {this.state.price}
+                                        </div>
+
+                                        <div class="form-group" style={{paddingLeft:"15px"}}>
+                                            <h6>Product Color</h6>
+                                            {this.state.color}
+                                        </div>
+                                        <div class="form-group" style={{paddingLeft:"15px"}}>
+                                            <h6>Product Category</h6>
+                                            {this.state.categoryName}
+                                        </div>
+                                        <div class="form-group" style={{paddingLeft:"15px"}}>
+                                            <h6>Product Discount</h6>
+                                            {this.state.discount}
+                                        </div>
+                                        <div class="form-group" style={{paddingLeft:"15px"}}>
+                                            <h6>Available Quantity</h6>
+                                          <text style={{color:this.state.quantity<20?"red":"green"}}>  {this.state.quantity}</text>
+                                        </div>
+                                        <div class="form-group" style={{paddingLeft:"15px"}}>
+                                            <h6>Product Size</h6>
+                                            {this.state.size}
+                                        </div>
+                                    </text>
+                                        
+                                        <br/>
+                                        <b>Created Date :  </b>{this.state.createdDate}<br/>
+                                        
+
+                                        {/* category */}
+                                       
+
+
+                                    </form>
+                                </div>
+                                <div class="signup-image">
+                                    
+                                
+
+                                    
+                                   
+
+                                            <figure>
+                                              <h4>Product Image</h4>
+                                        <img id="imageSrc" src={this.state.newimage ? this.state.newimage:"https://res.cloudinary.com/fashionistaimage/image/upload/v1590072616/g2i7hkrkxfiub2kdvfy8.gif"} style={{width:"95%"}} alt="Product image" />
+<br/> <br/><br/>
+                                        <h4>Rating</h4>
+                                   
+                                        <div class="progress" style={{height:+30}}>
+  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" 
+  aria-valuemin="0" aria-valuemax="100" style={{width:getAvgRating(this.state.rating)/5*100+"%" , backgroundImage: "linear-gradient(to right, #FFD54F, #F57F17)"}}>
+  <b>{getAvgRating(this.state.rating)} / 5.00</b> 
+  </div>
+</div>
+<br/>
+<h4>Product Description</h4>
+
+
+                                    </figure>
+                                    <div class="form-group" style={{paddingLeft:"15px"}}>
+                                            
+                                           {this.state.description}
+                                        </div>
+
+<div id="avoid1">
+                                        <input type="button" name="signup" id="enableupdate" onClick={showUpdate} class="btn btn-primary" value="Enable Editing" /></div>
+                                    
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+
+                </Grid>
+                
+                {/* second Update */}
+                
+                <Grid id="updateBox" style={{display:"none"}}
+          item
+          lg={12}
+          sm={12}
+          xl={12}
+          xs={12}
+        > 
 
 
                 <div class="main">
@@ -907,29 +1375,30 @@ export default class addproducts extends Component {
 
 
 
-                    <section class="signup">
+                <section class="signup">
                         <div class="container">
                             <div class="signup-content">
-                                <div class="signup-form">
-                                    <h2 class="form-title">Add Product</h2>
+                            <div class="signup-form" style={{margin:"20px"}}>
+                                    <h2 style={{paddingBottom:"60px"}}
+                                    class="form-title">Update Product</h2>
                                     <form class="register-form" onSubmit={this.onSubmit}>
                                         {/* product code */}
                                         Product Code
                                         <div class="form-group">
                                             <label for="code"><i class="zmdi zmdi-tag-more"></i></label>
-                                            <input type="text" onChange={this.onChangeProductCode} value={this.state.productCode} required name="code" id="productCode" placeholder="ex : P001" />
+                                            <input  type="text" onChange={this.onChangeProductCode} value={this.state.productCode} required name="code" id="productCode" placeholder="ex : P001" />
                                         </div>
                                         {/* product name */}
                                         Product Name
                                         <div class="form-group">
                                             <label for="name"><i class="zmdi zmdi-info-outline"></i></label>
-                                            <input type="text" name="name" id="productName" placeholder="Product Name" onChange={this.onChangeProductName} value={this.state.productName} required />
+                                            <input  type="text" name="name" id="productName" placeholder="Product Name" onChange={this.onChangeProductName} value={this.state.productName} required />
                                         </div>
 
                                         {/* category */}
-                                        <div class="form-group">
+                                        <div class="form-group"  id="category">
                                              Category
-                                <div class="input-group mb-3">
+                                <div  class="input-group mb-3" >
                                                 <div class="input-group-prepend">
                                                     <label class="input-group-text" for="categoryName"></label>
                                                 </div>
@@ -962,38 +1431,38 @@ export default class addproducts extends Component {
                                         <div class="form-group">
                                             
                                             <label for="price"><i class="zmdi zmdi-money-box"></i></label>
-                                            <input type="text" name="name" id="price" placeholder="Product Price" onChange={this.onChangePrice} value={this.state.price} required />
+                                            <input  type="text" name="name" id="price" placeholder="Product Price" onChange={this.onChangePrice} value={this.state.price} required />
                                         </div>
                                         {/* color */}
                                         Color
-                                        <div class="form-group">
+                                        <div class="form-group" >
                                             <label for="color"><i class="zmdi zmdi-format-color-fill"></i></label>
-                                            <input type="text" name="name" id="color" placeholder="Product Color" onChange={this.onChangeColor} value={this.state.color} required />
+                                            <input  type="text" name="name" id="color" placeholder="Product Color" onChange={this.onChangeColor} value={this.state.color} required />
                                         </div>
                                         {/* size */}Size
                                         <div class="form-group">
                                             <label for="size"><i class="zmdi zmdi-fullscreen-alt"></i></label>
-                                            <input type="text" name="size" id="productName" placeholder="Product Size" onChange={this.onChangeSize} value={this.state.size} required />
+                                            <input  type="text" name="size" id="productName" placeholder="Product Size" onChange={this.onChangeSize} value={this.state.size} required />
                                         </div>
                                         {/* quantity */}
                                         Stock Quantity
                                         <div class="form-group">
                                             <label for="quantity"><i class="zmdi zmdi-storage"></i></label>
-                                            <input type="text" name="name" id="quantity" placeholder="Product Quantity" onChange={this.onChangeQuantity} value={this.state.quantity} required />
+                                            <input  type="text" name="name" id="quantity" placeholder="Product Quantity" onChange={this.onChangeQuantity} value={this.state.quantity} required />
                                         </div>
 
                                         {/* discount */}
                                         Discount
                                         <div class="form-group">
                                             <label for="discount"><i class="zmdi zmdi-label"></i></label>
-                                            <input type="text" name="name" id="discount" placeholder="Product Discount Percentage" onChange={this.onChangeDiscount} value={this.state.discount} />
+                                            <input  type="text" name="name" id="discount" placeholder="Product Discount Percentage" onChange={this.onChangeDiscount} value={this.state.discount} />
                                         </div>
 
                                         {/* discription */}
                                         Description
                                         <div class="form-group">
                                             <label for="discription"></label>
-                                            <textarea name="name" id="discription" 
+                                            <textarea  name="name" id="discription" 
                                             rows="10" cols="35"
                                             placeholder="Product Discription" onChange={this.onChangeDiscription} value={this.state.description} />
                                         </div>
@@ -1001,7 +1470,9 @@ export default class addproducts extends Component {
 
 
                                         <div class="form-group form-button">
-                                            <input type="submit" name="signup" id="signup" class="form-submit" value="Add" />
+                                       
+                                       <a onClick={resetButtons}> <input type="button" name="signup" id="resetupdate"  style={{display:"none"}}  class="btn btn-danger" value="Cancel" /></a>
+                                            <input type="submit" name="signup" id="updateButton" class="form-submit" style={{display:"none"}} value="Update" />
 
 
                                         </div>
@@ -1046,7 +1517,7 @@ export default class addproducts extends Component {
                                             </div>
 
                                             <figure>
-                                        <img src="images/signup-image.jpg" alt="sing up image" />
+                                       
 
 
                                     </figure>
@@ -1058,9 +1529,90 @@ export default class addproducts extends Component {
 
                         </div>
                     </section>
-                </div><div id ="tab1"></div><div id ="tab2"></div><div id ="tab3"></div><div id ="tab4"></div><div hidden="true" id ="profile">No Data Available to Generate Reports from this page</div><div id ="avoid1"></div><div id ="avoid2"></div><div id ="tab-cards"></div>
+                </div>
 
-            </div>
+                </Grid>
+
+                {/* Update ends */}
+                
+                
+                
+                </Grid>
+                
+                <Grid
+        container
+        spacing={0}
+      >
+        <Grid
+          item
+          lg={6}
+          sm={6}
+          xl={6}
+          xs={12}
+        > 
+        {/* orders */}
+
+        <div className="container" style={{marginTop:-200}} id="tab1" >
+ 
+ <h1>Orders</h1>
+   <table className="table" style={{color:"#546E7A"}}>
+    
+     <thead style={{color:"#3F51B5"}}>
+       <tr>
+        
+         <th scope="col">Oder ID</th>
+         <th scope="col">User ID</th>
+         <th scope="col">Date</th>
+         <th scope="col">Payment Method</th>
+         
+         
+         
+       </tr>
+     </thead>
+     <tbody>
+       {this.orderList()}
+     </tbody>
+   </table>
+   </div>
+        
+        
+        </Grid>
+
+        <Grid
+          item
+          lg={6}
+          sm={6}
+          xl={6}
+          xs={12}
+        > 
+        {/* Coments */}
+
+        <div className="container" style={{marginTop:-200 , backgroundColor:"#29B6F6"}} id="tab2" >
+ 
+ <h1>Comments</h1>
+   <table className="table" style={{color:"white"}}>
+    
+     <thead style={{color:"#3F51B5"}}>
+       
+     </thead>
+     <tbody>
+       {this.CommentList()}
+     </tbody>
+   </table>
+   </div>
+        
+        
+        </Grid>
+        
+        
+        
+        
+        </Grid>
+</div>
+
+
+
+<div id="tab3"></div><div id="avoid2"></div><div id="tab3"></div><div id="tab4"></div><div id="tab4"></div>     </div>
 
 
 

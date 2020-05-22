@@ -11,6 +11,7 @@ import {Pie} from 'react-chartjs-2';
 
 
 
+
 function getAvgRating(ratings) {
   const total = ratings.reduce((acc, c) => acc + c, 0);
   if(total){
@@ -81,6 +82,15 @@ export default class productList extends Component {
 
     this.deleteProduct = this.deleteProduct.bind(this);
     this.validateUser = this.validateUser.bind(this);
+    this.getRecentProducts = this.getRecentProducts.bind(this);
+    this.getAllProducts = this.getAllProducts.bind(this);
+    this.getAllActiveCategories= this.getAllActiveCategories.bind(this);
+    this.getAllOrders= this.getAllOrders.bind(this);
+    this.getLowStockProducts= this.getLowStockProducts.bind(this);
+    this.getTopRatedProducts= this.getTopRatedProducts.bind(this);
+    this.getRecentUpdateProducts= this.getRecentUpdateProducts.bind(this);
+
+
 
     
     
@@ -95,7 +105,12 @@ export default class productList extends Component {
 
     this.state = {
 
+      allOrders:[],
+      categories: [],
       recentproducts: [],
+      Toproducts: [],
+      Updateproducts: [],
+      Lowstockproducts: [],
       search: '',
       orders:[],
       totproductList:[],
@@ -116,17 +131,9 @@ export default class productList extends Component {
 
   }
 
-   
-
-  componentDidMount() {
-
-    this.validateUser();
-
-   
+   getRecentProducts(){
 
     const token = localStorage.getItem('manager_token');
-
-    // recent list
 
     axios.get('http://localhost:4000/product/recent',{
       headers:
@@ -146,8 +153,83 @@ export default class productList extends Component {
 
     })
 
-// total List
+   }
 
+   getRecentUpdateProducts(){
+
+    const token = localStorage.getItem('manager_token');
+
+    axios.get('http://localhost:4000/product/updated',{
+      headers:
+      {
+          manager_token :token
+
+      }
+  }).then(res => {
+      this.setState({
+
+        Updateproducts: res.data.data
+                
+      })
+    }).catch(err => {
+      console.log(err);
+
+
+    })
+
+   }
+
+   getLowStockProducts(){
+
+    const token = localStorage.getItem('manager_token');
+
+    axios.get('http://localhost:4000/product/lowstock',{
+      headers:
+      {
+          manager_token :token
+
+      }
+  }).then(res => {
+      this.setState({
+
+        Lowstockproducts: res.data.data
+                
+      })
+    }).catch(err => {
+      console.log(err);
+
+
+    })
+
+   }
+
+   getTopRatedProducts(){
+
+    const token = localStorage.getItem('manager_token');
+
+    axios.get('http://localhost:4000/product/top-rated',{
+      headers:
+      {
+          manager_token :token
+
+      }
+  }).then(res => {
+      this.setState({
+
+        Toproducts: res.data.data
+                
+      })
+    }).catch(err => {
+      console.log(err);
+
+
+    })
+
+   }
+
+
+   getAllProducts(){
+    const token = localStorage.getItem('manager_token');
     axios.get('http://localhost:4000/product/all',{
       headers:
       {
@@ -165,6 +247,74 @@ export default class productList extends Component {
 
 
     })
+   }
+
+   getAllOrders(){
+    const token = localStorage.getItem('manager_token');
+    axios.get('http://localhost:4000/order/',{
+      headers:
+      {
+          manager_token :token
+
+      }
+  }).then(res => {
+      this.setState({
+
+        allOrders: res.data.data
+                
+      })
+    }).catch(err => {
+      console.log(err);
+
+
+    })
+   }
+
+   getAllActiveCategories(){
+
+    const token = localStorage.getItem('manager_token');
+
+    axios.get('http://localhost:4000/category/getall',{
+      headers:
+      {
+          manager_token :token
+
+      }
+  }).then(res => {
+      this.setState({
+
+        categories: res.data
+                
+      })
+    }).catch(err => {
+      console.log(err);
+
+
+    })
+
+   }
+
+  componentDidMount() {
+    this.getAllOrders();
+
+    this.validateUser();
+    this.getAllActiveCategories();
+
+    this.getRecentProducts();
+    this.getAllProducts();
+    this.getLowStockProducts();
+    this.getTopRatedProducts();
+    this.getRecentUpdateProducts();
+   
+
+    
+
+    // recent list
+
+   
+// total List
+
+    
 
   }
 
@@ -271,6 +421,45 @@ export default class productList extends Component {
     })
   }
 
+  lowstockList() {
+
+    return this.state.Lowstockproducts.filter(searchItems(this.state.search)).map(productCurrent => {
+
+      return <ProductRow
+        deleteProduct={this.deleteProduct}
+        key={productCurrent._id}
+        product={productCurrent}
+             />;
+
+    })
+  }
+
+  updateProductList() {
+
+    return this.state.Updateproducts.filter(searchItems(this.state.search)).map(productCurrent => {
+
+      return <ProductRow
+        deleteProduct={this.deleteProduct}
+        key={productCurrent._id}
+        product={productCurrent}
+             />;
+
+    })
+  }
+
+  topRateProductList() {
+
+    return this.state.Toproducts.filter(searchItems(this.state.search)).map(productCurrent => {
+
+      return <ProductRow
+        deleteProduct={this.deleteProduct}
+        key={productCurrent._id}
+        product={productCurrent}
+             />;
+
+    })
+  }
+
   onChangeSearch(e) {
 
     this.setState({
@@ -279,6 +468,11 @@ export default class productList extends Component {
 
 
     });
+
+  }
+
+  getOrders(){
+
 
   }
 
@@ -307,7 +501,7 @@ export default class productList extends Component {
         <div style={{padding:"20px"}}>
         <h6 style={{color:"#78909C"}}><i class="fas fa-info-circle"></i>  Store Manager Portal / Dashboard</h6>
         </div>
-        <div clss="Managercard">
+        <div clss="Managercard" id="tab-cards">
           <div className="managerStat">
             <div
               className="container "
@@ -318,23 +512,23 @@ export default class productList extends Component {
                   <div className="card-counter primary">
                     <i className="fas fa-tshirt" />
                     <span className="count-numbers">{this.state.totproductList.length}</span>
-                    <span className="count-name">Total Products</span>
+                    <span className="count-name"> Product Types</span>
                   </div>
                 </div>
 
                 <div className="col-md-3">
                   <div className="card-counter danger">
-                    <i className="fas fa-dollar-sign" />
-                    <span className="count-numbers">599</span>
-                    <span className="count-name">Purchases</span>
+                  <i class="fas fa-shopping-cart"></i>
+                    <span className="count-numbers">{this.state.allOrders.length}</span>
+                    <span className="count-name"> Total Purchases</span>
                   </div>
                 </div>
 
                 <div className="col-md-3">
                   <div className="card-counter success">
-                    <i className="fa fa-database" />
-                    <span className="count-numbers">6875</span>
-                    <span className="count-name">Data</span>
+                  <i class="fas fa-chart-pie"></i>
+                    <span className="count-numbers">{this.state.categories.length}</span>
+                    <span className="count-name"> Active Categories</span>
                   </div>
                 </div>
 
@@ -342,7 +536,7 @@ export default class productList extends Component {
                   <div className="card-counter info">
                     <i className="fa fa-users" />
                     <span className="count-numbers">35</span>
-                    <span className="count-name">Users</span>
+                    <span className="count-name"> Customers</span>
                   </div>
                 </div>
               </div>
@@ -510,7 +704,7 @@ export default class productList extends Component {
           xl={6}
           xs={12}
         >
- <div className="container" >
+ <div id="tab1" className="container" >
  
  <h1>Latest Products</h1>
    <table className="table" style={{color:"#546E7A"}}>
@@ -543,9 +737,9 @@ export default class productList extends Component {
           xs={12}
         >
  
- <div className="container" style={{backgroundColor:"#00ACC1" , color:"#FAFAFA"}}>
+ <div id="tab2" className="container" style={{backgroundColor:"#00ACC1" , color:"#FAFAFA"}}>
  
-        <h1>Product Summary</h1>
+        <h1>Recently Updated Products</h1>
           <table className="table" style={{color:"#FAFAFA"}}>
            
             <thead>
@@ -560,7 +754,7 @@ export default class productList extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.productList()}
+              {this.updateProductList()}
             </tbody>
           </table>
           </div>
@@ -582,9 +776,9 @@ export default class productList extends Component {
           xl={6}
           xs={12}
         >
- <div className="container" style={{backgroundColor:"#FF7043" , color:"#FBE9E7"}}>
+ <div  id="tab3" className="container" style={{backgroundColor:"#FF7043" , color:"#FBE9E7"}}>
  
- <h1>Product Summary</h1>
+ <h1>Low Stock Products</h1>
    <table className="table" style={{color:"#FBE9E7"}}>
     
      <thead>
@@ -599,7 +793,7 @@ export default class productList extends Component {
        </tr>
      </thead>
      <tbody>
-       {this.productList()}
+       {this.lowstockList()}
      </tbody>
    </table>
    </div>
@@ -613,10 +807,10 @@ export default class productList extends Component {
          xl={6}
          xs={12}
         >
- <div className="container" style={{backgroundColor:"#263238" , color:"#CDDC39"}}>
+ <div id="tab4" className="container" style={{backgroundColor:"#263238" , color:"#FDD835"}}>
  
-        <h1>Product Summary</h1>
-          <table className="table" style={{color:"#E6EE9C"}}>
+        <h1>Top Rated Products</h1>
+          <table className="table" style={{color:"#FDD835"}}>
            
             <thead>
               <tr>
@@ -630,7 +824,7 @@ export default class productList extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.productList()}
+              {this.topRateProductList()}
             </tbody>
           </table>
           </div>
@@ -644,7 +838,9 @@ export default class productList extends Component {
 
 
 </center>
-
+<div id="avoid1"></div>
+<div id="avoid2"></div>
+<div id="profile"></div>
 
 
 

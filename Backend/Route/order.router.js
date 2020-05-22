@@ -55,7 +55,7 @@ orderRoutes.route("/add").post(async (req, res) => {
 //get all 
 // get by id 
 orderRoutes.route("/").get(function (req, res) {
-  orders.find(function (err, orders) {
+  Order.find(function (err, orders) {
       if (err) {
         console.log(err);
       } else {
@@ -67,7 +67,7 @@ orderRoutes.route("/").get(function (req, res) {
 
 orderRoutes.route("/:id").get(function (req, res) {
   let id = req.params.id;
-  orders.findOne({ orderId: id }, function (err, order) {
+  Order.findOne({ orderId: id }, function (err, order) {
     if (err) {
       console.log(err);
     } else {
@@ -81,6 +81,9 @@ orderRoutes.route("/:id").get(function (req, res) {
 orderRoutes.get('/getbyProduct/:id', (req, res) => {
 
   let id = req.params.id;
+
+  console.log("recieved id is :", id);
+  
 
   Order.find({products: {$elemMatch: {_id:id}}} , function (err, orders) {
     if (err) {

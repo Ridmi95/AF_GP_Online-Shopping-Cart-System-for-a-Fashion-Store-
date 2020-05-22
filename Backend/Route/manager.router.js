@@ -158,7 +158,8 @@ ManagerRoutes.post('/add',adminAuth,(req, res) => {
                                         from: 'ptester473@gmail.com',
                                         to: req.body.email,
                                         subject: 'Activate Your Account',
-                                        text: 'http://localhost:4000/managers/activate/'+req.body.email + " username : " + req.body.username + " , password : " + _p
+                                        text: 'http://localhost:4000/managers/activate/'+req.body.email + " username : " + req.body.username + " , password : " + _p,
+                                        html: 'Please Activate Your Store Manager Account From Here <a class="btn btn-success" href="http://localhost:4000/managers/activate/'+req.body.email+'">Activate</a><br/> and after that <a class="btn btn-success" href="http://localhost:3000/manager-Sign-In">Log in</a>. Please Bookmark your Log In Page for future refferences', // html body
                                     }
 
 
