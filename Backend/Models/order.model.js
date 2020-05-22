@@ -31,10 +31,10 @@ let Order = new Schema(
 
     //customer name
 
-    customerName:{
-      type: String,
-      required: true,
-    },
+    // customerName:{
+    //   type: String,
+    //   required: true,
+    // },
     
   },
   {
