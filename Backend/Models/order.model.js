@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+//define collection for order
 let Order = new Schema(
   {
     orderId: {
