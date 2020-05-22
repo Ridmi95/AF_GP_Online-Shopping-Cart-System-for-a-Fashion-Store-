@@ -43,7 +43,9 @@ usersRoutes.route('/userlist').get(function (req, res) {
     });
 });
 
-//add a new user
+
+
+//add a new user - method 1
 usersRoutes.post("/register", async(req,res) =>{
     try{
     let {name,address, email,username,password,passwordCheck,phone}
@@ -84,6 +86,22 @@ usersRoutes.post("/register", async(req,res) =>{
     res.status(500).json({err: err.message});
 }
 });
+
+
+// add a new user - method 2
+usersRoutes.route('/add').post(function (req,res) {
+    let user = new Users(req.body);
+    user.save()
+        .then(user =>{
+            res.status(200).json({'Message':'successful'});
+        }).catch(err =>{
+        res.status(400).send('fail');
+    });
+});
+
+
+
+
 //view user by id
     usersRoutes.get('/:id',(req,res)=>{
         Users.findById(req.params.id)
