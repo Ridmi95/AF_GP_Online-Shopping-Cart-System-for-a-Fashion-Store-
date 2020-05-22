@@ -32,6 +32,7 @@ cloudinary.config({
 //     });
 // });
 
+
 //manager
 productRoutes.get("/all",auth , async (req, res) =>{
   await Product.find(function (err, products) {
@@ -61,6 +62,7 @@ productRoutes.get("/admin-all",admin_auth , async (req, res) =>{
 
 
 
+
 productRoutes.get("/recent",auth , async (req, res) =>{
   await Product.find(function (err, products) {
     if (err) {
@@ -70,6 +72,7 @@ productRoutes.get("/recent",auth , async (req, res) =>{
     }
   }).limit(10).sort({createdAt:-1});
 });
+
 
 productRoutes.get("/updated",auth , async (req, res) =>{
   await Product.find(function (err, products) {
@@ -104,7 +107,7 @@ productRoutes.get("/top-discount",auth , async (req, res) =>{
 
 
 
-
+//client get
 productRoutes.route("/").get(function (req, res) {
   let category = req.query.category;
 
@@ -127,6 +130,8 @@ productRoutes.route("/").get(function (req, res) {
   }
 });
 
+
+
 //manager get product
 productRoutes.get("/manager/:id",auth,async (req, res) =>{
   let id = req.params.id;
@@ -142,6 +147,9 @@ productRoutes.get("/manager/:id",auth,async (req, res) =>{
 });
 
 
+
+
+//client update
 productRoutes.get("/ByCategory/:key",async (req, res) =>{
   let key = req.params.key;
 
@@ -159,18 +167,35 @@ productRoutes.get("/ByCategory/:key",async (req, res) =>{
 });
 
 
-productRoutes.get("/:id",async (req, res) =>{
+// productRoutes.get("/:id",async (req, res) =>{
+//   let id = req.params.id;
+//   await Product.findOne({ _id: id }, function (err, product) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.status(200).json({ success: true, data: product });
+//       console.log("Passed product is", product);
+      
+//     }
+//   });
+// });
+      
+
+// Client get by Id
+productRoutes.route("/:id").get(function (req, res) {
   let id = req.params.id;
-  await Product.findOne({ _id: id }, function (err, product) {
+  Product.findOne({ productCode: id }, function (err, product) {
     if (err) {
       console.log(err);
     } else {
       res.status(200).json({ success: true, data: product });
-      console.log("Passed product is", product);
       
     }
   });
 });
+
+
+
 
 //search by Id
 productRoutes.route("/search/:key").get(function (req, res) {
@@ -190,7 +215,9 @@ productRoutes.route("/search/:key").get(function (req, res) {
         });
       });
 
-//update by product code
+
+
+//Client update by product code
 
 productRoutes.route("/update/bycode/").put(function (req, res) {
   Product.findOneAndUpdate(
@@ -205,6 +232,8 @@ productRoutes.route("/update/bycode/").put(function (req, res) {
     }
   );
 });
+
+
 
 // upload file
 
@@ -242,11 +271,6 @@ productRoutes.post('/upload', auth,(req,res) =>{
 
 
 
-
-
-  
-
-
 })
 
 
@@ -271,6 +295,8 @@ productRoutes.route('/list/:id').get((req, res) =>{
 
 
 });
+
+
 
 //add product
 productRoutes.post('/add', auth, async (req, res) =>{
