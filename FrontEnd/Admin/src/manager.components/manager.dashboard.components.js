@@ -7,6 +7,7 @@ import swal from 'sweetalert';
 import { Grid } from '@material-ui/core';
 import Swal from 'sweetalert2'
 import { Line } from 'react-chartjs-2';
+import Chart from './Charts';
 
 
 
@@ -602,24 +603,7 @@ export default class productList extends Component {
 
                 <h3>Sample Chart</h3>
 
-                <Line
-
-                  options={{
-
-                    responsive: true
-                  }}
-                  data={
-
-                    this.state.Chartdata
-
-                  }
-
-
-
-
-
-
-                />
+               <Chart/>
 
 
 

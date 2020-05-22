@@ -240,7 +240,7 @@ export default class viewproduct extends Component {
 
     getProduct() {
         const token = localStorage.getItem('manager_token');
-        axios.get('http://localhost:4000/product/' + this.props.match.params.id, {
+        axios.get('http://localhost:4000/product/manager/' + this.props.match.params.id, {
             headers:
             {
                 manager_token: token

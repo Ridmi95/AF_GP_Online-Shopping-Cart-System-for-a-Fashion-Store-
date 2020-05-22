@@ -127,8 +127,8 @@ productRoutes.route("/").get(function (req, res) {
   }
 });
 
-//customer get product
-productRoutes.get("/customer/:id",async (req, res) =>{
+//manager get product
+productRoutes.get("/manager/:id",auth,async (req, res) =>{
   let id = req.params.id;
   await Product.findOne({ _id: id }, function (err, product) {
     if (err) {
@@ -142,7 +142,24 @@ productRoutes.get("/customer/:id",async (req, res) =>{
 });
 
 
-productRoutes.get("/:id",auth,async (req, res) =>{
+productRoutes.get("/ByCategory/:key",async (req, res) =>{
+  let key = req.params.key;
+
+  console.log("Category key is: " , key);
+  
+  await Product.find({ categoryName: key }, function (err, product) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: product });
+      console.log("Passed product is", product);
+      
+    }
+  });
+});
+
+
+productRoutes.get("/:id",async (req, res) =>{
   let id = req.params.id;
   await Product.findOne({ _id: id }, function (err, product) {
     if (err) {
