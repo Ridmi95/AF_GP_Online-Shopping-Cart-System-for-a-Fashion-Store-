@@ -7,7 +7,8 @@ import swal from 'sweetalert';
 import { Grid } from '@material-ui/core';
 import Swal from 'sweetalert2'
 import { Line } from 'react-chartjs-2';
-import Chart from './Charts';
+import Chart1 from './Bar';
+import Chart2 from './SalesLine';
 
 
 
@@ -601,9 +602,9 @@ export default class productList extends Component {
 
               <div style={{ position: "relative" }} >
 
-                <h3>Sample Chart</h3>
+                <center><b><h2 style={{marginBottom:"50px"}}>Products by Categories Summary</h2></b></center>
 
-               <Chart/>
+               <Chart1/>
 
 
 
@@ -623,19 +624,9 @@ export default class productList extends Component {
 
               <div style={{ position: "relative" }} >
 
-                <h3>Sample Chart</h3>
+              <center><b><h2 style={{marginBottom:"50px"}}>Sales Summary</h2></b></center>
 
-                <Line
-
-                  options={{
-                    responsive: true
-                  }}
-                  data={
-
-                    this.state.Chartdata
-
-                  }
-
+                <Chart2
 
 
 

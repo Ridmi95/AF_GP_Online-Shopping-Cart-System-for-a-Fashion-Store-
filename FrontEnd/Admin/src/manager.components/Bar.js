@@ -5,7 +5,7 @@ import axios from 'axios';
 var LabelArray = [];
 var DataArray =[];
 
-class Chart extends Component{
+class bar extends Component{
 
     constructor(props){
         super(props);
@@ -21,14 +21,7 @@ class Chart extends Component{
               productCount:[],
               labels:[],
               data:[],
-              Chartdata: {
-                labels: ['1', '2', '1', '3', '2', '3', '4', '5'],
-                datasets: [{
-                  label: "medium",
-                  backgroundColor: "rgba(255,0,255,0.75)",
-                  data: [4, 5, 1, 10, 32, 2, 12]
-                }]
-              }
+              Chartdata: null
         }
     }
 
@@ -60,7 +53,7 @@ class Chart extends Component{
          
 
         }
-        console.log("labels are :" ,this.state.labels);
+       
 
         this.getProductsCountByCategory();
           
@@ -97,9 +90,7 @@ class Chart extends Component{
         
               })
 
-              console.log("Product array of "+key+" is ", this.state.productArray);
-
-              console.log("index is: " , index);
+              
               
               this.state.data.push(this.state.productArray.length);
               DataArray[index]=this.state.productArray.length;
@@ -123,11 +114,9 @@ class Chart extends Component{
         
           
       }
-      componentDidMount() {
-        this.getAllActiveCategories();
-        console.log("Data Array VAr: ", DataArray);
-        console.log("Label Array VAr len: ", LabelArray.length);
-        console.log("Label Array VAr : ", LabelArray);
+    async  componentDidMount() {
+       await this.getAllActiveCategories();
+     
         
 
         this.setState({
@@ -154,21 +143,21 @@ class Chart extends Component{
 
     render(){
 
+       
         return(
             <div className="chart" >
 
-                <Bar
+                <Pie
 
 
                 
                 data ={this.state.Chartdata}
                    
-                // width={}
-                // height={}
+            
                 options={{legend:{position:"bottom"}}}
                 
                 
-                />
+                redraw />
 
 
             </div>
@@ -178,4 +167,4 @@ class Chart extends Component{
 
 
 }
-export default Chart;
+export default bar;

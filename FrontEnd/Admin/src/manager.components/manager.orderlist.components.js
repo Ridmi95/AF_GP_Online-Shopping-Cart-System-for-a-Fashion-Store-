@@ -5,6 +5,9 @@ import Title from './manager.title.components';
 import axios from 'axios';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2'
+import Chart1 from './RevenueLine';
+import Chart2 from './OrderLine';
+import { Grid } from '@material-ui/core';
 
 
 
@@ -334,7 +337,7 @@ export default class orderList extends Component {
                   <div className="card-counter success">
                     <i class="fas fa-store" />
                     <span className="count-numbers">{getTotProducts(this.state.products)}</span>
-                    <span className="count-name"> Total Products</span>
+                    <span className="count-name"> Total Products In Stock</span>
                   </div>
                 </div>
 
@@ -351,6 +354,69 @@ export default class orderList extends Component {
 
 
         <div></div>
+
+        <div style={{ padding: "40px" }}>
+
+
+<Grid
+  container
+  spacing={10}
+>
+  <Grid
+    item
+    lg={6}
+    sm={6}
+    xl={6}
+    xs={12}
+  >
+
+    <div style={{ position: "relative" }} >
+
+      <h3>Revenue Summary</h3>
+
+     <Chart1/>
+
+
+
+    </div>
+  </Grid>
+
+
+
+
+  <Grid
+    item
+    lg={6}
+    sm={6}
+    xl={6}
+    xs={12}
+  >
+
+    <div style={{ position: "relative" }} >
+
+      <h3>Purchase Orders Summary</h3>
+
+      <Chart2
+
+
+
+
+
+      />
+
+
+
+    </div>
+  </Grid>
+
+
+</Grid>
+
+
+
+
+
+</div>
 
         <br /><br />
         <div
@@ -382,6 +448,9 @@ export default class orderList extends Component {
         </div>
 
 
+
+        
+       
 
 
 

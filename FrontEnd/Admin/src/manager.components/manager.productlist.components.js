@@ -9,6 +9,7 @@ import Swal from 'sweetalert2'
 
 
 
+
 function getAvgRating(ratings) {
   const total = ratings.reduce((acc, c) => acc + c, 0);
   if(total){
@@ -463,7 +464,7 @@ export default class productList extends Component {
                   <div className="card-counter success">
                   <i class="fas fa-store"/>
     <span className="count-numbers">{getTotProducts(this.state.products)}</span>
-                    <span className="count-name"> Total Products</span>
+                    <span className="count-name">Products In Stock</span>
                   </div>
                 </div>
 
