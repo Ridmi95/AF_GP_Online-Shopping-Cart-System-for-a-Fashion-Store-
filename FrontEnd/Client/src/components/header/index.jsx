@@ -14,8 +14,7 @@ import { handleCart } from "action/cart";
 
 import "./styles.scss";
 import Icon from "components/icon";
-// import UserSignIn from "../../user.components/user.Login";
-// import UserSignUp from "../../user.components/user.SignUp";
+
 
 type HeaderProps = {
   isAuthenticated: Boolean,
@@ -162,9 +161,7 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
                         loading={status === ASYNC_STATUS.LOADING}
                         onClick={this.handleSignInButtonClick}
                         htmlType={Button.HTML_TYPE.LINK}
-                        // link="/userlogin"
-                        link="/"
-                      >
+                        link="/home">
                         Sign In
                       </Button>
                     </div>
@@ -173,9 +170,7 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
                         loading={status === ASYNC_STATUS.LOADING}
                         onClick={this.handleSingUpButtonClick}
                         htmlType={Button.HTML_TYPE.LINK}
-                        // link="/usersignup"
-                        link="/"
-                      >
+                        link="/">
                         Sign Up
                       </Button>
                     </div>
@@ -183,12 +178,6 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
                 </Fragment>
               )}
             </div>
-            {/*<main className="container-fluid">*/}
-            {/*<Switch>*/}
-            {/*    <Route exact path="/userlogin" component={UserSignIn}/>*/}
-            {/*    <Route exact path="/usersignup" component={UserSignUp}/>*/}
-            {/*  </Switch>*/}
-            {/*</main>*/}
           </div>
         </div>
       </Fragment>
