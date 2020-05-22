@@ -21,6 +21,7 @@
 "use strict";
 const express = require("express");
 const orderRoutes = express.Router();
+const auth = require('./managerAuth.js');
 
 let Product = require("../Models/product.model");
 
@@ -54,31 +55,20 @@ orderRoutes.route("/add").post(async (req, res) => {
 
 //get all 
 // get by id 
-orderRoutes.route("/").get(function (req, res) {
+
+
+orderRoutes.get("/managerlist",auth,function (req, res) {
   Order.find(function (err, orders) {
       if (err) {
-        console.log(err);
+        console.log("Error is: ", err);
       } else {
-        res.status(200).json({ success: true, data: orders });
+        res.json(orders);
       }
     });
 
 });
 
-orderRoutes.route("/:id").get(function (req, res) {
-  let id = req.params.id;
-  Order.findOne({ orderId: id }, function (err, order) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.status(200).json({ success: true, data: order });
-    }
-  });
-});
-
-
-
-orderRoutes.get('/getbyProduct/:id', (req, res) => {
+orderRoutes.get('/getbyProduct/:id',auth, (req, res) => {
 
   let id = req.params.id;
 
@@ -94,6 +84,37 @@ orderRoutes.get('/getbyProduct/:id', (req, res) => {
     }
   })
 });
+
+
+orderRoutes.route("/").get(function (req, res) {
+  Order.find(function (err, orders) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(200).json({ success: true, data: orders });
+      }
+    });
+
+});
+
+
+
+
+orderRoutes.route("/:id").get(function (req, res) {
+  let id = req.params.id;
+  Order.findOne({ orderId: id }, function (err, order) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: order });
+    }
+  });
+});
+
+
+
+
+
 
 
 
