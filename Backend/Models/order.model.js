@@ -28,6 +28,14 @@ let Order = new Schema(
       type: String,
       required: true,
     },
+
+    //customer name
+
+    customerName:{
+      type: String,
+      required: true,
+    },
+    
   },
   {
     collection: "order",
