@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 import Navbar from "./manager.navbar.components";
 import Title from "./manager.title.components";
-import styleManager from "./css/manager-add-style.css";
+
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
 let imgname = '';
 let token = localStorage.getItem('manager_token');
-let addvalid=false;
+let addvalid = false;
 let sub = false;
 
 
@@ -35,7 +35,7 @@ export default class addproducts extends Component {
         this.showHelp = this.showHelp.bind(this)
         this.RemoveImage = this.RemoveImage.bind(this)
 
-        
+
 
 
         this.state = {
@@ -56,7 +56,7 @@ export default class addproducts extends Component {
             photo: null,
             NewUpload: false,
             uploadedimg: null,
-            uploadPercentage:0
+            uploadPercentage: 0
 
         }
     }
@@ -67,10 +67,10 @@ export default class addproducts extends Component {
         this.validateUser();
 
 
-        
+
 
         token = localStorage.getItem('manager_token');
-        
+
 
         axios.get('http://localhost:4000/category/getall', {
             headers:
@@ -84,7 +84,7 @@ export default class addproducts extends Component {
                 this.setState({
 
                     categories: res.data.map(category => category.category_name),
-                    
+
 
                 })
 
@@ -101,12 +101,12 @@ export default class addproducts extends Component {
 
 
         token = localStorage.getItem('manager_token')
-       
+
         axios.get('http://localhost:4000/login/manager-token-validate', {
 
             headers:
             {
-                // Authorization : ` bearer $(token) ` 
+
 
                 manager_token: token
 
@@ -271,22 +271,22 @@ export default class addproducts extends Component {
     }
     onChangeImage(e) {
 
-       try {
-        imgname = e.target.files[0].name;
-           
-       } catch (error) {
+        try {
+            imgname = e.target.files[0].name;
 
-        swal({
-            title: "Please Select an Image",
-            text: "You have not Select an Image!",
-            icon: "error",
-            button: "ok",
-        });
+        } catch (error) {
 
-           
-       }
+            swal({
+                title: "Please Select an Image",
+                text: "You have not Select an Image!",
+                icon: "error",
+                button: "ok",
+            });
 
-        
+
+        }
+
+
 
         this.setState({
 
@@ -297,14 +297,14 @@ export default class addproducts extends Component {
 
 
         });
-    
+
 
 
     }
 
-    RemoveImage(){
+    RemoveImage() {
 
-        if(this.state.image){
+        if (this.state.image) {
 
             swal({
                 title: "Are you sure?",
@@ -312,204 +312,205 @@ export default class addproducts extends Component {
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
-              })
-              .then((stat) => {
-                if (stat) {
+            })
+                .then((stat) => {
+                    if (stat) {
 
 
-                    this.state.image=null;
+                        this.state.image = null;
 
-                    swal("Image De-Attached Successfully!", {
-                        title:"Image De-Attached Successfully!",
-                        text:'To Re-Attach Press View or Attach',
-                        icon: "info",
-                      });
-                  
-                } else {
-                    swal("Image De-Attached Cancelled!", {
-                        title:"Image De-Attached Cancelled!",
-                        text:'Your Image Attachment is Safe',
-                        icon: "success",
-                      });
-                }
-              });
+                        swal("Image De-Attached Successfully!", {
+                            title: "Image De-Attached Successfully!",
+                            text: 'To Re-Attach Press View or Attach',
+                            icon: "info",
+                        });
 
-        }else{
+                    } else {
+                        swal("Image De-Attached Cancelled!", {
+                            title: "Image De-Attached Cancelled!",
+                            text: 'Your Image Attachment is Safe',
+                            icon: "success",
+                        });
+                    }
+                });
+
+        } else {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
                 title: 'No Attachment Found',
-                text:"No Attachment is  found for this product",
+                text: "No Attachment is  found for this product",
                 showConfirmButton: false,
                 timer: 3000
-              })
+            })
 
 
         }
     }
 
-    
+
 
     async uploadImage() {
 
 
         if (imgname) {
 
-        if (this.state.NewUpload) {
+            if (this.state.NewUpload) {
 
 
-            let Toast = Swal.mixin({
-                toast: true,
-                position: 'center',
-                showConfirmButton: false,
-                timer: this.state.uploadPercentage,
-                timerProgressBar: true,
-                onOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                },
-                onBeforeOpen: () => {
-                    Swal.showLoading()
-                }
-                
-                
-              })
-              console.log("percentage ", this.state.uploadPercentage);
+                let Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: this.state.uploadPercentage,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    },
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    }
 
 
-            this.state.NewUpload = false;
-
-            const formData = new FormData();
-
-            formData.append('photo', this.state.photo);
-
-           
-
-              token = localStorage.getItem('manager_token')
-
-            await axios.post('http://localhost:4000/product/upload', formData,{
-
-                headers:
-                {
-                    manager_token: token
-    
-                },
-                onUploadProgress: ProgressEvent =>{
-
-                    this.state.uploadPercentage=100-parseInt((Math.round((ProgressEvent.loaded * 100)/ProgressEvent.total)))
-
-                    console.log("percentage inside ", this.state.uploadPercentage);
-
-                    Toast.fire({
-                        icon: 'info',
-                        title: 'Uploading on Progress.',
-                        text:'Please wait a moment',
-                        
-                      })
-
-                    setTimeout(()=> this.state.uploadPercentage=0,1000)
+                })
+                console.log("percentage ", this.state.uploadPercentage);
 
 
-                }
+                this.state.NewUpload = false;
+
+                const formData = new FormData();
+
+                formData.append('photo', this.state.photo);
 
 
 
+                token = localStorage.getItem('manager_token')
 
-            }).then((res) => {
+                await axios.post('http://localhost:4000/product/upload', formData, {
 
-                console.log("response is: ", res.data);
+                    headers:
+                    {
+                        manager_token: token
 
-                if (res.data.URL) {
+                    },
+                    onUploadProgress: ProgressEvent => {
+
+                        this.state.uploadPercentage = 100 - parseInt((Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total)))
+
+                        console.log("percentage inside ", this.state.uploadPercentage);
+
+                        Toast.fire({
+                            icon: 'info',
+                            title: 'Uploading on Progress.',
+                            text: 'Please wait a moment',
+
+                        })
+
+                        setTimeout(() => this.state.uploadPercentage = 0, 1000)
+
+
+                    }
+
+
+
+
+                }).then((res) => {
+
+                    console.log("response is: ", res.data);
+
+                    if (res.data.URL) {
+
+                        Swal.fire({
+                            title: 'Confirm',
+                            text: "Do You Want To Set This As the Product Image?",
+
+                            imageUrl: res.data.URL,
+
+                            imageHeight: 400,
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes',
+                            cancelButtonText: 'No,cancel',
+                            reverseButtons: true,
+                            preConfirm: (e) => {
+
+                                swal({
+                                    title: "Image Attached",
+                                    text: "This Image File is Attached to Your Product",
+                                    icon: "success",
+
+                                    dangerMode: false,
+                                })
+                                this.state.image = res.data.URL;
+
+                                console.log(this.state.image);
+
+                            }
+
+
+
+                        }).then((e) => {
+
+
+                            this.state.uploadedimg = res.data.URL;
+
+                            console.log("Uploaded but Cancel: ", this.state.uploadedimg);
+
+
+
+
+
+
+
+
+                        })
+
+                    } if (res.data.msg) {
+                        swal({
+                            title: "No File is Selected",
+                            text: res.data.msg,
+                            icon: "error",
+
+                            dangerMode: true,
+                        })
+
+
+                    }
+
+                }).catch((err => {
 
                     Swal.fire({
-                        title: 'Confirm',
-                        text: "Do You Want To Set This As the Product Image?",
-                        // html:'<figure> <img src="'+res.data.URL+'" alt="sing up image"/></figure>',
-                        imageUrl: res.data.URL,
-
-                        imageHeight: 400,
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes',
-                        cancelButtonText: 'No,cancel',
-                        reverseButtons: true,
-                        preConfirm: (e) => {
-
-                            swal({
-                                title: "Image Attached",
-                                text: "This Image File is Attached to Your Product",
-                                icon: "success",
-                                // buttons: true,
-                                dangerMode: false,
-                            })
-                            this.state.image = res.data.URL;
-
-                            console.log(this.state.image);
-
-                        }
-
-
-
-                    }).then((e) => {
-                        
-
-                        this.state.uploadedimg = res.data.URL;
-
-                        console.log("Uploaded but Cancel: ", this.state.uploadedimg);
-
-
-
-
-
-
-
-
-                    })
-
-                } if (res.data.msg) {
-                    swal({
-                        title: "No File is Selected",
-                        text: res.data.msg ,
+                        title: "Upload Interrupted",
+                        text: "Selected File is not an Image or in unsupported file format or Upload is interrupted Due to Server Error, Upload failed! ",
                         icon: "error",
-                        // buttons: true,
+
                         dangerMode: true,
                     })
 
 
+                }))
+
+
+            } else {
+
+                if (!this.state.NewUpload) {
+
+                    swal({
+                        title: "Existing Upload",
+                        text: "This File is Already Uploaded",
+                        icon: "info",
+
+                        dangerMode: false,
+                    })
                 }
 
-            }).catch((err=>{
-
-                Swal.fire({
-                    title: "Upload Interrupted",
-                    text: "Selected File is not an Image or in unsupported file format or Upload is interrupted Due to Server Error, Upload failed! ",
-                    icon: "error",
-                    // buttons: true,
-                    dangerMode: true,
-                })
-
-
-            }))
-
-
-        } else {
-
-            if(!this.state.NewUpload){
-
-            swal({
-                title: "Existing Upload",
-                text: "This File is Already Uploaded",
-                icon: "info",
-                // buttons: true,
-                dangerMode: false,
-            })
             }
-        
-        }}else{
+        } else {
             swal({
                 title: "No File is Selected",
                 text: "No file is selected Please Select a File First!",
                 icon: "error",
-                // buttons: true,
+
                 dangerMode: true,
             })
 
@@ -518,43 +519,43 @@ export default class addproducts extends Component {
 
     }
 
-    showImage(){
+    showImage() {
 
-        let go=0;
+        let go = 0;
 
         if (this.state.image) {
 
             Swal.fire({
                 title: 'Product Picture',
-                
-                // html:'<figure> <img src="'+res.data.URL+'" alt="sing up image"/></figure>',
+
+
                 imageUrl: this.state.image,
-                icon:"success",
+                icon: "success",
 
                 text: "This Image is Attached to your Product",
 
                 imageHeight: 400,
-                
+
                 confirmButtonText: 'Continue',
-                
+
                 reverseButtons: true,
             })
 
-            addvalid=true;
-
-                
+            addvalid = true;
 
 
 
 
-        }else if(this.state.uploadedimg){
+
+
+        } else if (this.state.uploadedimg) {
 
             Swal.fire({
                 title: 'Image Not Attached',
                 html: "Uploaded Image is <b>not attached</b> to the Product,<br/>Do you wish to <b>Attach</b> this as the Product Image?",
-                // html:'<figure> <img src="'+res.data.URL+'" alt="sing up image"/></figure>',
+
                 imageUrl: this.state.uploadedimg,
-                icon:"question",
+                icon: "question",
 
                 imageHeight: 400,
                 showCancelButton: true,
@@ -566,7 +567,7 @@ export default class addproducts extends Component {
 
                     console.log(this.state.image);
 
-                    
+
 
 
 
@@ -574,115 +575,115 @@ export default class addproducts extends Component {
                         title: "Image Attached",
                         text: "This Image File is Attached to Your Product",
                         icon: "success",
-                        // buttons: true,
+
                         dangerMode: false,
                     })
 
-                    addvalid= true;
+                    addvalid = true;
 
-                    
+
 
                 }
 
-                
+
 
 
 
             })
-            addvalid= true;
+            addvalid = true;
 
 
 
 
 
-        }else{
+        } else {
 
-            if(!sub){
-            swal({
-                title: "No File is Uploaded",
-                text: "No file is Uploaded, First Upload an Image file",
-                icon: "error",
-                // buttons: true,
-                dangerMode: true,
-            })
-            
-        }else{
+            if (!sub) {
+                swal({
+                    title: "No File is Uploaded",
+                    text: "No file is Uploaded, First Upload an Image file",
+                    icon: "error",
 
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                  confirmButton: 'btn btn-danger',
-                  cancelButton: 'btn btn-success',
-                  margin :'50px'
-                },
-                buttonsStyling: false
-              })
+                    dangerMode: true,
+                })
 
-            swalWithBootstrapButtons.fire({
-                title: 'No file is Uploaded',
-                text: "Do you wish to continue without uploading a Product Image?",
-                // html:'<figure> <img src="'+res.data.URL+'" alt="sing up image"/></figure>',
-                imageUrl: this.state.uploadedimg,
-                icon:"warning",
+            } else {
 
-                imageHeight: 400,
-                showCancelButton: true,
-                confirmButtonText: 'Continue',
-                cancelButtonText: 'Cancel',
-                reverseButtons: true,
-                
-                preConfirm: (e) => {
-                   
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-danger',
+                        cancelButton: 'btn btn-success',
+                        margin: '50px'
+                    },
+                    buttonsStyling: false
+                })
 
-                   
+                swalWithBootstrapButtons.fire({
+                    title: 'No file is Uploaded',
+                    text: "Do you wish to continue without uploading a Product Image?",
+
+                    imageUrl: this.state.uploadedimg,
+                    icon: "warning",
+
+                    imageHeight: 400,
+                    showCancelButton: true,
+                    confirmButtonText: 'Continue',
+                    cancelButtonText: 'Cancel',
+                    reverseButtons: true,
+
+                    preConfirm: (e) => {
 
 
-                    go=1;
-                   console.log("Go dont need file");
-                   
-                   addvalid= true;
 
-                    
 
+
+                        go = 1;
+                        console.log("Go dont need file");
+
+                        addvalid = true;
+
+
+
+                    }
+
+
+
+
+
+                })
+
+                if (go == 0) {
+
+                    console.log("dont go");
+
+
+                    addvalid = false;
                 }
-
-                
-
-
-
-            })
-
-            if(go==0){
-
-                console.log("dont go");
-
-
-                addvalid= false;
             }
-        }
 
         }
 
 
     }
 
-    showHelp(){
+    showHelp() {
         Swal.fire({
-          title: '<strong>File Upload Details</strong>',
-          icon: 'info',
-          html:
-            '<div style="text-align:justify;"><b>1. </b>   Upload file type should be in Image Format <br/><b>2. </b>  Select file to Upload by Pressing <b>Browse</b> button.<br/><b>3. </b>  To Upload the file Press <b> Upload Image </b> button. <br/><b>4. </b>   If you want to attach file to product Press <b>yes</b><br/><b>5. </b>  To view or attach the uploaded image to the product press <b>View or Attach Image</b></div>',
-            
-          showCloseButton: true,
-          
-          focusConfirm: false,
-          confirmButtonText:
-            '<i class="fas fa-check-circle"></i> Got it',
-         
-          
-        })
-      }
+            title: '<strong>File Upload Details</strong>',
+            icon: 'info',
+            html:
+                '<div style="text-align:justify;"><b>1. </b>   Upload file type should be in Image Format <br/><b>2. </b>  Select file to Upload by Pressing <b>Browse</b> button.<br/><b>3. </b>  To Upload the file Press <b> Upload Image </b> button. <br/><b>4. </b>   If you want to attach file to product Press <b>yes</b><br/><b>5. </b>  To view or attach the uploaded image to the product press <b>View or Attach Image</b></div>',
 
-     onSubmit = async (e) => {
+            showCloseButton: true,
+
+            focusConfirm: false,
+            confirmButtonText:
+                '<i class="fas fa-check-circle"></i> Got it',
+
+
+        })
+    }
+
+    onSubmit = async (e) => {
 
         e.preventDefault();
 
@@ -708,173 +709,152 @@ export default class addproducts extends Component {
 
         token = localStorage.getItem('manager_token')
 
-      
-        sub=true;
 
-      if(!addvalid){
+        sub = true;
 
-        this.showImage();
+        if (!addvalid) {
 
-
-      }else{
-        
-
-        axios.post('http://localhost:4000/product/add', product, {
-            headers:
-            {
-                manager_token: token
-
-            }
-        }).then((res) => {
-
-            if (res.data.warn) {
+            this.showImage();
 
 
-                swal({
-                    title: "Failed",
-                    text: res.data.warn,
-                    icon: "error",
-                    // buttons: true,
-                    dangerMode: true,
-                })
-
-            } else {
-
-                swal({
-                    title: "Successful",
-                    text: "Product Added Successfully!",
-                    icon: "success",
-                    button: "Continue",
-                });
-
-                addvalid=false;
-                this.state.image=null;
-            }
-
-        }
-        ).catch((err) => {
-
-            if (token === "null") {
-
-                console.log("Token is null Box called");
-
-                swal({
-                    title: "Unauthorized Access",
-                    text: "You have to Log-In First!",
-                    icon: "error",
-                    button: "ok",
-                });
-
-                this.props.history.push('/manager-Sign-In/');
-            }
-
-            else {
-
-                token = localStorage.getItem('manager_token')
+        } else {
 
 
-                // 
-                axios.get('http://localhost:4000/login/manager-token-validate', {
+            axios.post('http://localhost:4000/product/add', product, {
+                headers:
+                {
+                    manager_token: token
 
-                    headers:
-                    {
-                        // Authorization : ` bearer $(token) ` 
-
-                        manager_token: token
-
-                    }
                 }
-                ).then((res) => {
+            }).then((res) => {
+
+                if (res.data.warn) {
+
+
                     swal({
                         title: "Failed",
-                        text: "Information format is Unsupported",
+                        text: res.data.warn,
                         icon: "error",
-                        // buttons: true,
+
                         dangerMode: true,
                     })
 
+                } else {
+
+                    swal({
+                        title: "Successful",
+                        text: "Product Added Successfully!",
+                        icon: "success",
+                        button: "Continue",
+                    });
+
+                    addvalid = false;
+                    this.state.image = null;
+                }
+
+            }
+            ).catch((err) => {
+
+                if (token === "null") {
+
+                    console.log("Token is null Box called");
+
+                    swal({
+                        title: "Unauthorized Access",
+                        text: "You have to Log-In First!",
+                        icon: "error",
+                        button: "ok",
+                    });
+
+                    this.props.history.push('/manager-Sign-In/');
+                }
+
+                else {
+
+                    token = localStorage.getItem('manager_token')
+
+
+                    // 
+                    axios.get('http://localhost:4000/login/manager-token-validate', {
+
+                        headers:
+                        {
+
+
+                            manager_token: token
+
+                        }
+                    }
+                    ).then((res) => {
+                        swal({
+                            title: "Failed",
+                            text: "Information format is Unsupported",
+                            icon: "error",
+
+                            dangerMode: true,
+                        })
+
+
+
+
+                    }
+
+
+
+                    ).catch((err) => {
+
+
+
+
+
+
+                        Swal.fire({
+                            position: 'bottom-end',
+                            icon: 'error',
+                            title: 'Session Has Expired',
+                            html:
+                                '<h4>Last Session Details</h4><br/><b>User ID :</b> ' + localStorage.getItem("id") + '<br/>' +
+                                'Please Log In again and come back to this page to Continue. <br/><a class="btn btn-success" href="http://localhost:3000/manager-Sign-In/" target="_blank">Log In Here</a>',
+                            showConfirmButton: false,
+                            timer: 10000,
+                            backdrop: `
+              rgba(255,0,0,0.4)`
+                        })
+
+
+
+
+                    });
+
+
+
+
 
 
 
                 }
 
 
-
-                ).catch((err) => {
-
+            });
 
 
 
-
-
-                    Swal.fire({
-                        position: 'bottom-end',
-                        icon: 'error',
-                        title: 'Session Has Expired',
-                        html:
-                            '<h4>Last Session Details</h4><br/><b>User ID :</b> ' + localStorage.getItem("id") + '<br/>' +
-                            'Please Log In again and come back to this page to Continue. <br/><a class="btn btn-success" href="http://localhost:3000/manager-Sign-In/" target="_blank">Log In Here</a>',
-                        showConfirmButton: false,
-                        timer: 10000,
-                        backdrop: `
-              rgba(255,0,0,0.4)`
-                    })
+            console.log("Product is: ", product.productCode);
+            console.log("Product is: ", product.categoryName);
+            console.log("Product is: ", product.productName);
+            console.log("Product is: ", product.color);
+            console.log("Product is: ", product.price);
+            console.log("Product is: ", product.quantity);
+            console.log("Product is: ", product.discount);
+            console.log("Product is: ", product.description);
+            console.log("Product is: ", product.rating);
+            console.log("Product is: ", product.comment);
+            console.log("Product is cat: ", product.categories);
 
 
 
-
-                });
-
-
-                // 
-
-                // swal({
-                //     title: "Failed",
-                //     text: "Information format is Unsupported",
-                //     icon: "error",
-                //     // buttons: true,
-                //     dangerMode: true,
-                //   })
-
-
-
-                // console.log("the token value is :" , token);
-
-                // Swal.fire({
-                //   position: 'bottom-end',
-                //   icon: 'error',
-                //   title: 'Session Has Expired',
-                //   html:
-                //   '<h4>Last Session Details</h4><br/><b>User ID :</b> '+ localStorage.getItem("id") +'<br/>'+
-                //   'Please Log In again and come back to this page to Continue. <br/><a class="btn btn-success" href="http://localhost:3000/manager-Sign-In/" target="_blank">Log In Here</a>',
-                //   showConfirmButton: false,
-                //   timer: 10000})
-
-
-
-
-            }
-
-
-        });
-
-
-
-        console.log("Product is: ", product.productCode);
-        console.log("Product is: ", product.categoryName);
-        console.log("Product is: ", product.productName);
-        console.log("Product is: ", product.color);
-        console.log("Product is: ", product.price);
-        console.log("Product is: ", product.quantity);
-        console.log("Product is: ", product.discount);
-        console.log("Product is: ", product.description);
-        console.log("Product is: ", product.rating);
-        console.log("Product is: ", product.comment);
-        console.log("Product is cat: ", product.categories);
-
-
-
-    }}
+        }
+    }
 
 
 
@@ -928,7 +908,7 @@ export default class addproducts extends Component {
 
                                         {/* category */}
                                         <div class="form-group">
-                                             Category
+                                            Category
                                 <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <label class="input-group-text" for="categoryName"></label>
@@ -960,7 +940,7 @@ export default class addproducts extends Component {
                                         {/* price */}
                                         Price
                                         <div class="form-group">
-                                            
+
                                             <label for="price"><i class="zmdi zmdi-money-box"></i></label>
                                             <input type="text" name="name" id="price" placeholder="Product Price" onChange={this.onChangePrice} value={this.state.price} required />
                                         </div>
@@ -993,9 +973,9 @@ export default class addproducts extends Component {
                                         Description
                                         <div class="form-group">
                                             <label for="discription"></label>
-                                            <textarea name="name" id="discription" 
-                                            rows="10" cols="35"
-                                            placeholder="Product Discription" onChange={this.onChangeDiscription} value={this.state.description} />
+                                            <textarea name="name" id="discription"
+                                                rows="10" cols="35"
+                                                placeholder="Product Discription" onChange={this.onChangeDiscription} value={this.state.description} />
                                         </div>
 
 
@@ -1010,17 +990,17 @@ export default class addproducts extends Component {
                                     </form>
                                 </div>
                                 <div class="signup-image">
-                                    
-                                
 
-                                    
-                                    <div className="shadow-box-example z-depth-5" style={{backgroundImage: "linear-gradient(to bottom right, #ECEFF1, #FAFAFA)", padding:"20px"}}>
-                                    <button class="btn btn-outline-info" style={{ margin:"5px", marginLeft:"85%" ,}} onClick={this.showHelp}><i class="zmdi zmdi-help"></i></button>
+
+
+
+                                    <div className="shadow-box-example z-depth-5" style={{ backgroundImage: "linear-gradient(to bottom right, #ECEFF1, #FAFAFA)", padding: "20px" }}>
+                                        <button class="btn btn-outline-info" style={{ margin: "5px", marginLeft: "85%", }} onClick={this.showHelp}><i class="zmdi zmdi-help"></i></button>
                                         <h5><i class="zmdi zmdi-image-alt"></i> Image Settings</h5>
                                         <div className="input-group">
-                                        
+
                                             <div className="input-group-prepend" >
-                                            
+
 
                                             </div>
                                             <div className="custom-file">
@@ -1032,25 +1012,25 @@ export default class addproducts extends Component {
                                                     onChange={this.onChangeImage}
                                                 />
                                                 <label className="custom-file-label" htmlFor="inputGroupFile01">
-                                                   {imgname ? imgname : "Choose a file"}
+                                                    {imgname ? imgname : "Choose a file"}
                                                 </label>
                                             </div>
                                         </div><br /><center>
                                             <div class="form-group" >
-                                                <button style={{padding:"15px", margin:"5px"}} class="btn btn-outline-success" onClick={this.uploadImage}><i class="fas fa-cloud-upload-alt"></i> Upload Image</button><br/>
-                                                <button class="btn btn-outline-primary" style={{margin:"5px"}} onClick={this.showImage}><i class="fas fa-eye"></i> View or Attach Image</button>
-                                                <button class="btn btn-outline-danger" style={{margin:"5px"}} onClick={this.RemoveImage}><i class="fas fa-unlink"></i> Remove Attached Image</button>
+                                                <button style={{ padding: "15px", margin: "5px" }} class="btn btn-outline-success" onClick={this.uploadImage}><i class="fas fa-cloud-upload-alt"></i> Upload Image</button><br />
+                                                <button class="btn btn-outline-primary" style={{ margin: "5px" }} onClick={this.showImage}><i class="fas fa-eye"></i> View or Attach Image</button>
+                                                <button class="btn btn-outline-danger" style={{ margin: "5px" }} onClick={this.RemoveImage}><i class="fas fa-unlink"></i> Remove Attached Image</button>
                                             </div></center>
 
-                                           
-                                            </div>
 
-                                            <figure>
-                                        <img src="images/signup-image.jpg" alt="sing up image" />
+                                    </div>
+
+                                    <figure>
+                                        <img src="https://res.cloudinary.com/fashionistaimage/image/upload/v1590121230/t0z7mqn3uib0nbztzt3w.jpg" alt="sing up image" />
 
 
                                     </figure>
-                                   
+
 
                                 </div>
 
@@ -1058,7 +1038,7 @@ export default class addproducts extends Component {
 
                         </div>
                     </section>
-                </div><div id ="tab1"></div><div id ="tab2"></div><div id ="tab3"></div><div id ="tab4"></div><div hidden="true" id ="profile">No Data Available to Generate Reports from this page</div><div id ="avoid1"></div><div id ="avoid2"></div><div id ="tab-cards"></div>
+                </div><div id="tab1"></div><div id="tab2"></div><div id="tab3"></div><div id="tab4"></div><div hidden="true" id="profile">No Data Available to Generate Reports from this page</div><div id="avoid1"></div><div id="avoid2"></div><div id="tab-cards"></div>
 
             </div>
 

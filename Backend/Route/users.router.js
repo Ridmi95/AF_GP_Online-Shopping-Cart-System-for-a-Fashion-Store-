@@ -5,8 +5,20 @@ const bcrypt = require('bcrypt');
 let Users = require('../Models/users.model');
 const loginauth = require('../Route/userLoginAuth.router');
 const adminAuth = require('./auth.router.js');
+const manager_auth = require('./managerAuth.js');
 
 usersRoutes.get('/', adminAuth, (req, res) => {
+    Users.find(function (err, users) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.json(users);
+        }
+    });
+});
+
+usersRoutes.get('/managerlist',manager_auth, (req, res) => {
     Users.find(function (err, users) {
         if (err) {
             console.log(err);
@@ -121,5 +133,9 @@ usersRoutes.delete('/delete', loginauth, async (req,res) =>{
             });
     
         });
+
+
+
+  
 
 module.exports = usersRoutes;

@@ -25,8 +25,8 @@ function createPDF() {
   
 
   var style = "<style>";
-  style = style + "table {width: 100%;font: 17px Calibri;}";
-  style = style + "table, th, td {border: solid 1px #DDD;color: black ; border-collapse: collapse;";
+  style = style + "table {width: 100%;font: 17px Calibri;} body{font-size:12px}";
+  style = style + "table, th, td {border: solid 1px #DDD;color: black ;border-collapse: collapse;";
   style = style + "padding: 2px 3px;text-align: center;}";
   style = style + "</style>";
 

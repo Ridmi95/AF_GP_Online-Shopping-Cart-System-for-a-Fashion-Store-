@@ -91,14 +91,14 @@ productRoutes.get("/lowstock",auth , async (req, res) =>{
   }).limit(10).sort({quantity:1});
 });
 
-productRoutes.get("/top-rated",auth , async (req, res) =>{
+productRoutes.get("/top-discount",auth , async (req, res) =>{
   await Product.find(function (err, products) {
     if (err) {
       console.log(err);
     } else {
       res.status(200).json({ success: true, data: products});
     }
-  }).limit(10).sort($sum(rating));
+  }).limit(10).sort({discount:-1});
 });
 
 
