@@ -106,7 +106,7 @@ export default class productList extends Component {
       Updateproducts: [],
       Lowstockproducts: [],
       search: '',
-      orders: [],
+     
       totproductList: [],
       Chartdata: {
         labels: ['1', '2', '1', '3', '2', '3', '4', '5'],
@@ -269,7 +269,7 @@ export default class productList extends Component {
 
   getAllOrders() {
     const token = localStorage.getItem('manager_token');
-    axios.get('http://localhost:4000/order/', {
+    axios.get('http://localhost:4000/order/managerlist', {
       headers:
       {
         manager_token: token
@@ -278,9 +278,11 @@ export default class productList extends Component {
     }).then(res => {
       this.setState({
 
-        allOrders: res.data.data
+        allOrders: res.data
 
       })
+      console.log("Orders are " , res.data);
+      
     }).catch(err => {
       console.log(err);
 
@@ -469,11 +471,6 @@ export default class productList extends Component {
 
 
     });
-
-  }
-
-  getOrders() {
-
 
   }
 

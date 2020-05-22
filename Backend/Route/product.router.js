@@ -127,6 +127,19 @@ productRoutes.route("/").get(function (req, res) {
   }
 });
 
+//customer get product
+productRoutes.get("/customer/:id",async (req, res) =>{
+  let id = req.params.id;
+  await Product.findOne({ _id: id }, function (err, product) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: product });
+      console.log("Passed product is", product);
+      
+    }
+  });
+});
 
 
 productRoutes.get("/:id",auth,async (req, res) =>{

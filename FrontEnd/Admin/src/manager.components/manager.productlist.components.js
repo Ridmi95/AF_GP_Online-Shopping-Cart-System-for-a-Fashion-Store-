@@ -181,7 +181,7 @@ export default class productList extends Component {
 
   getAllOrders(){
     const token = localStorage.getItem('manager_token');
-    axios.get('http://localhost:4000/order/',{
+    axios.get('http://localhost:4000/order/managerlist',{
       headers:
       {
           manager_token :token
@@ -190,7 +190,7 @@ export default class productList extends Component {
   }).then(res => {
       this.setState({
 
-        orders: res.data.data
+        orders: res.data
                 
       })
     }).catch(err => {
