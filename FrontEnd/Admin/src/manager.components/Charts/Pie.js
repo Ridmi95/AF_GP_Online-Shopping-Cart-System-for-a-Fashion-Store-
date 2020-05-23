@@ -6,7 +6,7 @@ import axios from 'axios';
 var LabelArray = [];
 var DataArray =[];
 
-class bar extends Component{
+class pie extends Component{
 
     constructor(props){
         super(props);
@@ -128,7 +128,7 @@ class bar extends Component{
                 labels: LabelArray,
                 datasets: [{
                   label: "Categories",
-                  backgroundColor:[ "#FFCA28","#FFAB91",'#C62828','#4DD0E1','#81C784','#BDBDBD','#7E57C2','#A5D6A7','#AD1457','#FFAB91','#EF5350','#D84315','#81D4FA','#BCAAA4','#81D4FA','#FFE082','#A5D6A7','#E1BEE7','#FFE0B2','#EF6C00','#EF9A9A','#FFF176','#FFCA28','#263238','#4A148C','#6A1B9A','#01579B','#B71C1C','#4A148C','#D84315','#EF5350','','#283593','#E65100','#42A5F5','#F57F17','#4DD0E1','#37474F','#01579B',],
+                  backgroundColor:[ "#FFCA28","#FFAB91",'#C62828','#4DD0E1','#03A9F4','#E91E63','#7E57C2','#A5D6A7','#AD1457','#FFAB91','#EF5350','#D84315','#81D4FA','#673AB7','#81D4FA','#FFE082','#A5D6A7','#E1BEE7','#FFE0B2','#EF6C00','#EF9A9A','#FFF176','#FFCA28','#263238','#4A148C','#6A1B9A','#01579B','#B71C1C','#4A148C','#D84315','#EF5350','#E91E63','#283593','#E65100','#42A5F5','#F57F17','#4DD0E1','#37474F','#01579B',],
                   data: DataArray
                 }]
               }
@@ -170,4 +170,4 @@ class bar extends Component{
 
 
 }
-export default bar;
+export default pie;

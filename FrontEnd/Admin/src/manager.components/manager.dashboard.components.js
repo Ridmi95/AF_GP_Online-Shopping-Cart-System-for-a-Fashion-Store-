@@ -7,7 +7,7 @@ import swal from 'sweetalert';
 import { Grid } from '@material-ui/core';
 import Swal from 'sweetalert2'
 import { Line } from 'react-chartjs-2';
-import Chart1 from './Charts/Bar';
+import Chart1 from './Charts/Pie';
 import Chart2 from './Charts/SalesLine';
 
 

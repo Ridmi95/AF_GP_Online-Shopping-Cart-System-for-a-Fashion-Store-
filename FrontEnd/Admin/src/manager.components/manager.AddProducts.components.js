@@ -482,6 +482,31 @@ export default class addproducts extends Component {
 
                 }).catch((err => {
 
+                    token = localStorage.getItem('manager_token')
+
+                    axios.get('http://localhost:4000/login/manager-token-validate', {
+
+                        headers:
+                        {
+
+
+                            manager_token: token
+
+                        }
+                    }
+                    ).then((res) => {
+
+
+                        Swal.fire({
+                            title: "Upload Interrupted",
+                            text: "Selected File is not an Image or in unsupported file format or Upload is interrupted Due to Server Error, Upload failed! ",
+                            icon: "error",
+                            // buttons: true,
+                            dangerMode: true,
+                        })
+
+                    }).catch((err) => {
+
                     Swal.fire({
                         title: "Upload Interrupted",
                         text: "Selected File is not an Image or in unsupported file format or Upload is interrupted Due to Server Error, Upload failed! ",
@@ -489,6 +514,8 @@ export default class addproducts extends Component {
 
                         dangerMode: true,
                     })
+
+                })
 
 
                 }))
