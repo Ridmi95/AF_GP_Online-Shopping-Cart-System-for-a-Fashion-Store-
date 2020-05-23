@@ -73,23 +73,24 @@ class UserSignIn extends React.Component {
                 usernameValidate: false
             })
             if(this.state.password !== ''){
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Successfully Logged In',
-                    showConfirmButton: false,
-                    timer: 1500
+                this.setState({
+                    passwordValidate: false
                 })
                 console.log("login validated  !!!!");
-                axios.get('http://localhost:4000/loginuser/user-log',user)
+                axios.get('http://localhost:4000/loginuser/login/'+this.state.username + '/' + this.state.password)
                     .then(res => {
                             console.log(res)
-                            if (res.data.Message === 'Successful') {
+                            if (res.data.Message !== 'unsuccessful') {
                                 Swal.fire(
                                     '',
                                     'Login Successful !.',
                                     'success'
                                 );
+                                localStorage.setItem("UserSignedIn", "UserSignedIn");
+                                localStorage.setItem("userid", res.data.Message._id);
+                                this.props.history.push('/userprofile');
+                                window.location.reload();
+
                                 this.setState({
                                     username: '',
                                     password:'',
@@ -122,12 +123,6 @@ class UserSignIn extends React.Component {
 
         }
     }
-
-
-
-
-
-
 
     toggleCollapse = collapseID => () =>
         this.setState(prevState => ({
@@ -173,6 +168,9 @@ class UserSignIn extends React.Component {
                                     Log in to purchase a wide range of your desired clothes
                                     and accessories on reasonable prices and attractive discounts
                                 </h6>
+                                <MDBBtn className="btn-fb waves-light" color="default" a href="/">
+                                    Home
+                                </MDBBtn>
                             </div>
                             <MDBCol md='6' xl='5' className='mb-4'>
                                 <MDBCard>
@@ -235,10 +233,6 @@ class UserSignIn extends React.Component {
                         </MDBRow>
                     </MDBContainer>
                     </MDBView>
-                <Switch>
-                    <Route exact path='/register' component={UserSignUp}/>
-
-                </Switch>
             </div>
         );
     }

@@ -2,27 +2,16 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import {
-    MDBNavbar,
-    MDBNavbarBrand,
-    MDBNavbarNav,
-    MDBNavItem,
-    MDBNavLink,
-    MDBNavbarToggler,
-    MDBCollapse,
     MDBMask,
     MDBRow,
     MDBCol,
-    MDBFormInline,
     MDBBtn,
     MDBView,
     MDBContainer,
-    MDBIcon
+
 } from 'mdbreact';
 import './css/CallToActionIntro.css';
 import Navbar from './Navbar';
-import UserSignIn from "./UserLogin";
-import UserSignUp from "./UserSignUp";
-
 
 class Landing extends React.Component {
     state = {
@@ -35,14 +24,6 @@ class Landing extends React.Component {
             collapsed: !collapsed
         });
     };
-
-    // componentDidMount() {
-    //   document.querySelector('nav').style.height = '65px';
-    // }
-    //
-    // componentWillUnmount() {
-    //   document.querySelector('nav').style.height = 'auto';
-    // }
 
     render() {
         const { collapsed } = this.state;
@@ -67,21 +48,15 @@ class Landing extends React.Component {
                             <MDBRow>
                                 <MDBCol md='12' className='mb-4 text-center'>
                                     <h1 className='display-4 font-weight-bold mb-0 pt-md-5 pt-5'>
-                                        Welcome to Fashionista
+                                        Welcome to Fashionista!
                                     </h1>
                                     <h5 className='pt-md-5 pt-sm-2 pt-5 pb-md-5 pb-sm-3 pb-5'>
                                         Check the latest products for fashion here!
                                     </h5>
 
-                                    <MDBNavLink to={"/login"}>
-                                        <MDBBtn color="primary" >Sign In</MDBBtn>
-                                    </MDBNavLink>
-                                    <MDBNavLink to={"/register"}>
-                                        <MDBBtn color="primary" >Sign Up</MDBBtn>
-                                    </MDBNavLink>
-                                    <MDBNavLink to={"/userprofile"}>
-                                        <MDBBtn color="primary" >User Profile</MDBBtn>
-                                    </MDBNavLink>
+                                        <MDBBtn color="primary" a href="/login">Sign In</MDBBtn>
+                                        <MDBBtn color="primary"  a href="/register">Sign Up</MDBBtn>
+
                                 </MDBCol>
                             </MDBRow>
                         </MDBContainer>

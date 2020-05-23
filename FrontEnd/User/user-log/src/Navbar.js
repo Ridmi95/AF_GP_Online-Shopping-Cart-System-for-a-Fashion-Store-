@@ -1,5 +1,10 @@
 import React from 'react';
-import { MDBContainer, MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem, MDBNavLink, MDBIcon } from 'mdbreact';
+import {
+    MDBNavbar,
+    MDBNavbarBrand,
+    MDBNavbarToggler,
+    MDBCollapse,
+} from 'mdbreact';
 import { BrowserRouter as Router } from 'react-router-dom';
 import logo from './assets/logo.png';
 

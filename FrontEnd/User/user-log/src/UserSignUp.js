@@ -15,7 +15,7 @@ import 'sweetalert2/src/sweetalert2.scss';
 import axios from 'axios';
 import './css/ContactFormPage.css';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-
+import Navbar from "./Navbar";
 class UserSignUp extends React.Component {
 
     constructor(props) {
@@ -160,6 +160,8 @@ class UserSignUp extends React.Component {
                                                             'User Details added successfully !.',
                                                             'success'
                                                         );
+                                                        this.props.history.push('/login');
+                                                        window.location.reload();
                                                         this.setState({
                                                             name: '',
                                                             address: '',
@@ -256,9 +258,11 @@ class UserSignUp extends React.Component {
         );
         return (
             <div id='contactformpage'>
+
                 <Router>
                     <div>
                         {collapseID && overlay}
+                        <Navbar/>
                     </div>
                 </Router>
 
@@ -276,6 +280,9 @@ class UserSignUp extends React.Component {
                                     Sign up to purchase a wide range of your desired clothes
                                     and accessories on reasonable prices and attractive discounts
                                 </h6>
+                                <MDBBtn className="btn-fb waves-light" color="default" a href="/">
+                                    Home
+                                </MDBBtn>
                             </div>
                             <MDBCol md='6' xl='5' className='mb-4'>
                                 <MDBCard className='dark-grey-text'>

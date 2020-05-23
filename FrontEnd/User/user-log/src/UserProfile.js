@@ -12,11 +12,11 @@ import {
     MDBTabContent,
     MDBNav,
     MDBNavItem,
-    MDBNavLink, MDBInput, MDBAlert,
+    MDBNavLink,
 } from 'mdbreact';
 import axios from 'axios';
-
-
+import Swal from "sweetalert2";
+import Navbar from "./Navbar";
 
 export default class UserProfile extends React.Component {
     constructor(props) {
@@ -26,24 +26,16 @@ export default class UserProfile extends React.Component {
             address: '',
             email: '',
             phone: '',
-            userid: '5ec5a72d1850cf20540f9dd8',
+            userid: localStorage.getItem("userid"),
             userList: [],
-            // namevalidation: false,
-            // addressvalidation: false,
-            // emailvalidation: false,
-            // phonevalidation:false,
+            idEdit:'',
             nameEdit: '',
             addressEdit:'',
             emailEdit:'',
+            usernameEdit:'',
+            passwordEdit:'',
+            confirmPasswordEdit:'',
             phoneEdit:'',
-            editedId:'',
-            editedName:'',
-            editedAddress:'',
-            editedEmail:'',
-            editedUsername: '',
-            editedPassword:'',
-            editedConfirmPassword:'',
-            editedPhone:'',
             modal: false,
             items: {
                 default: "1",
@@ -55,15 +47,16 @@ export default class UserProfile extends React.Component {
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePhone= this.onChangePhone.bind(this);
         this.getUserDetails = this.getUserDetails.bind(this);
-        //this.updateUserProfile = this.updateUserProfile.bind(this);
-        // this.getEditUserDetails = this.getEditUserDetails.bind(this);
+        this.updateUserProfile = this.updateUserProfile.bind(this);
+        this.deleteUserAccount = this.deleteUserAccount.bind(this);
+
 
 
     };
 
     componentDidMount() {
         this.getUserDetails();
-        // this.getEditUserDetails();
+
     }
 
     onChangeName(event){
@@ -100,6 +93,7 @@ export default class UserProfile extends React.Component {
     }
 
 
+    //load user details to page
     getUserDetails() {
         console.log("----------------------------");
 
@@ -111,7 +105,13 @@ export default class UserProfile extends React.Component {
                     nameEdit : response.data.name,
                     addressEdit: response.data.address,
                     emailEdit: response.data.email,
-                    phoneEdit: response.data.phone
+                    phoneEdit: response.data.phone,
+                    idEdit:response.data._id,
+                    usernameEdit:response.data.username,
+                    passwordEdit:response.data.password,
+
+
+
                 })
 
                 console.log(this.state.userList);
@@ -123,39 +123,125 @@ export default class UserProfile extends React.Component {
     }
 
 
-    //update user profile - incomplete
+    //update user profile
 
-    // updateUserProfile(event,editedId,editedName,editedAddress,
-    //   editedEmail,editedUsername,editedPassword,editedConfirmPassword,
-    //   editedPhone){
-    //       event.preventDefault();
-    //   axios.post('http://localhost:4000/users/update/'+ editedId)
-    //       .then(response=>{
-    //
-    //       })
-    //
-    //
-    //
-    // }
+    updateUserProfile(idEdit,nameEdit,addressEdit,emailEdit,usernameEdit,passwordEdit,phoneEdit) {
+
+        if (this.state.nameEdit !== '') {
+            if (this.state.addressEdit !== '') {
+                if (this.state.emailEdit !== '') {
+                    if (this.state.phoneEdit !== '') {
+
+                        console.log("**" + idEdit );
+                        console.log("**" + nameEdit);
+                        console.log("**" + addressEdit);
+                        console.log("**" + emailEdit);
+                        console.log("**" + usernameEdit);
+                        console.log("**" + passwordEdit );
+                        console.log("**" + phoneEdit);
+
+                        axios.get('http://localhost:4000/users/update/'+ this.state.idEdit+'/'+ this.state.nameEdit+'/'+ this.state.addressEdit+'/'+
+                            this.state.emailEdit  +'/'+ this.state.usernameEdit +'/'+ this.state.passwordEdit +'/' + this.state.phoneEdit)
+                            .then(response => {
+                                    console.log(response);
+                                    if (response.data.userUpdate === 'successful') {
+                                        Swal.fire(
+                                            '',
+                                            'User Details updated successfully !.',
+                                            'success'
+                                        );
+                                        this.getUserDetails();
+                                        this.setState({
+                                            idEdit:'',
+                                            nameEdit:'',
+                                            addressEdit:'',
+                                            emailEdit:'',
+                                            usernameEdit:'',
+                                            passwordEdit:'',
+                                            confirmPasswordEdit:'',
+                                            phoneEdit:''
+                                        })
+                                    } else {
+                                        Swal.fire(
+                                            '',
+                                            'Update of Details failed !',
+                                            'error'
+                                        )
+                                    }
+                                }
+                            );
+
+                    } else {
+                        console.log("phone number is empty");
+                    }
+                } else {
+                    console.log("email empty");
+                }
+            } else {
+                console.log("address empty");
+            }
+        } else {
+            console.log("name empty");
+
+        }
+    }
 
 
+    deleteUserAccount(id) {
 
-    // getEditUserDetails(){
-    // console.log("details for editing method is called");
-    // axios.post('http://localhost:4000/update/'+ this.state.userid)
-    //     .then(response =>{
-    //
-    //         this.setState({
-    //             userList : response.data,
-    //
-    //         })
-    //         console.log(this.state.userList);
-    //     }).catch(function (error) {
-    //       console.log(error);
-    // })
-    //
-    //
-    // }
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to undo this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                axios.get('http://localhost:4000/users/delete/' + id).then(response => {
+                    if (response.data.userDelete === 'success') {
+                        swalWithBootstrapButtons.fire(
+                            'Deleted!',
+                            'Delete Failed Error.',
+                            'error'
+                        )
+                    } else {
+                        Swal.fire(
+                            '',
+                            'User Profile Deleted Successfully !',
+                            'success'
+                        )
+                        console.log("deleted profile called");
+                        localStorage.removeItem('UserSignedIn');
+                        localStorage.removeItem('userid');
+                        this.props.history.push('/login');
+                        window.location.reload();
+                        console.log("directed to login page");
+                    }
+                })
+
+                    }  else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your account is safe :)',
+                        'error'
+                    )
+                }
+            })
+
+            }
 
 
 
@@ -178,27 +264,32 @@ export default class UserProfile extends React.Component {
     };
 
     render() {
-
-
         return (
 
             <Router>
-                <MDBCard>
-                    <MDBCardBody cascade className="text-center">
-                        <h2 className="font-weight-bold h2col">USER PROFILE</h2>
+                <Navbar />
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+               <div>
+                   <MDBCard>
+                       <MDBCardBody cascade className="text-center" >
+                           <h2 className="font-weight-bold h2col">USER PROFILE</h2>
+                           <h2 className="font-weight-bold h2col">{this.state.userList.name}</h2>
+                               <MDBBtn className="btn-fb waves-light" color="mdb-color" a href="/">
+                                   Home
+                               </MDBBtn>
+                               <MDBBtn className="btn-fb waves-light" color="mdb-color" a href="/logout">
+                                   Logout
+                               </MDBBtn>
 
-                        <MDBNavLink to={"/"}>
-                            <MDBBtn className="btn-fb waves-light" color="mdb-color">
-                                Home
-                            </MDBBtn>
-                        </MDBNavLink>
-                        <MDBNavLink to={"/"}>
-                            <MDBBtn className="btn-fb waves-light" color="mdb-color">
-                                Logout
-                            </MDBBtn>
-                        </MDBNavLink>
-                    </MDBCardBody>
-                </MDBCard>
+                       </MDBCardBody>
+                   </MDBCard>
+               </div>
+
 
 
                 <MDBCol md="12">
@@ -225,10 +316,7 @@ export default class UserProfile extends React.Component {
                                             <MDBContainer className="mt-5">
 
 
-
-                                                {/*this.state.userList.map(user =>{*/}
-
-                                                {/*return this.state.userList.map(user => {*/}
+                                                {/*view user profile*/}
 
                                                 <section className="my-5">
                                                     <MDBRow>
@@ -238,7 +326,7 @@ export default class UserProfile extends React.Component {
                                                                  alt=""/>
                                                             <br/>
                                                             <br/>
-                                                            <MDBBtn className="btn-fb waves-light" color="danger">
+                                                            <MDBBtn className="btn-fb waves-light" color="danger" onClick={() => this.deleteUserAccount(this.state.userList._id)}>
                                                                 Delete Profile
                                                             </MDBBtn>
                                                         </MDBCol>
@@ -351,7 +439,13 @@ export default class UserProfile extends React.Component {
                                                                            onChange={this.onChangePhone} name="phone"/>
                                                                     <br/>
                                                                 </MDBRow>
-                                                                <MDBBtn color="info" type="submit" >Update Profile</MDBBtn>
+
+
+                                                                <MDBBtn color="info" type="button" onClick={()=> this.updateUserProfile(this.state.idEdit,this.state.nameEdit,this.state.addressEdit,
+                                                                    this.state.emailEdit,this.state.usernameEdit,this.state.passwordEdit,this.state.phoneEdit)}> Update Profile</MDBBtn>
+
+
+
                                                             </form>
                                                         </MDBCol>
                                                     </MDBRow>

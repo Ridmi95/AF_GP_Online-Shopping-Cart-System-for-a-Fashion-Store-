@@ -38,12 +38,36 @@ userLoginRoutes.post("/user-log", async(req,res) => {
                 username: user.username
             },
         });
+        res.status(200).json({'userLogin':'successful'});
         console.log(token);
        
 
     } catch (err) {
         res.status(500).json({err: err.message});
     }
+});
+
+
+///user login - method 2
+
+
+userLoginRoutes.get("/login/:username/:password",function (req,res) {
+    let username = req.params.username;
+    let password = req.params.password;
+    Users.findOne({ username: username, password: password },)
+        .exec()
+        .then(userlog =>{
+            console.log("User Valid");
+            console.log(userlog);
+            console.log("User Valid");
+            if( userlog ){
+                res.status(200).json({"Message": userlog});
+            }else{
+                res.status(200).json({"Message": "unsuccessful"});
+            }
+        }).catch(err=>{
+        res.status(500).json(err);
+    })
 });
 
 //validate token

@@ -28,6 +28,8 @@ usersRoutes.get('/managerlist',manager_auth, (req, res) => {
         }
     });
 });
+
+
 //view all users
 usersRoutes.route('/userlist').get(function (req, res) {
     if (session.user === null || session.user === '' ) {
@@ -120,7 +122,7 @@ usersRoutes.delete('/delete', loginauth, async (req,res) =>{
     }
 });
 
-//update user
+//update user- method 1
     usersRoutes.route('/update/:id').post(function (req, res) {
         if (session.user === null || session.user === '') {
             return;
@@ -152,8 +154,46 @@ usersRoutes.delete('/delete', loginauth, async (req,res) =>{
     
         });
 
+//update user - method 2
+usersRoutes.route('/update/:id/:name/:address/:email/:username/:password/:phone').get(function (req, res) {
+    console.log("update function called");
+    let id = req.params.id;
+    let name=req.params.name;
+    let address=req.params.address;
+    let email=req.params.email;
+    let username=req.params.username;
+    let password=req.params.password;
+    let phone=req.params.phone;
 
+    console.log("**" + id);
+    console.log("**" + name);
+    console.log("**" + address);
+    console.log("**" + email);
+    console.log("**" + username);
+    console.log("**" +password);
+    console.log("**" + phone);
 
-  
+    Users.updateOne({_id : id},{$set: {name :name, address: address,email: email, username:username, password: password, phone: phone }}).then(user=>{
+        console.log(" successfully updated user");
+        console.log(user);
+        res.status(200).json({'userUpdate':'successful'});
+    }).catch(err=>{
+        console.log("update fail");
+        res.status(400).send('fail');
+    });
+});
+
+//delete user - method 2
+usersRoutes.route('/delete/:id').get(function (req, res) {
+    let id=req.params.id;
+    console.log("Delete called!");
+    Users.deleteOne({_id:id}).then(user=>{
+        console.log("successful");
+        res.status(200).json({'userDelete':'successful'});
+    }).catch(err=>{
+        console.log("fail");
+        res.status(400).send('fail');
+    });
+});
 
 module.exports = usersRoutes;
