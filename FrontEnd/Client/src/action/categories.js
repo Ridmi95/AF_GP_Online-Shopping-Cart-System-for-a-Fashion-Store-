@@ -1,12 +1,14 @@
 // @flow
 import Alert from "components/Alert";
 
+//asyncCategoriesInit
 function asyncCategoriesInit() {
   return {
     type: "ASYNC_CATEGORIES_INIT",
   };
 }
 
+//asyncCategoriesInit
 export function notificationHandler(isSuccess, message) {
   return {
     type: "CATEGORIES_HANDLE_NOTIFICATIONS",
@@ -20,6 +22,7 @@ export function notificationHandler(isSuccess, message) {
   };
 }
 
+//getAllCategories
 export function getAllCategories() {
   return (dispatch, getState, serviceManager) => {
     dispatch(asyncCategoriesInit());
