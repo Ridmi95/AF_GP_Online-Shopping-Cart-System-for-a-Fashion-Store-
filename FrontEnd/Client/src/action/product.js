@@ -1,12 +1,14 @@
 // @flow
 import Alert from "components/Alert";
 
+//asyncProductInit()
 function asyncProductInit() {
   return {
     type: "ASYNC_PRODUCT_INIT",
   };
 }
 
+//notificationHandler
 export function notificationHandler(isSuccess, message) {
   return {
     type: "PRODUCT_HANDLE_NOTIFICATIONS",
@@ -20,6 +22,7 @@ export function notificationHandler(isSuccess, message) {
   };
 }
 
+//getAllProducts
 export function getAllProducts(filters = {}) {
   return (dispatch, getState, serviceManager) => {
     dispatch(asyncProductInit());
@@ -53,6 +56,7 @@ export function getAllProducts(filters = {}) {
   };
 }
 
+//getProduct
 export function getProduct(productCode) {
   return (dispatch, getState, serviceManager) => {
     dispatch(asyncProductInit());
@@ -86,6 +90,7 @@ export function getProduct(productCode) {
   };
 }
 
+//updateProduct
 export function updateProduct(payload) {
   return (dispatch, getState, serviceManager) => {
     dispatch(asyncProductInit());
@@ -119,6 +124,8 @@ export function updateProduct(payload) {
   };
 }
 
+
+//placeOrder
 export function placeOrder(payload) {
   return (dispatch, getState, serviceManager) => {
     dispatch(asyncProductInit());
@@ -150,6 +157,7 @@ export function placeOrder(payload) {
   };
 }
 
+//nitOrder
 export function initOrder(payload) {
   return (dispatch) => {
     dispatch({ type: "INITIATE_ORDER" });

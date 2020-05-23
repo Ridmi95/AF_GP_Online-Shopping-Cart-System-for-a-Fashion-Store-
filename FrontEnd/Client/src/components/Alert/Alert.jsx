@@ -1,4 +1,4 @@
-// @flow
+
 import React from "react";
 import classNames from "classnames";
 
@@ -17,6 +17,7 @@ type AlertProps = {
   type: typeof TYPE.SUCCESS | typeof TYPE.ERROR | typeof TYPE.INFO
 };
 
+//Alert
 function Alert(props: AlertProps) {
   const { children, type, isFullWidth } = props;
   return (
