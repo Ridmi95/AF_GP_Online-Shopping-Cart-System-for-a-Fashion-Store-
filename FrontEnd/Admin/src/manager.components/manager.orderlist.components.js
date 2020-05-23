@@ -5,15 +5,15 @@ import Title from './manager.title.components';
 import axios from 'axios';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2'
-import Chart1 from './RevenueLine';
-import Chart2 from './OrderLine';
+import Chart1 from './Charts/RevenueLine';
+import Chart2 from './Charts/OrderLine';
 import { Grid } from '@material-ui/core';
 
 
 
 
 
-
+//calculate total products
 function getTotProducts(items) {
 
   var total = 0;
@@ -40,6 +40,7 @@ function getTotProducts(items) {
 }
 
 
+//calculate total revenue
 function getTotRevenue(items) {
 
   var total = 0;
@@ -65,6 +66,7 @@ function getTotRevenue(items) {
 
 }
 
+//search records in tables
 function searchItems(item) {
 
   return function (e) {
@@ -86,8 +88,6 @@ const ProductRow = props => (
 
     <td>{props.order.orderId}</td>
     <td>{props.order.userId}</td>
-
-
     <td>{props.order.orderDate.substring(0, 10)}</td>
     <td>{props.order.paymentMethod}</td>
     <td>{(props.order.totalPrice)}</td>
@@ -106,18 +106,11 @@ export default class orderList extends Component {
 
     super(props);
 
-    
+
     this.validateUser = this.validateUser.bind(this);
     this.getAllOrders = this.getAllOrders.bind(this);
-
-
-
-
-
-
-
-
     this.onChangeSearch = this.onChangeSearch.bind(this);
+
 
     this.state = {
 
@@ -162,6 +155,7 @@ export default class orderList extends Component {
     this.getAllOrders();
 
 
+    //get total products
 
     const token = localStorage.getItem('manager_token');
 
@@ -185,6 +179,7 @@ export default class orderList extends Component {
 
   }
 
+  // validate users
   validateUser() {
 
 
@@ -263,7 +258,7 @@ export default class orderList extends Component {
 
 
 
-
+//get order list
 
   OderList() {
 
@@ -358,65 +353,70 @@ export default class orderList extends Component {
         <div style={{ padding: "40px" }}>
 
 
-<Grid
-  container
-  spacing={10}
->
-  <Grid
-    item
-    lg={6}
-    sm={6}
-    xl={6}
-    xs={12}
-  >
+          <Grid
+            container
+            spacing={10}
+          >
+            <Grid
+              item
+              lg={6}
+              sm={6}
+              xl={6}
+              xs={12}
+            >
 
-    <div style={{ position: "relative" }} >
+              <div style={{ position: "relative" }} >
 
-      <h3>Revenue Summary</h3>
+                <h3>Revenue Summary</h3>
 
-     <Chart1/>
+                {/* Revenue Chart */}
 
 
-
-    </div>
-  </Grid>
+                <Chart1 />
 
 
 
-
-  <Grid
-    item
-    lg={6}
-    sm={6}
-    xl={6}
-    xs={12}
-  >
-
-    <div style={{ position: "relative" }} >
-
-      <h3>Purchase Orders Summary</h3>
-
-      <Chart2
+              </div>
+            </Grid>
 
 
 
 
+            <Grid
+              item
+              lg={6}
+              sm={6}
+              xl={6}
+              xs={12}
+            >
 
-      />
+              <div style={{ position: "relative" }} >
 
+                <h3>Purchase Orders Summary</h3>
 
+                 {/* Purchase Orders Chart */}
 
-    </div>
-  </Grid>
-
-
-</Grid>
+                <Chart2
 
 
 
 
 
-</div>
+                />
+
+
+
+              </div>
+            </Grid>
+
+
+          </Grid>
+
+
+
+
+
+        </div>
 
         <br /><br />
         <div
@@ -449,8 +449,8 @@ export default class orderList extends Component {
 
 
 
-        
-       
+
+
 
 
 
@@ -482,7 +482,11 @@ export default class orderList extends Component {
               {this.OderList()}
             </tbody>
           </table>
-        </div><div id="tab2"></div><div id="tab3"></div><div id="tab4"></div><div id="profile"></div><div id="avoid1"></div><div id="avoid2"></div>
+        </div>
+        
+         {/* pdf generator divs */}
+         
+         <div id="tab2"></div><div id="tab3"></div><div id="tab4"></div><div id="profile"></div><div id="avoid1"></div><div id="avoid2"></div>
 
 
 

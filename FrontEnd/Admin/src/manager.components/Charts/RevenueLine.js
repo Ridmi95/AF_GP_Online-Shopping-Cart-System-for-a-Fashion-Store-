@@ -7,12 +7,13 @@ var DataArray =[];
 var DataArray2=[];
 
 
+//get date by string
 function DateString(date) {
 
   return date.substring(0,10);
 }
 
-class SalesLine extends Component{
+class RevenueLine extends Component{
 
     constructor(props){
         super(props);
@@ -33,6 +34,7 @@ class SalesLine extends Component{
         }
     }
 
+    //get date labels
    async getAllDates() {
 
         const token = localStorage.getItem('manager_token');
@@ -103,6 +105,7 @@ class SalesLine extends Component{
     
       }
 
+      //get salses by date labels
      async getSalesbyDate(){
 
 
@@ -195,17 +198,19 @@ class SalesLine extends Component{
         console.log("Label Array VAr len: ", LabelArray.length);
         console.log("Label Array VAr : ", LabelArray);
         
+
+        //set labels and data
         const labels=LabelArray;
         const data=DataArray;
-        
+        const data2=DataArray2;
 
         this.setState({
     
             Chartdata:{
                 labels: labels,
                 datasets: [{
-                  label: "Total Sale Amount (Rs)",
-                  backgroundColor:[ "rgba(255,0,255,0.75)"],
+                  label: "Total Revenue of Purchases (Rs)",
+                  backgroundColor:[ "rgb(255, 152, 0,0.75)"],
                   data: data
                 }]
               }
@@ -225,7 +230,6 @@ class SalesLine extends Component{
 
       
 
-       
 
        
         return(
@@ -253,4 +257,4 @@ class SalesLine extends Component{
 
 
 }
-export default SalesLine;
+export default RevenueLine;

@@ -8,25 +8,6 @@ import swal from 'sweetalert';
 
 
 
-// function openDiv() {
-//     return (
-//                 <div className="alertBox">
-
-//                 <div class="alert alert-success">
-//                         <div class="container" style={{padding:'50px'}}>
-//                             <div class="alert-icon">
-//                                 <i class="material-icons">Notification</i>
-//                             </div>
-//                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-//                                 <span aria-hidden="true"><i class="material-icons">x</i></span>
-//                             </button>
-//                             <h6><b>Success :</b> Yuhuuu! You've got your $11.99 album from The Weeknd</h6>
-//                         </div>
-//                     </div>
-//                             </div>
-//             );
-
-//   }
 
 export default class managerSignIn extends Component {
 
@@ -92,6 +73,7 @@ export default class managerSignIn extends Component {
     }
 
 
+    //handle sign in
 
     onSubmit = (e) => {
 
@@ -129,7 +111,7 @@ export default class managerSignIn extends Component {
 
 
 
-                   
+
 
 
 
@@ -152,10 +134,14 @@ export default class managerSignIn extends Component {
                     const id = res.data.manager.id;
                     const username = res.data.manager.username;
                     const email = res.data.manager.email;
+                    const role = res.data.manager.role;
+
+                    //set user details in local storage
                     localStorage.setItem('manager_token', token);
                     localStorage.setItem('id', id);
                     localStorage.setItem('username', username);
                     localStorage.setItem('email', email);
+
                     this.props.history.push('/dashboard-manager/');
 
 
@@ -211,35 +197,15 @@ export default class managerSignIn extends Component {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
                 <div className="manager">
 
-
-
-
-
-
                     <header>
-
-
 
 
                         <link rel="stylesheet" href="./css/manager-add-style.css" />
 
                     </header>
-                    {/* <Title/>
-                <Navbar /> */}
+
 
 
                     <div class="main">
@@ -249,7 +215,7 @@ export default class managerSignIn extends Component {
                                 <div class="signin-content">
                                     <div class="signin-image">
                                         <figure><img src="http://localhost:3000/images/signin-image.jpg" alt="sing up image" /></figure>
-                                        {/* <a href="#" class="signup-image-link">Create an account</a> */}
+
                                     </div>
 
                                     <div class="signin-form">
@@ -275,12 +241,7 @@ export default class managerSignIn extends Component {
                                             </div>
                                         </form>
                                         <div class="social-login">
-                                            {/* <span class="social-label">Or login with</span>
-                            <ul class="socials">
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
-                            </ul> */}
+
                                         </div>
                                     </div>
                                 </div>

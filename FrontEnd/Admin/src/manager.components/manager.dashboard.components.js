@@ -7,12 +7,11 @@ import swal from 'sweetalert';
 import { Grid } from '@material-ui/core';
 import Swal from 'sweetalert2'
 import { Line } from 'react-chartjs-2';
-import Chart1 from './Bar';
-import Chart2 from './SalesLine';
+import Chart1 from './Charts/Bar';
+import Chart2 from './Charts/SalesLine';
 
 
-
-
+//get average ratings of products
 
 function getAvgRating(ratings) {
   const total = ratings.reduce((acc, c) => acc + c, 0);
@@ -27,6 +26,8 @@ function getAvgRating(ratings) {
     return 0;
 
 }
+
+// handle table content searcg
 
 function searchItems(item) {
 
@@ -126,6 +127,8 @@ export default class productList extends Component {
 
 
   }
+
+  // get all regisistered customers details
   getUsers() {
 
     const token = localStorage.getItem('manager_token');
@@ -151,6 +154,7 @@ export default class productList extends Component {
 
   }
 
+  // get recent product list
   getRecentProducts() {
 
     const token = localStorage.getItem('manager_token');
@@ -175,6 +179,7 @@ export default class productList extends Component {
 
   }
 
+  // get recently updated product list
   getRecentUpdateProducts() {
 
     const token = localStorage.getItem('manager_token');
@@ -198,6 +203,8 @@ export default class productList extends Component {
     })
 
   }
+
+  //get low stock product list
 
   getLowStockProducts() {
 
@@ -223,6 +230,7 @@ export default class productList extends Component {
 
   }
 
+  // get high discount offering products
   getTopDiscountProducts() {
 
     const token = localStorage.getItem('manager_token');
@@ -248,6 +256,7 @@ export default class productList extends Component {
   }
 
 
+  // get all products
   getAllProducts() {
     const token = localStorage.getItem('manager_token');
     axios.get('http://localhost:4000/product/all', {
@@ -269,6 +278,7 @@ export default class productList extends Component {
     })
   }
 
+  // get all orders
   getAllOrders() {
     const token = localStorage.getItem('manager_token');
     axios.get('http://localhost:4000/order/managerlist', {
@@ -292,6 +302,7 @@ export default class productList extends Component {
     })
   }
 
+  // get all categories
   getAllActiveCategories() {
 
     const token = localStorage.getItem('manager_token');
@@ -337,6 +348,7 @@ export default class productList extends Component {
 
 
 
+  // validate user sessions
 
   validateUser() {
 
@@ -403,19 +415,9 @@ export default class productList extends Component {
 
 
 
-
-
-
-
-
-
-
-
   }
 
-
-
-
+//handle recent product table row
   productList() {
 
     return this.state.recentproducts.filter(searchItems(this.state.search)).map(productCurrent => {
@@ -429,6 +431,8 @@ export default class productList extends Component {
     })
   }
 
+  //handle lowstock table row
+
   lowstockList() {
 
     return this.state.Lowstockproducts.filter(searchItems(this.state.search)).map(productCurrent => {
@@ -440,6 +444,8 @@ export default class productList extends Component {
 
     })
   }
+
+  //handle recently upated table row
 
   updateProductList() {
 
@@ -453,6 +459,8 @@ export default class productList extends Component {
     })
   }
 
+  //handle top discounted table row
+
   topProductList() {
 
     return this.state.Toproducts.filter(searchItems(this.state.search)).map(productCurrent => {
@@ -464,6 +472,8 @@ export default class productList extends Component {
 
     })
   }
+
+  // handle search 
 
   onChangeSearch(e) {
 
@@ -603,7 +613,7 @@ export default class productList extends Component {
               <div style={{ position: "relative" }} >
 
                 <center><b><h2 style={{marginBottom:"50px"}}>Products by Categories Summary</h2></b></center>
-
+{/* products by Categories PIE chart*/}
                <Chart1/>
 
 
@@ -625,7 +635,7 @@ export default class productList extends Component {
               <div style={{ position: "relative" }} >
 
               <center><b><h2 style={{marginBottom:"50px"}}>Sales Summary</h2></b></center>
-
+{/* products by revenue Line chart */}
                 <Chart2
 
 
@@ -650,7 +660,7 @@ export default class productList extends Component {
 
 
 
-
+{/* Summary Tables */}
 
         <div style={{ padding: "40px" }}>
           <center>
@@ -800,9 +810,12 @@ export default class productList extends Component {
 
 
           </center>
+
+          {/* pdf generator divs */}
           <div id="avoid1"></div>
           <div id="avoid2"></div>
           <div id="profile"></div>
+           {/* pdf generator divs */}
 
 
 

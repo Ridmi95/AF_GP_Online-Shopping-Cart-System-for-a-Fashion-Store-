@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 
 import { RouteWithLayout } from './components';
-import { Main as MainLayout, Minimal as MinimalLayout ,index as Base} from './layouts';
+import { Main as MainLayout, Minimal as MinimalLayout, index as Base } from './layouts';
 
 import {
   Dashboard as DashboardView,
@@ -22,14 +22,13 @@ import {
 } from './views';
 
 
-// manager
+
 
 import Navbar from "./manager.components/manager.navbar.components";
 import addproducts from "./manager.components/manager.AddProducts.components";
 import ManagerDashboard from "./manager.components/manager.dashboard.components";
-import updateproduct from "./manager.components/manager.updateProduct.components";
-import productList  from "./manager.components/manager.productlist.components";
-import ManagerSignIn from "./manager.components/managerSignIn";
+import productList from "./manager.components/manager.productlist.components";
+import ManagerSignIn from "./manager.components/manager.SignIn.components";
 import ViewProduct from "./manager.components/manager.viewproduct.components";
 import orderList from "./manager.components/manager.orderlist.components";
 
@@ -44,15 +43,15 @@ const Routes = () => {
         from="/"
         to="/sign-in"
       />
-{/* manager */}
-<RouteWithLayout
+     
+      <RouteWithLayout
         component={addproducts}
         exact
         layout={MinimalLayout}
         path="/add-product"
       />
 
-<RouteWithLayout
+      <RouteWithLayout
         component={orderList}
         exact
         layout={MinimalLayout}
@@ -65,14 +64,14 @@ const Routes = () => {
         path="/dashboard-manager"
       />
 
-<RouteWithLayout
+      <RouteWithLayout
         component={ViewProduct}
         exact
         layout={MinimalLayout}
         path="/view-product/:id"
       />
 
-<RouteWithLayout
+      <RouteWithLayout
         component={productList}
         exact
         layout={MinimalLayout}
@@ -80,20 +79,14 @@ const Routes = () => {
       />
 
 
-<RouteWithLayout
-        component={updateproduct}
-        exact
-        layout={MinimalLayout}
-        path="/edit-product/:id"/>
 
-<RouteWithLayout
+      <RouteWithLayout
         component={ManagerSignIn}
         exact
         layout={MinimalLayout}
-        path="/manager-Sign-In"/>
+        path="/manager-Sign-In" />
 
-      {/* manager */}
-
+    
 
 
       <RouteWithLayout

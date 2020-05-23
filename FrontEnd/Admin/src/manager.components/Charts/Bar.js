@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Bar , Line , Pie} from 'react-chartjs-2';
 import axios from 'axios';
 
+//labels and data of chart
 var LabelArray = [];
 var DataArray =[];
 
@@ -25,6 +26,7 @@ class bar extends Component{
         }
     }
 
+    // get all active categories
    async getAllActiveCategories() {
 
         const token = localStorage.getItem('manager_token');
@@ -66,6 +68,7 @@ class bar extends Component{
     
       }
 
+      //get product count of  single category
       getProductsCountByCategory(){
 
 
@@ -117,7 +120,7 @@ class bar extends Component{
     async  componentDidMount() {
        await this.getAllActiveCategories();
      
-        
+        //set chart values
 
         this.setState({
     

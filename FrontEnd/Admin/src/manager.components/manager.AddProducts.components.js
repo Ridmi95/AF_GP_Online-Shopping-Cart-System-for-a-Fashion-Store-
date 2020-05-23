@@ -97,6 +97,7 @@ export default class addproducts extends Component {
 
     }
 
+    // validate use sessions
     validateUser() {
 
 
@@ -302,6 +303,7 @@ export default class addproducts extends Component {
 
     }
 
+    // handle image de attach
     RemoveImage() {
 
         if (this.state.image) {
@@ -349,6 +351,7 @@ export default class addproducts extends Component {
     }
 
 
+    //handle image upload
 
     async uploadImage() {
 
@@ -493,11 +496,11 @@ export default class addproducts extends Component {
 
             } else {
 
-                
-                
+
+
 
                 if (!this.state.NewUpload) {
-                    
+
 
 
                     swal({
@@ -671,6 +674,7 @@ export default class addproducts extends Component {
 
     }
 
+    //show help tag for image upload
     showHelp() {
         Swal.fire({
             title: '<strong>File Upload Details</strong>',
@@ -688,6 +692,7 @@ export default class addproducts extends Component {
         })
     }
 
+    //handle add products
     onSubmit = async (e) => {
 
         e.preventDefault();

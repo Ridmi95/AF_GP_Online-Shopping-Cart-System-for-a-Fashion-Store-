@@ -6,13 +6,14 @@ var LabelArray = [];
 var DataArray =[];
 var DataArray2=[];
 
+//get date by string
 
 function DateString(date) {
 
   return date.substring(0,10);
 }
 
-class OrderLine extends Component{
+class SalesLine extends Component{
 
     constructor(props){
         super(props);
@@ -33,6 +34,7 @@ class OrderLine extends Component{
         }
     }
 
+    // generate lables of dates for chart
    async getAllDates() {
 
         const token = localStorage.getItem('manager_token');
@@ -103,16 +105,19 @@ class OrderLine extends Component{
     
       }
 
+      //retrieve sales by date labels
      async getSalesbyDate(){
 
 
         for (let index = 0; index < this.state.DistinctDatesArray.length; index++) {
 
+          //set label
             let key = this.state.DistinctDatesArray[index];
 
-            console.log("Input Date: ", key);
+            
             
 
+            //recieve data by labels
            const token = localStorage.getItem('manager_token');
      await   axios.get('http://localhost:4000/order/byDate/' + key, {
             headers:
@@ -169,6 +174,8 @@ class OrderLine extends Component{
           
       }
     async  componentDidMount() {
+
+      //set Temporary Labels and data empty
       LabelArray=[];
       DataArray=[];
       DataArray2=[];
@@ -191,22 +198,21 @@ class OrderLine extends Component{
 
       
        await this.getAllDates();
-        console.log("Data Array VAr: ", DataArray);
-        console.log("Label Array VAr len: ", LabelArray.length);
-        console.log("Label Array VAr : ", LabelArray);
+       
+       //set labels and data
         
         const labels=LabelArray;
         const data=DataArray;
-        const data2=DataArray2;
+        
 
         this.setState({
     
             Chartdata:{
                 labels: labels,
                 datasets: [{
-                  label: "Total Purchase Orders",
-                  backgroundColor:[ "rgb(0, 188, 212,0.55)"],
-                  data: data2
+                  label: "Total Sale Amount (Rs)",
+                  backgroundColor:[ "rgba(255,0,255,0.75)"],
+                  data: data
                 }]
               }
 
@@ -225,7 +231,7 @@ class OrderLine extends Component{
 
       
 
-  
+       
 
        
         return(
@@ -253,4 +259,4 @@ class OrderLine extends Component{
 
 
 }
-export default OrderLine;
+export default SalesLine;

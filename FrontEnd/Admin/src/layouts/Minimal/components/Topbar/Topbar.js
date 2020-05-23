@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar } from '@material-ui/core';
 
+
+
 const useStyles = makeStyles(() => ({
   root: {
     boxShadow: 'none'
@@ -16,6 +18,10 @@ const Topbar = props => {
 
   const classes = useStyles();
 
+
+
+  
+
   return (
     <AppBar
       {...rest}
@@ -24,7 +30,7 @@ const Topbar = props => {
       position="fixed"
     >
       <Toolbar>
-        <RouterLink to="/">
+        <RouterLink  >
           <img
             alt="Logo"
             src="/images/logos/logo--white.svg"

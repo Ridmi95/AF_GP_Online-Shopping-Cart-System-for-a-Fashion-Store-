@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 
 let login = require('../Models/login.model');
 
-
+// admin user validation
 
 loginRoutes.post("/", async (req, res) => {
 

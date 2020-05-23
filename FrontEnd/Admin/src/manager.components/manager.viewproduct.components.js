@@ -8,12 +8,13 @@ import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 import { Grid } from '@material-ui/core';
 
-let reset= false;
+let reset = false;
 let imgname = '';
 let token = localStorage.getItem('manager_token');
 
 let updatedURL = null;
 
+//set product image
 function setImage() {
 
     var img = document.getElementById("imageSrc");
@@ -21,7 +22,7 @@ function setImage() {
     img.src = updatedURL;
 
 }
-
+//set update calcel button( view or hide)
 function showUpdate() {
     var updatebutton = document.getElementById("updateButton");
     var enableupdate = document.getElementById("enableupdate");
@@ -53,7 +54,7 @@ function showUpdate() {
 
     }
 }
-
+//set update calcel button( view or hide)
 function resetButtons() {
 
     window.location.reload(false);
@@ -99,6 +100,7 @@ function getAvgRating(ratings) {
 }
 
 
+// order table row componnent
 const OrderRow = props => (
 
 
@@ -119,6 +121,7 @@ const OrderRow = props => (
     </tr>
 );
 
+// comment table row componnent
 const CommentRow = props => (
 
 
@@ -162,7 +165,7 @@ export default class viewproduct extends Component {
         this.orderList = this.orderList.bind(this)
         this.CommentList = this.CommentList.bind(this)
         this.getOrders = this.getOrders.bind(this)
-        
+
 
 
 
@@ -236,7 +239,7 @@ export default class viewproduct extends Component {
 
     }
 
-
+    //get the product details
 
     getProduct() {
         const token = localStorage.getItem('manager_token');
@@ -281,6 +284,7 @@ export default class viewproduct extends Component {
         })
     }
 
+    // set table values for order table
     orderList() {
 
         return this.state.orders.map(orderCurrent => {
@@ -292,6 +296,8 @@ export default class viewproduct extends Component {
 
         })
     }
+
+    // get comments by product
 
     CommentList() {
 
@@ -305,6 +311,7 @@ export default class viewproduct extends Component {
         })
     }
 
+    //get orders by product
     getOrders() {
 
         const token = localStorage.getItem('manager_token');
@@ -337,6 +344,7 @@ export default class viewproduct extends Component {
         })
     }
 
+    //validate user sessions
     validateUser() {
 
 
@@ -542,6 +550,7 @@ export default class viewproduct extends Component {
 
     }
 
+    // remove image attachment
     RemoveImage() {
 
         if (this.state.image) {
@@ -589,6 +598,7 @@ export default class viewproduct extends Component {
     }
 
 
+    //handle upload image
 
     async uploadImage() {
 
@@ -736,47 +746,47 @@ export default class viewproduct extends Component {
                         }
                     }
                     ).then((res) => {
-                    
-
-                    Swal.fire({
-                        title: "Upload Interrupted",
-                        text: "Selected File is not an Image or in unsupported file format or Upload is interrupted Due to Server Error, Upload failed! ",
-                        icon: "error",
-                        // buttons: true,
-                        dangerMode: true,
-                    })
-
-                }).catch((err) => {
 
 
+                        Swal.fire({
+                            title: "Upload Interrupted",
+                            text: "Selected File is not an Image or in unsupported file format or Upload is interrupted Due to Server Error, Upload failed! ",
+                            icon: "error",
+                            // buttons: true,
+                            dangerMode: true,
+                        })
 
-                    imgname=0;
-                    this.state.NewUpload=false;
+                    }).catch((err) => {
 
 
-                    Swal.fire({
-                        position: 'bottom-end',
-                        icon: 'error',
-                        title: 'Session Has Expired',
-                        html:
-                            '<h4>Last Session Details</h4><br/><b>User ID :</b> ' + localStorage.getItem("id") + '<br/>' +
-                            'Please Log In again and come back to this page to Continue. <br/><a class="btn btn-success" href="http://localhost:3000/manager-Sign-In/" target="_blank">Log In Here</a>',
-                        showConfirmButton: false,
-                        timer: 10000,
-                        backdrop: `
+
+                        imgname = 0;
+                        this.state.NewUpload = false;
+
+
+                        Swal.fire({
+                            position: 'bottom-end',
+                            icon: 'error',
+                            title: 'Session Has Expired',
+                            html:
+                                '<h4>Last Session Details</h4><br/><b>User ID :</b> ' + localStorage.getItem("id") + '<br/>' +
+                                'Please Log In again and come back to this page to Continue. <br/><a class="btn btn-success" href="http://localhost:3000/manager-Sign-In/" target="_blank">Log In Here</a>',
+                            showConfirmButton: false,
+                            timer: 10000,
+                            backdrop: `
           rgba(255,0,0,0.4)`
-                    })
+                        })
 
 
 
 
-                });
+                    });
 
 
 
 
                 }
-                
+
                 ))
 
 
@@ -784,16 +794,16 @@ export default class viewproduct extends Component {
 
                 if (!(this.state.NewUpload)) {
 
-                    if(this.state.uploadedimg){
+                    if (this.state.uploadedimg) {
 
-                    swal({
-                        title: "Existing Upload",
-                        text: "This File is Already Uploaded",
-                        icon: "info",
-                        // buttons: true,
-                        dangerMode: false,
-                    })
-                }
+                        swal({
+                            title: "Existing Upload",
+                            text: "This File is Already Uploaded",
+                            icon: "info",
+                            // buttons: true,
+                            dangerMode: false,
+                        })
+                    }
                 }
 
             }
@@ -833,7 +843,7 @@ export default class viewproduct extends Component {
                 reverseButtons: true,
             })
 
-           
+
 
 
 
@@ -871,7 +881,7 @@ export default class viewproduct extends Component {
                         dangerMode: false,
                     })
 
-                   
+
 
 
 
@@ -882,7 +892,7 @@ export default class viewproduct extends Component {
 
 
             })
-          
+
 
 
 
@@ -925,7 +935,7 @@ export default class viewproduct extends Component {
                     go = 1;
                     console.log("Go dont need file");
 
-                
+
 
 
 
@@ -942,7 +952,7 @@ export default class viewproduct extends Component {
                 console.log("dont go");
 
 
-                
+
             }
 
         }
@@ -950,6 +960,7 @@ export default class viewproduct extends Component {
 
     }
 
+    //help tag show
     showHelp() {
         Swal.fire({
             title: '<strong>File Upload Details</strong>',
@@ -967,6 +978,7 @@ export default class viewproduct extends Component {
         })
     }
 
+    // handle updates
     onSubmit = async (e) => {
 
         e.preventDefault();
@@ -1039,7 +1051,7 @@ export default class viewproduct extends Component {
 
 
 
-                       
+
                         this.state.image = null;
                         this.getProduct();
 
@@ -1114,7 +1126,7 @@ export default class viewproduct extends Component {
 
 
 
-                    
+
 
 
                     Swal.fire({
@@ -1293,7 +1305,7 @@ export default class viewproduct extends Component {
                                                         </div>
                                                         <div class="form-group" style={{ paddingLeft: "15px" }}>
                                                             <h6>Product Discount</h6>
-                                                            {this.state.discount} {this.state.discount? "%" :"0%"}
+                                                            {this.state.discount} {this.state.discount ? "%" : "0%"}
                                                         </div>
                                                         <div class="form-group" style={{ paddingLeft: "15px" }}>
                                                             <h6>Available Quantity</h6>
@@ -1610,6 +1622,7 @@ export default class viewproduct extends Component {
                 </div>
 
 
+ {/* pdf generator divs */}
 
                 <div id="tab3"></div><div id="avoid2"></div><div id="tab3"></div><div id="tab4"></div><div id="tab4"></div>     </div>
 
