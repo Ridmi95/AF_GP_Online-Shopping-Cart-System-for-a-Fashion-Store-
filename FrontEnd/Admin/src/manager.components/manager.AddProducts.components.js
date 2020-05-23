@@ -493,7 +493,12 @@ export default class addproducts extends Component {
 
             } else {
 
+                
+                
+
                 if (!this.state.NewUpload) {
+                    
+
 
                     swal({
                         title: "Existing Upload",

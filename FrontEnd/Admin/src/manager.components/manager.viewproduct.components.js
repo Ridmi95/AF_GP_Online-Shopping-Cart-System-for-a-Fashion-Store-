@@ -723,6 +723,21 @@ export default class viewproduct extends Component {
 
                 }).catch((err => {
 
+                    token = localStorage.getItem('manager_token')
+
+                    axios.get('http://localhost:4000/login/manager-token-validate', {
+
+                        headers:
+                        {
+
+
+                            manager_token: token
+
+                        }
+                    }
+                    ).then((res) => {
+                    
+
                     Swal.fire({
                         title: "Upload Interrupted",
                         text: "Selected File is not an Image or in unsupported file format or Upload is interrupted Due to Server Error, Upload failed! ",
@@ -731,13 +746,45 @@ export default class viewproduct extends Component {
                         dangerMode: true,
                     })
 
+                }).catch((err) => {
 
-                }))
+
+
+                    imgname=0;
+                    this.state.NewUpload=false;
+
+
+                    Swal.fire({
+                        position: 'bottom-end',
+                        icon: 'error',
+                        title: 'Session Has Expired',
+                        html:
+                            '<h4>Last Session Details</h4><br/><b>User ID :</b> ' + localStorage.getItem("id") + '<br/>' +
+                            'Please Log In again and come back to this page to Continue. <br/><a class="btn btn-success" href="http://localhost:3000/manager-Sign-In/" target="_blank">Log In Here</a>',
+                        showConfirmButton: false,
+                        timer: 10000,
+                        backdrop: `
+          rgba(255,0,0,0.4)`
+                    })
+
+
+
+
+                });
+
+
+
+
+                }
+                
+                ))
 
 
             } else {
 
-                if (!this.state.NewUpload) {
+                if (!(this.state.NewUpload)) {
+
+                    if(this.state.uploadedimg){
 
                     swal({
                         title: "Existing Upload",
@@ -746,6 +793,7 @@ export default class viewproduct extends Component {
                         // buttons: true,
                         dangerMode: false,
                     })
+                }
                 }
 
             }
@@ -1066,6 +1114,7 @@ export default class viewproduct extends Component {
 
 
 
+                    
 
 
                     Swal.fire({
@@ -1244,7 +1293,7 @@ export default class viewproduct extends Component {
                                                         </div>
                                                         <div class="form-group" style={{ paddingLeft: "15px" }}>
                                                             <h6>Product Discount</h6>
-                                                            {this.state.discount}
+                                                            {this.state.discount} {this.state.discount? "%" :"0%"}
                                                         </div>
                                                         <div class="form-group" style={{ paddingLeft: "15px" }}>
                                                             <h6>Available Quantity</h6>
@@ -1402,10 +1451,10 @@ export default class viewproduct extends Component {
                                                     </div>
 
                                                     {/* discount */}
-                                        Discount
+                                        Discount ( % )
                                         <div class="form-group">
                                                         <label for="discount"><i class="zmdi zmdi-label"></i></label>
-                                                        <input type="text" name="name" id="discount" placeholder="Product Discount Percentage" onChange={this.onChangeDiscount} value={this.state.discount} />
+                                                        <input type="text" name="name" id="discount" placeholder="Product Discount ( Do not enter % sign at the end )" onChange={this.onChangeDiscount} value={this.state.discount} />
                                                     </div>
 
                                                     {/* discription */}
@@ -1537,7 +1586,7 @@ export default class viewproduct extends Component {
                         >
                             {/* Coments */}
 
-                            <div className="container" style={{ marginTop: -200, backgroundColor: "#29B6F6" }} id="tab2" >
+                            <div className="container" style={{ marginTop: -5, backgroundColor: "#29B6F6" }} id="tab2" >
 
                                 <h1>Comments</h1>
                                 <table className="table" style={{ color: "white" }}>

@@ -97,6 +97,18 @@ orderRoutes.route("/:id").get(function (req, res) {
 });
 
 
+orderRoutes.get("/byDate/:date",function (req, res) {
+  let date = req.params.date;
+  Order.find({ orderDate: { $regex: date }}, function (err, order) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({ success: true, data: order });
+    }
+  }).sort({orderDate:-1});;
+});
+
+
 
 
 
