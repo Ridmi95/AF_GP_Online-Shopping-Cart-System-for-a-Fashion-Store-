@@ -9,7 +9,7 @@ let Product = require("../Models/product.model");
 const cloudinary = require("cloudinary").v2;
 const fileupload = require('express-fileupload');
 
-
+//image hosting server configuration details
 
 cloudinary.config({
   cloud_name :"fashionistaimage",
@@ -19,21 +19,10 @@ cloudinary.config({
 
 });
 
-// productRoutes.route("/add").post(function (req, res) {
-//   let product = new Product(req.body);
-
-//   product
-//     .save()
-//     .then((product) => {
-//       res.status(200).json({ success: true, data: product });
-//     })
-//     .catch((err) => {
-//       res.status(400).json({ success: false, data: err });
-//     });
-// });
 
 
-//manager
+
+//store manager end point to get all the products
 productRoutes.get("/all",auth , async (req, res) =>{
   await Product.find(function (err, products) {
     if (err) {
@@ -49,7 +38,7 @@ productRoutes.get("/all",auth , async (req, res) =>{
 
 
 
-//admin
+//admin  end point to get all the products
 productRoutes.get("/admin-all",admin_auth , async (req, res) =>{
   await Product.find(function (err, products) {
     if (err) {
@@ -62,7 +51,7 @@ productRoutes.get("/admin-all",admin_auth , async (req, res) =>{
 
 
 
-
+//store manager end poin to get recently created products
 productRoutes.get("/recent",auth , async (req, res) =>{
   await Product.find(function (err, products) {
     if (err) {
@@ -73,7 +62,7 @@ productRoutes.get("/recent",auth , async (req, res) =>{
   }).limit(10).sort({createdAt:-1});
 });
 
-
+//store manager end poin to get recently updated products
 productRoutes.get("/updated",auth , async (req, res) =>{
   await Product.find(function (err, products) {
     if (err) {
@@ -84,6 +73,7 @@ productRoutes.get("/updated",auth , async (req, res) =>{
   }).limit(10).sort({updatedAt:-1});
 });
 
+//store manager end poin to get  products in low stocks
 productRoutes.get("/lowstock",auth , async (req, res) =>{
   await Product.find(function (err, products) {
     if (err) {
@@ -94,6 +84,7 @@ productRoutes.get("/lowstock",auth , async (req, res) =>{
   }).limit(10).sort({quantity:1});
 });
 
+//store manager end poin to get products with high discounts
 productRoutes.get("/top-discount",auth , async (req, res) =>{
   await Product.find(function (err, products) {
     if (err) {
@@ -107,7 +98,7 @@ productRoutes.get("/top-discount",auth , async (req, res) =>{
 
 
 
-//client get
+//Customer end point to get all producrs
 productRoutes.route("/").get(function (req, res) {
   let category = req.query.category;
 
@@ -132,7 +123,7 @@ productRoutes.route("/").get(function (req, res) {
 
 
 
-//manager get product
+//manager end point to get products by id
 productRoutes.get("/manager/:id",auth,async (req, res) =>{
   let id = req.params.id;
   await Product.findOne({ _id: id }, function (err, product) {
@@ -149,7 +140,7 @@ productRoutes.get("/manager/:id",auth,async (req, res) =>{
 
 
 
-//client update
+//get products  of a given category
 productRoutes.get("/ByCategory/:key",async (req, res) =>{
   let key = req.params.key;
 
@@ -167,21 +158,10 @@ productRoutes.get("/ByCategory/:key",async (req, res) =>{
 });
 
 
-// productRoutes.get("/:id",async (req, res) =>{
-//   let id = req.params.id;
-//   await Product.findOne({ _id: id }, function (err, product) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.status(200).json({ success: true, data: product });
-//       console.log("Passed product is", product);
-      
-//     }
-//   });
-// });
+
       
 
-// Client get by Id
+// Customer products get by Id
 productRoutes.route("/:id").get(function (req, res) {
   let id = req.params.id;
   Product.findOne({ productCode: id }, function (err, product) {
@@ -197,7 +177,7 @@ productRoutes.route("/:id").get(function (req, res) {
 
 
 
-//search by Id
+//search products by Id
 productRoutes.route("/search/:key").get(function (req, res) {
 
   let key = req.params.key;
@@ -217,7 +197,7 @@ productRoutes.route("/search/:key").get(function (req, res) {
 
 
 
-//Client update by product code
+//customer product update by product code
 
 productRoutes.route("/update/bycode/").put(function (req, res) {
   Product.findOneAndUpdate(
@@ -235,7 +215,7 @@ productRoutes.route("/update/bycode/").put(function (req, res) {
 
 
 
-// upload file
+// upload file to cloudinary
 
 productRoutes.post('/upload', auth,(req,res) =>{
 
@@ -275,19 +255,9 @@ productRoutes.post('/upload', auth,(req,res) =>{
 
 
 
-//product Admin
 
 
-//get all the products
-// productRoutes.route('/list').get((req, res) =>{
-
-//   Product.find().then(product => res.json(product))
-//   .catch(err => res.status(400).json('Error: ' + err));
-
-
-// });
-
-// get product by id
+// get product by id in store Manager UI
 productRoutes.route('/list/:id').get((req, res) =>{
 
   Product.findById(req.params.id).then(product => res.json(product))
@@ -298,7 +268,7 @@ productRoutes.route('/list/:id').get((req, res) =>{
 
 
 
-//add product
+//add products
 productRoutes.post('/add', auth, async (req, res) =>{
 
   const productCode = req.body.productCode;
@@ -315,7 +285,7 @@ productRoutes.post('/add', auth, async (req, res) =>{
   
 
 
-  // 
+  // check if discount not recieved
   if(discount==null){
 
     discount=0;
@@ -353,7 +323,7 @@ productRoutes.delete('/delete/:id',auth,async (req, res) =>{
 
 });
 
-//update product
+//update product by id
 
 productRoutes.post('/update/:id' , auth,async (req, res) =>{
 

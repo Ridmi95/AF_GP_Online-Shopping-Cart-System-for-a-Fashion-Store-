@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const config = require('../configure.js');
 
+//validate authentication
+
 const auth = (req,res,location) =>{
 
     try{

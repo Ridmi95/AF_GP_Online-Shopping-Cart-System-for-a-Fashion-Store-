@@ -8,12 +8,10 @@ const config = require('../configure.js');
 const jwt = require('jsonwebtoken');
 
 
-// Require Category model in our routes module
+
 let login = require('../Models/login.model');
 
-// let manager = require('../Models/manager.model');
 
-// Defined get data(index or listing) route
 
 loginRoutes.post("/", async (req, res) => {
 
@@ -90,19 +88,8 @@ loginRoutes.post("/admin-token-validate", async (req, res) => {
 });
 
 
-/*
-loginRoutes.route('/hash').get(function (req, res) {
-    bcrypt.hash('123456', 10, function (err, hash) {
-        if (err) {
-           console.log(err)
-        } else {
-            console.log(hash);
-            res.json(hash)
-       }
-    });
-});
-*/
-//manger login
+
+//Store Manager User Validation login
 
 loginRoutes.post("/manager-login" ,async (req,res)=>{
 
@@ -157,7 +144,7 @@ loginRoutes.post("/manager-login" ,async (req,res)=>{
 })
 
 
-//token validate
+//Store Manager User Session Validation by token
 loginRoutes.get("/manager-token-validate" ,async (req,res)=>{
 
     try {
