@@ -9,6 +9,7 @@ import Routes from "routes";
 
 import "./index.scss";
 
+//api
 const settings = {
   api: {
     baseUrl: "http://localhost:4000",
