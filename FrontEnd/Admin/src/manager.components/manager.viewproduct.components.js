@@ -1307,7 +1307,7 @@ export default class viewproduct extends Component {
                                                         </div>
                                                         <div class="form-group" style={{ paddingLeft: "15px" }}>
                                                             <h6>Product Discount</h6>
-                                                            {this.state.discount} {this.state.discount ? "%" : "0%"}
+                                                            {this.state.discount} {this.state.discount ? "%" : this.state.discount==0 ?"%": "0%"}
                                                         </div>
                                                         <div class="form-group" style={{ paddingLeft: "15px" }}>
                                                             <h6>Available Quantity</h6>

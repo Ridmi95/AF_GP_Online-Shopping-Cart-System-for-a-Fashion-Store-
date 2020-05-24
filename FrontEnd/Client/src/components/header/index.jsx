@@ -156,21 +156,26 @@ class Header extends PureComponent<HeaderProps, HeaderState> {
                     <div className="cart-wrapper">
                       <Icon icon="cart" onClick={handleCart} />
                     </div>
-                    <div className="auth-button">
+                    <div className="wishlist-wrapper" hidden={localStorage.getItem("userid")?false:true}>
+                      <Button htmlType={Button.HTML_TYPE.LINK} link="/logout">
+                        Log Out
+                      </Button>
+                    </div>
+                    <div className="auth-button" hidden={localStorage.getItem("userid")?true:false} >
                       <Button
                         loading={status === ASYNC_STATUS.LOADING}
                         onClick={this.handleSignInButtonClick}
                         htmlType={Button.HTML_TYPE.LINK}
-                        link="/home">
+                        link="/signin">
                         Sign In
                       </Button>
                     </div>
-                    <div className="auth-button">
+                    <div className="auth-button" hidden={localStorage.getItem("userid")?true:false}>
                       <Button
                         loading={status === ASYNC_STATUS.LOADING}
                         onClick={this.handleSingUpButtonClick}
                         htmlType={Button.HTML_TYPE.LINK}
-                        link="/">
+                        link="/signup" >
                         Sign Up
                       </Button>
                     </div>

@@ -16,6 +16,13 @@ import axios from 'axios';
 import './css/ContactFormPage.css';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import Navbar from "./Navbar";
+import './index.css';
+
+import 'bootstrap-css-only/css/bootstrap.min.css'; 
+    import    'mdbreact/dist/css/mdb.css';
+
+  
+
 class UserSignUp extends React.Component {
 
     constructor(props) {
@@ -160,7 +167,7 @@ class UserSignUp extends React.Component {
                                                             'User Details added successfully !.',
                                                             'success'
                                                         );
-                                                        this.props.history.push('/login');
+                                                        this.props.history.push('/signin');
                                                         window.location.reload();
                                                         this.setState({
                                                             name: '',
@@ -258,6 +265,16 @@ class UserSignUp extends React.Component {
         );
         return (
             <div id='contactformpage'>
+
+<header>
+
+<link rel="stylesheet" href="./css/AppPages.css" />
+<link rel="stylesheet" href="./css/CallToActionIntro.css" />
+<link rel="stylesheet" href="./css/ContactFormPage.css" />
+
+
+
+</header>
 
                 <Router>
                     <div>

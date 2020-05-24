@@ -17,6 +17,10 @@ import {
 import axios from 'axios';
 import Swal from "sweetalert2";
 import Navbar from "./Navbar";
+import './index.css';
+
+import 'bootstrap-css-only/css/bootstrap.min.css'; 
+    import    'mdbreact/dist/css/mdb.css';
 
 export default class UserProfile extends React.Component {
     constructor(props) {
@@ -279,7 +283,7 @@ export default class UserProfile extends React.Component {
                        <MDBCardBody cascade className="text-center" >
                            <h2 className="font-weight-bold h2col">USER PROFILE</h2>
                            <h2 className="font-weight-bold h2col">{this.state.userList.name}</h2>
-                               <MDBBtn className="btn-fb waves-light" color="mdb-color" a href="/">
+                               <MDBBtn className="btn-fb waves-light" color="mdb-color" a href="/home">
                                    Home
                                </MDBBtn>
                                <MDBBtn className="btn-fb waves-light" color="mdb-color" a href="/logout">

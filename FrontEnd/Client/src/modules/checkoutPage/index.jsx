@@ -321,7 +321,7 @@ const mapStateToProps = (state) => {
     orderSuccess: state.product.orderSuccess,
     status: state.product.status,
     notification: state.product.notification,
-    userId: "admin", //state.user.userId
+    userId: localStorage.getItem("CustomerName")
   };
 };
 

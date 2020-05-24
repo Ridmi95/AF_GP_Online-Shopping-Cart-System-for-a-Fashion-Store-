@@ -18,6 +18,10 @@ import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import swal from 'sweetalert';
 import Navbar from "./Navbar";
+import './index.css';
+
+import 'bootstrap-css-only/css/bootstrap.min.css'; 
+    import    'mdbreact/dist/css/mdb.css';
 import UserSignUp from "./UserSignUp";
 
 class UserSignIn extends React.Component {
@@ -88,6 +92,7 @@ class UserSignIn extends React.Component {
                                 );
                                 localStorage.setItem("UserSignedIn", "UserSignedIn");
                                 localStorage.setItem("userid", res.data.Message._id);
+                                localStorage.setItem("CustomerName", res.data.Message.username);
                                 this.props.history.push('/userprofile');
                                 window.location.reload();
 
