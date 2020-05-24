@@ -39,7 +39,7 @@ orderRoutes.route("/add").post(async (req, res) => {
 
 
 
-//define get data
+//manager get all products
 orderRoutes.get("/managerlist",auth,function (req, res) {
   Order.find(function (err, orders) {
       if (err) {
@@ -52,7 +52,7 @@ orderRoutes.get("/managerlist",auth,function (req, res) {
 });
 
 
-//define get data by id
+//manager get order by id
 orderRoutes.get('/getbyProduct/:id',auth, (req, res) => {
 
   let id = req.params.id;
@@ -96,7 +96,7 @@ orderRoutes.route("/:id").get(function (req, res) {
   });
 });
 
-
+//Manager recieve products by order date
 orderRoutes.get("/byDate/:date",function (req, res) {
   let date = req.params.date;
   Order.find({ orderDate: { $regex: date }}, function (err, order) {
