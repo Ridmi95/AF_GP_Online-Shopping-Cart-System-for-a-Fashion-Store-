@@ -12,7 +12,7 @@ Online Shopping Cart System for a Fashion Store by using
 ## Installation 
 Download or Clone the project first. Then you need to Run the Back-End,
 
-###Back-End Configurations
+### Back-End Configurations
 1. Open "Backend" folder through teminal and run ``` npm install ``` to download node modules.
 2. To run server run ``` nodemon start ``` in the terminal
 3. Now the Server is Runing
@@ -41,11 +41,12 @@ To View Admin front-end you need to run Admin Project
 Happy Coding !
 
 # Project Team
-``` Name1: IT18003888 Y.R. Ekanayake
+``` 
+Name1: IT18003888 Y.R. Ekanayake
 
- Name2: IT18080636 G.N.S. De Silva
+Name2: IT18080636 G.N.S. De Silva
 
- Name3: IT18028560 K.R.G.A. Hemachandra
+Name3: IT18028560 K.R.G.A. Hemachandra
 
- Name4: IT18032598 P. D. R. Deshan
+Name4: IT18032598 P. D. R. Deshan
 ```
