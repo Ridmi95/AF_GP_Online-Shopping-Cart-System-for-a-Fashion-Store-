@@ -614,6 +614,7 @@ export default class viewproduct extends Component {
                     showConfirmButton: false,
                     timer: this.state.uploadPercentage,
                     timerProgressBar: true,
+                   
                     onOpen: (toast) => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
                         toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -654,6 +655,7 @@ export default class viewproduct extends Component {
                             icon: 'info',
                             title: 'Uploading on Progress.',
                             text: 'Please wait a moment',
+
 
                         })
 

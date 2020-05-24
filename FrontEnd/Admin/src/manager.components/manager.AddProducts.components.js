@@ -407,6 +407,7 @@ export default class addproducts extends Component {
                             icon: 'info',
                             title: 'Uploading on Progress.',
                             text: 'Please wait a moment',
+                           
 
                         })
 
@@ -975,7 +976,7 @@ export default class addproducts extends Component {
                                             </div>
                                         </div>
                                         {/* price */}
-                                        Price
+                                        Price (Rs.)
                                         <div class="form-group">
 
                                             <label for="price"><i class="zmdi zmdi-money-box"></i></label>
@@ -1000,10 +1001,10 @@ export default class addproducts extends Component {
                                         </div>
 
                                         {/* discount */}
-                                        Discount
+                                        Discount (%)
                                         <div class="form-group">
                                             <label for="discount"><i class="zmdi zmdi-label"></i></label>
-                                            <input type="text" name="name" id="discount" placeholder="Product Discount Percentage" onChange={this.onChangeDiscount} value={this.state.discount} />
+                                            <input type="text" name="name" id="discount" placeholder="Product Discount (Do not enter % sign)" onChange={this.onChangeDiscount} value={this.state.discount} />
                                         </div>
 
                                         {/* discription */}
