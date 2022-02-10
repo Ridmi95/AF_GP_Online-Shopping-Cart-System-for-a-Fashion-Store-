@@ -42,7 +42,7 @@
     "jsonexport": "^2.4.1",
     "mdbreact": "^4.26.1",
     "moment": "^2.24.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "prop-types": "^15.7.2",
     "ra-data-json-server": "^3.5.1",
     "react": "^16.8.6",
